@@ -2,5 +2,8 @@ language: java
 jdk: openjdk8
 # skip installation step
 install: true
+cache:
+   directories:
+      - $HOME/.m2
 script:
 - mvn -f progetto/pom.xml clean verify
