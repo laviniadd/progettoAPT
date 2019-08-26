@@ -7,9 +7,12 @@ matrix:
  - os: osx
  osx_image: xcode10.1
 # skip installation step
+services:
+ - docker
 install: true
 cache:
    directories:
       - $HOME/.m2
 script:
 - mvn -f progetto/pom.xml clean verify $ADDITIONAL_MAVEN_ARGS
+- mvn -f progetto/pom.xml clean verify -Pdocker
