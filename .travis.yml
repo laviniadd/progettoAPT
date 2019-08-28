@@ -14,5 +14,5 @@ cache:
    directories:
       - $HOME/.m2
 script:
-# - mvn -f progetto/pom.xml clean verify $ADDITIONAL_MAVEN_ARGS
-- mvn -f progetto/pom.xml clean verify -Pdocker
+- mvn -f progetto/pom.xml clean verify $ADDITIONAL_MAVEN_ARGS
+#- mvn -f progetto/pom.xml clean verify -Pdocker
