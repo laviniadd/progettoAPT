@@ -15,8 +15,9 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 		<!-- The provider specifies the JPA implementation that you want to use 
 			(Hibernate) -->
 
-		<class></class>
-		<class></class>
+		<class>com.myproject.app.model.ListaSpesa</class>
+		<class>com.myproject.app.model.Prodotto</class>
+		<class>com.myproject.app.model.ElencoProdotti</class>
 		<!-- Specify names of managed persistable classes -->
 
 		<properties>
