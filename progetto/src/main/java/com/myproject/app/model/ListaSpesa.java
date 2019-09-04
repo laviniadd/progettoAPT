@@ -6,9 +6,18 @@ import javax.persistence.*;
 
 @Entity
 public class ListaSpesa extends BaseEntity {
-	private String name;
 	
+	private String name;
 	private Set<ElencoProdotti> elencoProdotti;
+	
+	public ListaSpesa() {
+	}
+	
+	public ListaSpesa(String name, Set<ElencoProdotti> elencoProdotti) {
+		super();
+		this.name = name;
+		this.elencoProdotti = elencoProdotti;
+	}
 
 	public String getName() {
 		return name;
@@ -17,6 +26,7 @@ public class ListaSpesa extends BaseEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	@OneToMany(mappedBy = "listaSpesa")
 	public Set<ElencoProdotti> getElencoProdotti() {
 		return elencoProdotti;

@@ -24,9 +24,55 @@
 			<property name="hibernate.connection.password" value="" />
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.HSQLDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="false" />
 		</properties>
 	</persistence-unit>
+<persistence-unit name="production"
+		transaction-type="RESOURCE_LOCAL">
+		<!-- The persistence-unit name must to be UNIQUE -->
+		<!-- The value RESOURCE_LOCAL to replace the default value (JTA) allows 
+			you to manage connection with database manually -->
 
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<!-- The provider specifies the JPA implementation that you want to use 
+			(Hibernate) -->
+
+		<class>com.myproject.app.model.ListaSpesa</class>
+		<class>com.myproject.app.model.Prodotto</class>
+		<class>com.myproject.app.model.ElencoProdotti</class>
+		<!-- Specify names of managed persistable classes -->
+
+		<properties>
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<!-- The dialect specifies the language of your DB (MySQL 5 InnoDB) -->
+
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<!-- Possible values for hbm2ddl: validate: validate the schema, makes 
+				no changes to the database. update: update the schema. create: creates the 
+				schema, destroying previous data. create-drop: drop the schema when the SessionFactory 
+				is closed explicitly, typically when the application is stopped. -->
+
+			<property name="hibernate.connection.url"
+				value="jdbc:mysql://192.168.99.101:3306/db-progetto?serverTimezone=UTC" />
+			<!-- value="jdbc:mysql://localhost:3306/progetto?serverTimezone=UTC" /> -->
+			<!-- the address with port of your mySql service, followed by the name 
+				of DB that is created if not exist -->
+
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.password" value="root" />
+			<!-- username and password of your mySql connection -->
+
+			<property name="hibernate.show_sql" value="false" />
+			<!-- show_sql=true permits to view queries in console -->
+
+			<property name="hibernate.format_sql" value="true" />
+			<!-- format_sql=true permits to view formatted queries in console -->
+
+			<property name="hibernate.id.new_generator_mappings"
+				value="true" />
+		</properties>
+	</persistence-unit>
+	
 </persistence>
