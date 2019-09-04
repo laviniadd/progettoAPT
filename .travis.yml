@@ -2,7 +2,7 @@ language: java
 matrix:
  include:
  - jdk: openjdk8
-#   env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report"
+   env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report"
 # - jdk: openjdk9
 # - os: osx
 # osx_image: xcode10.1
