@@ -1,11 +1,8 @@
 package com.myproject.app.dao;
 
 import static org.assertj.core.api.Assertions.*;
-// import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.junit.runners.model.InitializationError;
-
 import com.myproject.app.model.ListaSpesa;
 
 public class listaDellaSpesaDaoTest extends JpaTest {
@@ -33,24 +30,45 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 	@Test
 	public void testListaDellaSpesaFindById() {
 		lista = new ListaSpesa();
-		lista.setName("spesaesselunga");
 		lista2 = new ListaSpesa();
-		lista2.setName("spesacoop");
 		
-		entityManager = PersistenceManager.getEntityManager();
-		entityManager.persist(lista);
-		entityManager.persist(lista2);
+		addListToDatabase(lista);
+		addListToDatabase(lista2);
+		
 		entityManager.getTransaction().commit();
 		entityManager.clear();
 
 		assertThat(listaDao.findById(lista2.getId())).isEqualTo(lista2);
 	}
-	
+
 	@Test
 	public void testListaDellaSpesaFindByIdNotFound() {
 		assertThat(listaDao.findById(Long.valueOf(1))).isNull();
 	}
-	
-	
+
+	@Test
+	public void testFindAllListaDellaSpesaWhenDatabaseIsNotEmpty() {
+		lista = new ListaSpesa();
+		lista2 = new ListaSpesa();
+		
+		addListToDatabase(lista);
+		addListToDatabase(lista2);
+		
+		entityManager.getTransaction().commit();
+		entityManager.clear();
+		
+		assertThat(listaDao.findAll()).containsExactly(lista, lista2);
+	}
+
+	@Test
+	public void testFindAllListaDellaSpesaWhenDatabaseIsEmpty() {
+		assertThat(listaDao.findAll()).isEmpty();
+	}
+
+	private void addListToDatabase(ListaSpesa listaDaSalvare) {
+		entityManager = PersistenceManager.getEntityManager();
+		entityManager.persist(listaDaSalvare);		
+		
+	}
 
 }
