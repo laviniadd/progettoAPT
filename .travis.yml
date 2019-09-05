@@ -1,12 +1,17 @@
 language: java
+
 matrix:
  include:
+ # always build this environment
  - jdk: openjdk8
-  env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report"
-# - jdk: openjdk9
-# - os: osx
-# osx_image: xcode10.1
-# skip installation step
+   env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report"
+ # only on PR
+ - jdk: openjdk9
+   if: type IN (pull_request)
+ # only on PR
+ - os: osx
+   osx_image: xcode10.1
+   if: type IN (pull_request)
 services:
  - docker
 install: true
