@@ -1,7 +1,7 @@
 package com.myproject.app.dao;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.assertEquals;
+// import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.junit.runners.model.InitializationError;
@@ -10,8 +10,9 @@ import com.myproject.app.model.ListaSpesa;
 
 public class listaDellaSpesaDaoTest extends JpaTest {
 
-	ListaDellaSpesaDao listaDao;
+	private ListaDellaSpesaDao listaDao;
 	private ListaSpesa lista;
+	private ListaSpesa lista2;
 
 	@Override
 	protected void init() throws InitializationError {
@@ -30,16 +31,26 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testFindByIdListaDellaSpesa() {
+	public void testListaDellaSpesaFindById() {
 		lista = new ListaSpesa();
 		lista.setName("spesaesselunga");
+		lista2 = new ListaSpesa();
+		lista2.setName("spesacoop");
+		
 		entityManager = PersistenceManager.getEntityManager();
 		entityManager.persist(lista);
+		entityManager.persist(lista2);
 		entityManager.getTransaction().commit();
 		entityManager.clear();
 
-		ListaSpesa listaPersisted = listaDao.findById(lista.getId());
-		assertThat(listaPersisted).isEqualTo(lista);
+		assertThat(listaDao.findById(lista2.getId())).isEqualTo(lista2);
 	}
+	
+	@Test
+	public void testListaDellaSpesaFindByIdNotFound() {
+		assertThat(listaDao.findById(Long.valueOf(1))).isNull();
+	}
+	
+	
 
 }

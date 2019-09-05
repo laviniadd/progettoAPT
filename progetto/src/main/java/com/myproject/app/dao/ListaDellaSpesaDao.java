@@ -1,16 +1,16 @@
 package com.myproject.app.dao;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 
 import com.myproject.app.model.ListaSpesa;
 
 public class ListaDellaSpesaDao extends BaseDao<ListaSpesa> {
 
-	private EntityManager entityManager;
+//	private EntityManager entityManager;
 
 	public ListaDellaSpesaDao() {
 		super(ListaSpesa.class); //passa il tipo della classe al costruttore della supe class, ovvero basedao
-		this.entityManager = PersistenceManager.getEntityManager();
+//		this.entityManager = PersistenceManager.getEntityManager();
 	}
 
 	/*
