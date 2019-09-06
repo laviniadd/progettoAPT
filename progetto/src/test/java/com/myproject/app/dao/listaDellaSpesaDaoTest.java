@@ -31,10 +31,10 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 	public void testListaDellaSpesaFindById() {
 		lista = new ListaSpesa();
 		lista2 = new ListaSpesa();
-		
+
 		addListToDatabase(lista);
 		addListToDatabase(lista2);
-		
+
 		entityManager.getTransaction().commit();
 		entityManager.clear();
 
@@ -50,13 +50,13 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 	public void testFindAllListaDellaSpesaWhenDatabaseIsNotEmpty() {
 		lista = new ListaSpesa();
 		lista2 = new ListaSpesa();
-		
+
 		addListToDatabase(lista);
 		addListToDatabase(lista2);
-		
+
 		entityManager.getTransaction().commit();
 		entityManager.clear();
-		
+
 		assertThat(listaDao.findAll()).containsExactly(lista, lista2);
 	}
 
@@ -67,8 +67,8 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 
 	private void addListToDatabase(ListaSpesa listaDaSalvare) {
 		entityManager = PersistenceManager.getEntityManager();
-		entityManager.persist(listaDaSalvare);		
-		
+		entityManager.persist(listaDaSalvare);
+
 	}
 
 }
