@@ -78,6 +78,7 @@
 					<configuration>
 						<excludes>
 							<exclude>**/App.*</exclude>
+							<exclude>**/AppTest.*</exclude>
 							<exclude>com/myproject/app/model/**/*</exclude>
 						</excludes>
 					</configuration>
