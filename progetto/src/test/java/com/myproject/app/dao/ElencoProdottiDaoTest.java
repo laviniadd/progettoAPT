@@ -5,8 +5,6 @@ import org.junit.Test;
 import org.junit.runners.model.InitializationError;
 
 import com.myproject.app.model.ElencoProdotti;
-import com.myproject.app.model.ListaSpesa;
-import com.myproject.app.model.Prodotto;
 
 public class ElencoProdottiDaoTest extends JpaTest {
 

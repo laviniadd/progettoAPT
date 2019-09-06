@@ -4,10 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import com.myproject.app.model.ElencoProdotti;
-import com.myproject.app.model.ListaSpesa;
-import com.myproject.app.model.Prodotto;
-
 public abstract class BaseDao<T> implements BaseDaoInterface<T> {
 
 	private EntityManager entityManager;
@@ -28,16 +24,8 @@ public abstract class BaseDao<T> implements BaseDaoInterface<T> {
 	}
 
 	public List<T> findAll() {
-		if (classType == ListaSpesa.class) {
-			return entityManager.createQuery("select e from ListaSpesa e", classType).getResultList();
-		}
-		if (classType == Prodotto.class) {
-			return entityManager.createQuery("select e from Prodotto e", classType).getResultList();
-		}
-		if (classType == ElencoProdotti.class) {
-			return entityManager.createQuery("select e from ElencoProdotti e", classType).getResultList();
-		}
-		return null;
+		String classTypeString = classType.getCanonicalName();
+		return entityManager.createQuery("SELECT t FROM " + classTypeString + " t", classType).getResultList();
 	}
 
 }
