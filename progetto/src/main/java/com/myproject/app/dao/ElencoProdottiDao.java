@@ -2,10 +2,10 @@ package com.myproject.app.dao;
 
 import com.myproject.app.model.ElencoProdotti;
 
-public class ElencoProdottiDao extends BaseDao<ElencoProdotti>{
+public class ElencoProdottiDao extends BaseRepository<ElencoProdotti>{
 
-	public ElencoProdottiDao() {
-		super(ElencoProdotti.class);
+	public ElencoProdottiDao(TransactionTemplate transaction) {
+		super(transaction, ElencoProdotti.class);
 	}
 
 }
