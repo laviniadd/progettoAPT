@@ -25,7 +25,7 @@ public class TransactionTemplate {
 
 			return returnValue;
 		} catch (Exception e) {
-			if (transaction.isActive()) {
+			if (transaction!=null) {
 				transaction.rollback();
 			}throw new NullPointerException();
 		} finally {
