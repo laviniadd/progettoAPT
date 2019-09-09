@@ -12,22 +12,19 @@ public class BaseRepository<T> {
 	}
 
 	public void save(T entity) {
-		transaction.executeTransaction((em) -> {
+		transaction.executeTransaction(em -> {
 			em.persist(entity);
 			return null;
 		});
 	}
 
 	public T findById(Long id) {
-		return transaction.executeTransaction((em) -> {
-			return em.find(classType, id);
-		});
+		return transaction.executeTransaction(em -> em.find(classType, id));
 	}
 
 	public List<T> findAll() {
 		String classTypeString = classType.getCanonicalName();
-		return transaction.executeTransaction((em) -> {
-			return em.createQuery("SELECT t FROM " + classTypeString + " t", classType).getResultList();
-		});
+		return transaction.executeTransaction(
+				em -> em.createQuery("SELECT t FROM " + classTypeString + " t", classType).getResultList());
 	}
 }
