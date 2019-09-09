@@ -27,7 +27,7 @@ public class TransactionTemplate {
 		} catch (Exception e) {
 			if (transaction.isActive()) {
 				transaction.rollback();
-			}throw new IllegalArgumentException(e);
+			}throw new NullPointerException();
 		} finally {
 			em.close();
 		}

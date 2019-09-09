@@ -20,7 +20,7 @@ public class TransactionTemplateTest extends JpaTest {
 	@Test
 	public void testExceptionIsNotActive() {
 
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		transaction.executeTransaction((em) -> {
 			em.getTransaction().rollback();
 			return null;
@@ -30,7 +30,7 @@ public class TransactionTemplateTest extends JpaTest {
 	@Test
 	public void testExceptionIsActive() {
 		
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		transaction.executeTransaction(null);
 	}
 
