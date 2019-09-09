@@ -1,23 +1,28 @@
 language: java
-
 matrix:
- include:
- # always build this environment
- - jdk: openjdk8
-   env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report"
- # only on PR
- - jdk: openjdk9
-   if: type IN (pull_request)
- # only on PR
- - os: osx
-   osx_image: xcode10.1
-   if: type IN (pull_request)
+   include:
+   -  jdk: openjdk8
+# always build this environment
+      env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
+   -  jdk: openjdk9
+# only on PR
+      if: type IN (pull_request)
+   -  os: osx
+# only on PR
+      osx_image: xcode10.1
+      if: type IN (pull_request)
 services:
- - docker
+- docker
+addons:
+   sonarcloud:
+      organization: "<laviniadd>"
+      token:
+         secure: $SONAR_TOKEN
 install: true
 cache:
    directories:
-      - $HOME/.m2
+   - $HOME/.m2
+   - $HOME/.sonar/cache
+
 script:
 - mvn -f progetto/pom.xml clean verify $ADDITIONAL_MAVEN_ARGS
-#- mvn -f progetto/pom.xml clean verify -Pdocker
