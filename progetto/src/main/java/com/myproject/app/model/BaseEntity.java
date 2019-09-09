@@ -6,7 +6,6 @@ import javax.persistence.*;
 public abstract class BaseEntity {
 
 	private Long id;
-//	private String uuid;
 
 	protected BaseEntity() {
 	}
