@@ -12,7 +12,7 @@ public class TransactionTemplate {
 	}
 
 	public <T> T executeTransaction(BaseRepositoryInterface<T> baseRepository) {
-		
+
 		EntityManager em = this.emf.createEntityManager();
 		EntityTransaction transaction = null;
 		try {
@@ -22,13 +22,12 @@ public class TransactionTemplate {
 			T returnValue = baseRepository.executeWithOpenedTransaction(em);
 
 			transaction.commit();
-			
+
 			return returnValue;
 		} catch (Exception e) {
-			if (transaction != null) {
+			if (transaction.isActive()) {
 				transaction.rollback();
-			}
-			throw new IllegalArgumentException(e);
+			}throw new IllegalArgumentException(e);
 		} finally {
 			em.close();
 		}
