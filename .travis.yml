@@ -25,4 +25,4 @@ cache:
    - $HOME/.sonar/cache
 
 script:
- - mvn -f progetto/pom.xml clean verify  $ADDITIONAL_MAVEN_ARGS
+ - mvn -f progetto/pom.xml clean verify $ADDITIONAL_MAVEN_ARGS
