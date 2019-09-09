@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 public class TransactionTemplate {
-	public EntityManagerFactory emf;
+	private EntityManagerFactory emf;
 
 	public TransactionTemplate(EntityManagerFactory emf) {
 		this.emf = emf;
