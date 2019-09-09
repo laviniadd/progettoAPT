@@ -10,7 +10,7 @@ public abstract class JpaTest {
 	private TransactionTemplate transaction;
 
 	@BeforeClass
-	public static void setUpClass() {
+	public static void setUpClass() throws Exception{
 		entityManagerFactory = Persistence.createEntityManagerFactory("test");
 	}
 

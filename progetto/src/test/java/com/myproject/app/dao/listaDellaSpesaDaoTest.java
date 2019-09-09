@@ -67,7 +67,9 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 	public void testFindAllListaDellaSpesaWhenDatabaseIsEmpty() {
 		assertThat(listaDao.findAll()).isEmpty();
 	}
-
+	
+	
+	
 	private void addListToDatabase(ListaSpesa listaDaSalvare) {
 		transaction.executeTransaction((em) -> {
 			em.persist(listaDaSalvare);
