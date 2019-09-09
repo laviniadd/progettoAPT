@@ -46,40 +46,4 @@ public class ElencoProdotti extends BaseEntity {
 		this.prodotto = prodotto;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((listaSpesa == null) ? 0 : listaSpesa.hashCode());
-		result = prime * result + ((prodotto == null) ? 0 : prodotto.hashCode());
-		result = prime * result + quantity;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ElencoProdotti other = (ElencoProdotti) obj;
-		if (listaSpesa == null) {
-			if (other.listaSpesa != null)
-				return false;
-		} else if (!listaSpesa.equals(other.listaSpesa)) {
-			return false;
-		}	
-		if (prodotto == null) {
-			if (other.prodotto != null)
-				return false;
-		} else if (!prodotto.equals(other.prodotto))
-			return false;
-		if (quantity != other.quantity) {
-			return false;
-		}
-		return true;
-	}
-
 }
