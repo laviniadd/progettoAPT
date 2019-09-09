@@ -24,4 +24,4 @@ cache:
    - $HOME/.sonar/cache
 
 script:
- - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+ - mvn -f progetto/pom.xml clean verify sonar:sonar
