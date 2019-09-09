@@ -5,9 +5,17 @@ import javax.persistence.*;
 @Entity
 public class ElencoProdotti extends BaseEntity {
 
+	public ElencoProdotti() {
+	}
+
+	public ElencoProdotti(ListaSpesa listaSpesa, Prodotto prodotto, int quantity) {
+		this.prodotto = prodotto;
+		this.listaSpesa = listaSpesa;
+		this.quantity = quantity;
+	}
+
 	private Prodotto prodotto;
 	private ListaSpesa listaSpesa;
-
 	private int quantity;
 
 	public int getQuantity() {
