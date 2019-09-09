@@ -2,6 +2,7 @@ language: java
 matrix:
    include:
    -  jdk: openjdk8
+   env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
 # always build this environment
    -  jdk: openjdk9
 # only on PR
@@ -24,4 +25,4 @@ cache:
    - $HOME/.sonar/cache
 
 script:
- - mvn -f progetto/pom.xml clean verify sonar:sonar
+ - mvn -f progetto/pom.xml clean verify  $ADDITIONAL_MAVEN_ARGS
