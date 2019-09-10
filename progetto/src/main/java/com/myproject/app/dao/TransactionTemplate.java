@@ -7,7 +7,6 @@ import javax.persistence.EntityTransaction;
 public class TransactionTemplate {
 	
 	private EntityManagerFactory emf;
-	private EntityTransaction transaction;
 	private EntityManager em;
 
 	public TransactionTemplate(EntityManagerFactory emf) {
@@ -15,6 +14,8 @@ public class TransactionTemplate {
 	}
 
 	public <T> T executeTransaction(BaseRepositoryInterface<T> baseRepository) {
+		
+		EntityTransaction transaction;
 		try {
 			em = this.emf.createEntityManager();
 			transaction = em.getTransaction();
