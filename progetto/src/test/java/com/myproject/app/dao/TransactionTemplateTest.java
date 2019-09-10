@@ -1,11 +1,10 @@
 package com.myproject.app.dao;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runners.model.InitializationError;
+import static org.assertj.core.api.Assertions.*;
 
-import com.arjuna.ats.arjuna.common.recoveryPropertyManager;
+import org.junit.Test;
+
+import org.junit.runners.model.InitializationError;
 
 public class TransactionTemplateTest extends JpaTest {
 
@@ -16,22 +15,16 @@ public class TransactionTemplateTest extends JpaTest {
 		this.transactionTemplate = transaction;
 	}
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
-	@Test
-	public void testExceptionIsNotActive() {
-		transactionTemplate.executeTransaction((em) -> {
-			em.clear();
-			em.getTransaction().isActive();			
-			return null;
-		});
-	}
-
 	@Test
 	public void testExceptionIsActive() {
 
-		thrown.expect(NullPointerException.class);
-		transactionTemplate.executeTransaction(null);
+		Throwable thrown = catchThrowable(() -> {
+			transactionTemplate.executeTransaction(null);
+		});
+
+		// then
+		assertThat(thrown).isInstanceOf(NullPointerException.class);
+
 	}
+
 }
