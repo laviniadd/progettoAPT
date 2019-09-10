@@ -25,9 +25,9 @@ public class TransactionTemplate {
 
 			return returnValue;
 		} catch (Exception e) {
-			if (transaction!=null) {
-				transaction.rollback();
-			}throw new NullPointerException();
+
+			transaction.rollback();
+			throw new NullPointerException();
 		} finally {
 			em.close();
 		}

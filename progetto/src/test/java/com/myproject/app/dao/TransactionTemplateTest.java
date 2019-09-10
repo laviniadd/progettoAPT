@@ -5,13 +5,15 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runners.model.InitializationError;
 
+import com.arjuna.ats.arjuna.common.recoveryPropertyManager;
+
 public class TransactionTemplateTest extends JpaTest {
 
-	private TransactionTemplate transaction;
+	private TransactionTemplate transactionTemplate;
 
 	@Override
 	protected void init(TransactionTemplate transaction) throws InitializationError {
-		this.transaction = transaction;
+		this.transactionTemplate = transaction;
 	}
 
 	@Rule
@@ -19,19 +21,17 @@ public class TransactionTemplateTest extends JpaTest {
 
 	@Test
 	public void testExceptionIsNotActive() {
-
-		thrown.expect(NullPointerException.class);
-		transaction.executeTransaction((em) -> {
-			em.getTransaction().rollback();
+		transactionTemplate.executeTransaction((em) -> {
+			em.clear();
+			em.getTransaction().isActive();			
 			return null;
 		});
 	}
 
 	@Test
 	public void testExceptionIsActive() {
-		
-		thrown.expect(NullPointerException.class);
-		transaction.executeTransaction(null);
-	}
 
+		thrown.expect(NullPointerException.class);
+		transactionTemplate.executeTransaction(null);
+	}
 }
