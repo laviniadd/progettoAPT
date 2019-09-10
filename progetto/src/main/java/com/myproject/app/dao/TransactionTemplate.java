@@ -14,9 +14,9 @@ public class TransactionTemplate {
 	public <T> T executeTransaction(BaseRepositoryInterface<T> baseRepository) {
 
 		EntityManager em = this.emf.createEntityManager();
-		EntityTransaction transaction = null;
+		EntityTransaction transaction = em.getTransaction();
 		try {
-			transaction = em.getTransaction();
+		//	transaction = em.getTransaction();
 			transaction.begin();
 
 			T returnValue = baseRepository.executeWithOpenedTransaction(em);
@@ -25,8 +25,7 @@ public class TransactionTemplate {
 
 			return returnValue;
 		} catch (Exception e) {
-
-			transaction.rollback();
+				transaction.rollback();
 			throw new NullPointerException();
 		} finally {
 			em.close();
