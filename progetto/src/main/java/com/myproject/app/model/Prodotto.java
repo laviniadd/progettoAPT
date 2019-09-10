@@ -42,8 +42,8 @@ public class Prodotto extends BaseEntity {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
-			return false;
-		return true;
+					return false;
+			return true;
 	}
 
 }
