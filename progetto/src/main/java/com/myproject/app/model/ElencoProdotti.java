@@ -69,7 +69,7 @@ public class ElencoProdotti extends BaseEntity {
 			if (other.listaSpesa != null)
 				return false;
 		} else if (!listaSpesa.equals(other.listaSpesa))
-			return false;
+					return false;
 		if (prodotto == null) {
 			if (other.prodotto != null)
 				return false;
