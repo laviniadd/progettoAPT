@@ -6,15 +6,14 @@ import javax.persistence.EntityTransaction;
 
 public class TransactionTemplate {
 	
-	private EntityManagerFactory emf;
-	private EntityManager em;
+	private EntityManagerFactory emf; 
 
 	public TransactionTemplate(EntityManagerFactory emf) {
 		this.emf = emf;
 	}
 
 	public <T> T executeTransaction(BaseRepositoryInterface<T> baseRepository) {
-		
+		EntityManager em;
 		EntityTransaction transaction;
 		try {
 			em = this.emf.createEntityManager();
