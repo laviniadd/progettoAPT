@@ -28,8 +28,6 @@ public class TransactionTemplate {
 			return returnValue;
 		} catch (Exception e) {
 			throw new NullPointerException();
-		} finally {
-			em.close();
 		}
 	}
 }
