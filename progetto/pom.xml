@@ -75,15 +75,29 @@
 					<version>3.0.0</version>
 					<executions>
 						<execution>
-							<phase>generate-sources</phase>
+							<id>add-test-source</id>
+							<phase>generate-test-sources</phase>
 							<goals>
-								<goal>add-source</goal>
+								<goal>add-test-source</goal>
 							</goals>
 							<configuration>
 								<sources>
-									<source>src/main/resources</source>
+									<source>src/it/java</source>
 								</sources>
 							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.22.1</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
 						</execution>
 					</executions>
 				</plugin>
@@ -158,36 +172,27 @@
 							<showLogs>true</showLogs>
 							<images>
 								<image>
-									<name>java-hello-java</name>
-									<build>
-										<dockerFileDir>${project.basedir}</dockerFileDir>
-										<args>
-											<jarToCopy>${project.artifactId}-${project.version}.jar</jarToCopy>
-										</args>
-									</build>
+									<name>database</name>
 									<run>
-										<wait>
-											<log>Hello World!</log>
-											<exit>0</exit>
-											<time>10000</time>
-										</wait>
+										<ports>
+											<port>3306:3306</port>
+										</ports>
 									</run>
 								</image>
 							</images>
 						</configuration>
 						<executions>
 							<execution>
-								<id>docker:build</id>
-								<phase>package</phase>
+								<id>docker:start</id>
+								<phase>pre-integration-test</phase>
 								<goals>
-									<goal>build</goal>
+									<goal>start</goal>
 								</goals>
 							</execution>
 							<execution>
-								<id>docker:start</id>
-								<phase>verify</phase>
+								<id>docker:stop</id>
+								<phase>post-integration-test</phase>
 								<goals>
-									<goal>start</goal>
 									<goal>stop</goal>
 								</goals>
 							</execution>
