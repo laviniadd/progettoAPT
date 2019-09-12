@@ -1,4 +1,4 @@
-package com.myproject.app.dao;
+package com.myproject.app.daoIT;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -28,7 +28,9 @@ public abstract class ITDao {
 		transaction = new TransactionTemplate(entityManagerFactory);
 		
 		transaction.executeTransaction((em) -> {
-			em.createNativeQuery("TRUNCATE SCHEMA public AND COMMIT").executeUpdate();
+			em.createNativeQuery("DELETE FROM Prodotto").executeUpdate();
+			em.createNativeQuery("DELETE FROM ListaSpesa").executeUpdate();
+			em.createNativeQuery("DELETE FROM ElencoProdotti").executeUpdate();
 			return null;
 		});
 		

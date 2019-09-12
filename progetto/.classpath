@@ -24,14 +24,17 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/it-test-classes" path="src/it/java">
+	<classpathentry kind="src" output="target/test-classes" path="src/it/java">
 		<attributes>
 			<attribute name="test" value="true"/>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/it-test-classes" path="src/it/resources">
+	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/it/resources">
 		<attributes>
 			<attribute name="test" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">

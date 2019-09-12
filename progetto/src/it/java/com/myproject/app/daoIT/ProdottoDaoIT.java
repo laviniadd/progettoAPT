@@ -1,10 +1,14 @@
-package com.myproject.app.dao;
+package com.myproject.app.daoIT;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import static org.assertj.core.api.Assertions.*;
+
 import org.junit.Test;
 import org.junit.runners.model.InitializationError;
 
+import com.myproject.app.dao.ProdottoDao;
+import com.myproject.app.dao.TransactionTemplate;
 import com.myproject.app.model.Prodotto;
 
 public class ProdottoDaoIT extends ITDao{
