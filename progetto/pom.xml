@@ -83,6 +83,7 @@
 							<configuration>
 								<sources>
 									<source>src/it/java</source>
+									<source>src/it/resources</source>
 								</sources>
 							</configuration>
 						</execution>
