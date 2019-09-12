@@ -24,4 +24,4 @@ cache:
    - $HOME/.sonar/cache
 
 script:
- - mvn -f progetto/pom.xml clean verify
+ - mvn -f progetto/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
