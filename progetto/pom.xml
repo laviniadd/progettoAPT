@@ -186,29 +186,13 @@
 						<version>0.27.2</version>
 						<configuration>
 							<showLogs>true</showLogs>
-							<images>
-								<image>
-									<name>database</name>
-									<run>
-										<ports>
-											<port>3306:3306</port>
-										</ports>
-									</run>
-								</image>
-							</images>
 						</configuration>
 						<executions>
-							<execution>
-								<id>docker:build</id>
-								<phase>package</phase>
-								<goals>
-									<goal>build</goal>
-								</goals>
-							</execution>
 							<execution>
 								<id>docker:start</id>
 								<phase>pre-integration-test</phase>
 								<goals>
+									<goal>build</goal>
 									<goal>start</goal>
 								</goals>
 							</execution>
