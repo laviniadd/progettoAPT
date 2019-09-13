@@ -23,7 +23,6 @@ cache:
    - $HOME/.m2
    - $HOME/.sonar/cache
 before_script:
-   - docker pull mysql-1
-   - docker run -d -p 3306:3306 mysql-1
+   - docker run -d -p 3306:3306 --name mysql-1 \-e MYSQL_ROOT_PASSWORD=root my-mysql
 script:
  - mvn -f progetto/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
