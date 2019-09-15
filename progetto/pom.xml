@@ -45,12 +45,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.17</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.1.1</version>
-		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
@@ -189,33 +183,39 @@
 					<plugin>
 						<groupId>io.fabric8</groupId>
 						<artifactId>docker-maven-plugin</artifactId>
-						<version>0.20.1</version>
+						<version>0.27.2</version>
+						<configuration>
+							<showLogs>true</showLogs>
+							<images>
+								<image>
+									<name>mysql:8</name>
+									<run>
+										<env>
+											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+											<MYSQL_DATABASE>db-progetto</MYSQL_DATABASE>
+										</env>
+										<ports>
+											<port>3306:3306</port>
+											
+										</ports>
+										<wait>
+										<time>120000</time>
+										</wait>
+									</run>
+								</image>
+							</images>
+						</configuration>
 						<executions>
 							<execution>
-								<id>prepare-it-database</id>
+								<id>docker:start</id>
+								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>start</goal>
 								</goals>
-								<configuration>
-									<images>
-										<image>
-											<name>postgres:9.5.4</name>
-											<alias>it-database</alias>
-											<run>
-												<ports>
-													<port>it-database.port:5432</port>
-												</ports>
-												<wait>
-
-													<time>150000</time>
-												</wait>
-											</run>
-										</image>
-									</images>
-								</configuration>
 							</execution>
 							<execution>
-								<id>remove-it-database</id>
+								<id>docker:stop</id>
+								<phase>post-integration-test</phase>
 								<goals>
 									<goal>stop</goal>
 								</goals>
@@ -228,4 +228,5 @@
 
 	</profiles>
 </project>
+
 
