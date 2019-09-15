@@ -188,9 +188,18 @@
 							<showLogs>true</showLogs>
 							<images>
 								<image>
+									<name>mysql:8</name>
 									<run>
+										<env>
+											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+											<MYSQL_DATABASE>db-progetto</MYSQL_DATABASE>
+										</env>
+										<ports>
+											<port>3306:3306</port>
+											
+										</ports>
 										<wait>
-											<time>20000</time>
+										<time>30000</time>
 										</wait>
 									</run>
 								</image>
