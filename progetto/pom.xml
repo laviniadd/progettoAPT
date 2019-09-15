@@ -127,6 +127,7 @@
 				<version>0.8.3</version>
 				<configuration>
 					<excludes>
+						<exclude>**/App.*</exclude>
 						<exclude>com/myproject/app/model/**/*</exclude>
 					</excludes>
 				</configuration>
@@ -191,6 +192,7 @@
 								<id>docker:start</id>
 								<phase>pre-integration-test</phase>
 								<goals>
+									<goal>build</goal>
 									<goal>start</goal>
 								</goals>
 							</execution>
@@ -209,3 +211,4 @@
 
 	</profiles>
 </project>
+
