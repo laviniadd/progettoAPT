@@ -84,7 +84,7 @@
 						<id>add-integration-test-resource</id>
 						<phase>generate-resources</phase>
 						<goals>
-							<goal>add-resource</goal>
+							<goal>add-test-resource</goal>
 						</goals>
 						<configuration>
 							<resources>
