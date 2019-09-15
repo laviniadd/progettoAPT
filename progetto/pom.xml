@@ -13,6 +13,15 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Properties for mysql database docker container -->
+		<docker.image.mysql>mysql:8</docker.image.mysql>
+		<docker.image.mysql.database>dbProgetto</docker.image.mysql.database>
+		<docker.image.mysql.root.password>root</docker.image.mysql.root.password>
+		<docker.image.mysql.user>root</docker.image.mysql.user>
+		<docker.image.mysql.password>root</docker.image.mysql.password>
+		<docker.image.mysql.portmapping>3306:3306</docker.image.mysql.portmapping>
+
 	</properties>
 
 	<dependencies>
@@ -178,6 +187,9 @@
 		</profile>
 		<profile>
 			<id>docker</id>
+			 <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
 			<build>
 				<plugins>
 					<plugin>
@@ -185,25 +197,46 @@
 						<artifactId>docker-maven-plugin</artifactId>
 						<version>0.27.2</version>
 						<configuration>
+							<verbose>true</verbose>
 							<showLogs>true</showLogs>
+							<image>
+								<name>${docker.image.mysql}</name>
+								
+								<run>
+									<env>
+										<MYSQL_ROOT_PASSWORD>${docker.image.mysql.root.password}</MYSQL_ROOT_PASSWORD>
+										<MYSQL_DATABASE>${docker.image.mysql.database}</MYSQL_DATABASE>
+										<MYSQL_USER>${docker.image.mysql.user}</MYSQL_USER>
+										<MYSQL_PASSWORD>${docker.image.mysql.password}</MYSQL_PASSWORD>
+									</env>
+									<ports>
+										<port>${docker.image.mysql.portmapping}</port>
+									</ports>
+									<wait>
+										<log>MySQL init process done. Ready for start up.</log>
+										<time>8000</time>
+									</wait>
+								</run>
+							</image>
+
 						</configuration>
-						<executions>
-							<execution>
-								<id>docker:start</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>build</goal>
-									<goal>start</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>docker:stop</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-							</execution>
-						</executions>
+						 <executions>
+                            <execution>
+                                <id>container-start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>container-stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
 					</plugin>
 				</plugins>
 			</build>
