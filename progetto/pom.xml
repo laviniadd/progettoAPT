@@ -206,10 +206,8 @@
 													<port>it-database.port:5432</port>
 												</ports>
 												<wait>
-													<log>(?s)database system is ready to accept
-														connections.*database system is ready to accept
-														connections</log>
-													<time>120000</time>
+
+													<time>150000</time>
 												</wait>
 											</run>
 										</image>
