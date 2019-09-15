@@ -197,11 +197,12 @@
 						<artifactId>docker-maven-plugin</artifactId>
 						<version>0.27.2</version>
 						<configuration>
+						<dockerHost>tcp://192.168.99.100:2376</dockerHost>
 							<verbose>true</verbose>
 							<showLogs>true</showLogs>
 							<image>
 								<name>${docker.image.mysql}</name>
-								
+								 <alias>local-mysql-database</alias>
 								<run>
 									<env>
 										<MYSQL_ROOT_PASSWORD>${docker.image.mysql.root.password}</MYSQL_ROOT_PASSWORD>
@@ -218,7 +219,7 @@
 									</wait>
 								</run>
 							</image>
-
+ 							<certPath>C:\Users\Lavinia\.docker\machine\machines\default</certPath>
 						</configuration>
 						 <executions>
                             <execution>
