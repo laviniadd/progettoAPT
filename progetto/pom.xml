@@ -195,7 +195,11 @@
 										</env>
 										<ports>
 											<port>3306:3306</port>
+											
 										</ports>
+										<wait>
+										<time>10000</time>
+										</wait>
 									</run>
 								</image>
 							</images>
