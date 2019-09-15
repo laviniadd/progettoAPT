@@ -52,7 +52,7 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 		</properties>
 	</persistence-unit>
 	
-	<persistence-unit name="it"
+	<persistence-unit name="integration"
 		transaction-type="RESOURCE_LOCAL">
 		<!-- The persistence-unit name must to be UNIQUE -->
 		<!-- The value RESOURCE_LOCAL to replace the default value (JTA) allows 

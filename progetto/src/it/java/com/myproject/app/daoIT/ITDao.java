@@ -18,7 +18,7 @@ public abstract class ITDao {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception{
-		entityManagerFactory = Persistence.createEntityManagerFactory("it");
+		entityManagerFactory = Persistence.createEntityManagerFactory("integration");
 	}
 
 	protected abstract void init(TransactionTemplate transaction) throws InitializationError;
