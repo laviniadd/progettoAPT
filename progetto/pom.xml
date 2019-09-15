@@ -127,7 +127,6 @@
 				<version>0.8.3</version>
 				<configuration>
 					<excludes>
-						<exclude>**/App.*</exclude>
 						<exclude>com/myproject/app/model/**/*</exclude>
 					</excludes>
 				</configuration>
