@@ -192,7 +192,7 @@
 										<env>
 											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
 											<MYSQL_DATABASE>db-progetto</MYSQL_DATABASE>
-											<MYSQL_USER>root</MYSQL_USER>
+											<MYSQL_USER>bob</MYSQL_USER>
 											<MYSQL_PASSWORD>root</MYSQL_PASSWORD>
 										</env>
 										<ports>
