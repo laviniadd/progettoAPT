@@ -186,13 +186,21 @@
 						<version>0.27.2</version>
 						<configuration>
 							<showLogs>true</showLogs>
+							<images>
+								<image>
+									<run>
+										<wait>
+											<time>20000</time>
+										</wait>
+									</run>
+								</image>
+							</images>
 						</configuration>
 						<executions>
 							<execution>
 								<id>docker:start</id>
 								<phase>pre-integration-test</phase>
 								<goals>
-									<goal>build</goal>
 									<goal>start</goal>
 								</goals>
 							</execution>
