@@ -33,7 +33,7 @@
 				is closed explicitly, typically when the application is stopped. -->
 
 			<property name="hibernate.connection.url"
-				value="jdbc:mysql://localhost:3306/db-progetto?serverTimezone=UTC" />
+				value="jdbc:mysql://localhost:3306/db-progetto?autoReconnect=true" />
 			<!-- value="jdbc:mysql://localhost:3306/progetto?serverTimezone=UTC" /> -->
 			<!-- the address with port of your mySql service, followed by the name 
 				of DB that is created if not exist -->

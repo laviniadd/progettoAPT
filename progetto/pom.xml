@@ -185,24 +185,6 @@
 						<artifactId>docker-maven-plugin</artifactId>
 						<version>0.27.2</version>
 						<configuration>
-							<images>
-								<image>
-									<name>mysql:8</name>
-									<run>
-										<env>
-											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
-											<MYSQL_DATABASE>db-progetto</MYSQL_DATABASE>
-										</env>
-										<ports>
-											<port>3306:3306</port>
-											
-										</ports>
-										<wait>
-										<time>30000</time>
-										</wait>
-									</run>
-								</image>
-							</images>
 							<showLogs>true</showLogs>
 						</configuration>
 						<executions>
