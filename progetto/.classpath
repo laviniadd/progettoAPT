@@ -31,9 +31,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/it/resources">
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/it/resources">
 		<attributes>
-			<attribute name="test" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
