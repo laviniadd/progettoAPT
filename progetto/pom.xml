@@ -45,6 +45,12 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.17</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.1.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
@@ -183,39 +189,35 @@
 					<plugin>
 						<groupId>io.fabric8</groupId>
 						<artifactId>docker-maven-plugin</artifactId>
-						<version>0.27.2</version>
-						<configuration>
-							<showLogs>true</showLogs>
-							<images>
-								<image>
-									<name>mysql:8</name>
-									<run>
-										<env>
-											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
-											<MYSQL_DATABASE>db-progetto</MYSQL_DATABASE>
-										</env>
-										<ports>
-											<port>3306:3306</port>
-											
-										</ports>
-										<wait>
-										<time>120000</time>
-										</wait>
-									</run>
-								</image>
-							</images>
-						</configuration>
+						<version>0.20.1</version>
 						<executions>
 							<execution>
-								<id>docker:start</id>
-								<phase>pre-integration-test</phase>
+								<id>prepare-it-database</id>
 								<goals>
 									<goal>start</goal>
 								</goals>
+								<configuration>
+									<images>
+										<image>
+											<name>postgres:9.5.4</name>
+											<alias>it-database</alias>
+											<run>
+												<ports>
+													<port>it-database.port:5432</port>
+												</ports>
+												<wait>
+													<log>(?s)database system is ready to accept
+														connections.*database system is ready to accept
+														connections</log>
+													<time>120000</time>
+												</wait>
+											</run>
+										</image>
+									</images>
+								</configuration>
 							</execution>
 							<execution>
-								<id>docker:stop</id>
-								<phase>post-integration-test</phase>
+								<id>remove-it-database</id>
 								<goals>
 									<goal>stop</goal>
 								</goals>
