@@ -89,7 +89,7 @@
 						<configuration>
 							<resources>
 								<resource>
-									<directory>src/it/resources</directory>
+									<directory>/src/it/resources</directory>
 								</resource>
 							</resources>
 						</configuration>
@@ -195,10 +195,10 @@
 										</env>
 										<ports>
 											<port>3306:3306</port>
-											
+
 										</ports>
 										<wait>
-										<time>120000</time>
+											<time>120000</time>
 										</wait>
 									</run>
 								</image>
