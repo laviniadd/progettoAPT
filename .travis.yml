@@ -3,14 +3,6 @@ matrix:
    include:
    -  jdk: openjdk8
       env: ADDITIONAL_MAVEN_ARGS="-Pdocker -Pjacoco coveralls:report sonar:sonar"
-# always build this environment
-   -  jdk: openjdk9
-# only on PR
-      if: type IN (pull_request)
-   -  os: osx
-# only on PR
-      osx_image: xcode10.1
-      if: type IN (pull_request)
 services:
    - docker
 addons:
