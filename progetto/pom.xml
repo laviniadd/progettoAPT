@@ -88,6 +88,7 @@
 				<executions>
 					<execution>
 						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
 						<goals>
 							<goal>add-test-source</goal>
 						</goals>
@@ -99,6 +100,7 @@
 					</execution>
 					<execution>
 						<id>add-test-resource</id>
+						<phase>generate-test-resources</phase>
 						<goals>
 							<goal>add-test-resource</goal>
 						</goals>
@@ -106,7 +108,6 @@
 							<resources>
 								<resource>
 									<directory>progetto/src/it/resources</directory>
-									<targetPath>resources</targetPath>
 								</resource>
 							</resources>
 						</configuration>
