@@ -100,7 +100,7 @@
 							<resources>
 								<resource>
 									<directory>progetto/src/it/resources</directory>
-									
+									<targetPath>resources</targetPath>
 								</resource>
 							</resources>
 						</configuration>
