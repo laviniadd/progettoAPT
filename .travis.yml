@@ -2,7 +2,7 @@ language: java
 matrix:
    include:
    -  jdk: openjdk8
-      env: ADDITIONAL_MAVEN_ARGS="-Pdocker jacoco coveralls:report"
+      env: ADDITIONAL_MAVEN_ARGS="-Pdocker -Pjacoco coveralls:report sonar:sonar"
 # always build this environment
    -  jdk: openjdk9
 # only on PR
