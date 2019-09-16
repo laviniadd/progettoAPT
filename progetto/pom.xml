@@ -107,12 +107,21 @@
 						<configuration>
 							<resources>
 								<resource>
-									<directory>progetto/src/it/resources</directory>
-									<targetPath>resources</targetPath>
-								</resource>
-								<resource>
 									<directory>src/it/resources</directory>
-									<targetPath>resources</targetPath>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-resource</id>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<!-- Don't forget <directory> label -->
+									<directory>src/it/resources</directory>
 								</resource>
 							</resources>
 						</configuration>
