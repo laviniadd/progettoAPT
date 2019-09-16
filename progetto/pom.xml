@@ -99,7 +99,7 @@
 						<configuration>
 							<resources>
 								<resource>
-									<directory>${project.basedir}\src\it\resources</directory>
+									<directory>**\src\it\resources</directory>
 								</resource>
 							</resources>
 						</configuration>
