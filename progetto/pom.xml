@@ -95,8 +95,26 @@
 						<configuration>
 							<sources>
 								<source>src/it/java</source>
-								<source>src/it/resources</source>	
 							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-resource</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>progetto/src/it/resources</directory>
+									<targetPath>resources</targetPath>
+								</resource>
+								<resource>
+									<directory>src/it/resources</directory>
+									<targetPath>resources</targetPath>
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>
