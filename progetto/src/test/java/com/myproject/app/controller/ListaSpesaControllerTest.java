@@ -28,17 +28,18 @@ public class ListaSpesaControllerTest {
 		MockitoAnnotations.initMocks(this);
 	}
 
-	@Test
-	public void testAllListaSpesa() {
-
-		List<ListaSpesa> listeSpesa = asList(new ListaSpesa());
-
-		when(listaSpesaDao.findAll()).thenReturn(listeSpesa);
-
-		listaSpesaController.allListeSpesa();
-		
-		verify(listaSpesaView).showAllListeSpesa(listeSpesa);
-
-	}
+	/*
+	 * @Test public void testAllListaSpesa() {
+	 * 
+	 * List<ListaSpesa> listeSpesa = asList(new ListaSpesa());
+	 * 
+	 * when(listaSpesaDao.findAll()).thenReturn(listeSpesa);
+	 * 
+	 * listaSpesaController.allListeSpesa();
+	 * 
+	 * verify(listaSpesaView).showAllListeSpesa(listeSpesa);
+	 * 
+	 * }
+	 */
 
 }
