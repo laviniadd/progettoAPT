@@ -87,8 +87,22 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>src/it/java</source>
+								<source>progetto/src/it/java</source>
 							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-resource</id>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>progetto/src/it/resources</directory>
+									
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>
