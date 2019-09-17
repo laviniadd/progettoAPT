@@ -24,7 +24,7 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 				value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 			<!-- The dialect specifies the language of your DB (MySQL 5 InnoDB) -->
 
-			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<!-- Possible values for hbm2ddl: validate: validate the schema, makes 
 				no changes to the database. update: update the schema. create: creates the 
 				schema, destroying previous data. create-drop: drop the schema when the SessionFactory 
@@ -32,7 +32,7 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
 			<property name="hibernate.connection.url"
 				value="jdbc:mysql://localhost:3306/db-progetto?autoReconnect=true" />
-			<!-- value="jdbc:mysql://localhost:3306/progetto?serverTimezone=UTC" /> -->
+			<!-- value="jdbc:mysql://localhost:3306/db-progetto?serverTimezone=UTC" /> -->
 			<!-- the address with port of your mySql service, followed by the name 
 				of DB that is created if not exist -->
 
