@@ -24,7 +24,7 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 				value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 			<!-- The dialect specifies the language of your DB (MySQL 5 InnoDB) -->
 
-			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<!-- Possible values for hbm2ddl: validate: validate the schema, makes 
 				no changes to the database. update: update the schema. create: creates the 
 				schema, destroying previous data. create-drop: drop the schema when the SessionFactory 
