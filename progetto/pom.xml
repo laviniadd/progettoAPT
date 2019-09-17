@@ -13,8 +13,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -24,12 +22,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
@@ -54,83 +47,102 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-testing</artifactId>
-			<version>5.2.2.Final</version>
-		</dependency>
-		<dependency>
 			<groupId>org.pitest</groupId>
 			<artifactId>pitest-parent</artifactId>
 			<version>1.4.10</version>
 			<type>pom</type>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.23.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>3.0.0</version>
-					<executions>
-						<execution>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>add-source</goal>
-							</goals>
-							<configuration>
-								<sources>
-									<source>src/main/resources</source>
-								</sources>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
 
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.3</version>
-					<configuration>
-						<excludes>
-							<exclude>**/App.*</exclude>
-							<exclude>com/myproject/app/model/**/*</exclude>
-						</excludes>
-					</configuration>
-					<executions>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.3</version>
+				<configuration>
+					<excludes>
+						<exclude>com/myproject/app/model/**/*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<!-- binds by default to the phase "initialize" -->
+							<goal>prepare-agent</goal>
+							<!-- binds by default to the phase "verify" -->
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-						<execution>
-							<goals>
-								<!-- binds by default to the phase "initialize" -->
-								<goal>prepare-agent</goal>
-								<!-- binds by default to the phase "verify" -->
-								<goal>report</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
-					<groupId>org.eluder.coveralls</groupId>
-					<artifactId>coveralls-maven-plugin</artifactId>
-					<version>4.3.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.pitest</groupId>
-					<artifactId>pitest-maven</artifactId>
-					<version>1.4.10</version>
-					<configuration>
-						<targetClasses>
-							<param>com.myproject.app.dao.*</param>
-						</targetClasses>
-						<targetTests>
-							<param>com.myproject.app.dao.*</param>
-						</targetTests>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>4.3.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.4.10</version>
+				<configuration>
+					<targetClasses>
+						<param>com.myproject.app.dao.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>com.myproject.app.dao.*</param>
+					</targetTests>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<profiles>
@@ -145,7 +157,6 @@
 				</plugins>
 			</build>
 		</profile>
-
 		<profile>
 			<id>docker</id>
 			<build>
@@ -158,18 +169,18 @@
 							<showLogs>true</showLogs>
 							<images>
 								<image>
-									<name>java-hello-java</name>
-									<build>
-										<dockerFileDir>${project.basedir}</dockerFileDir>
-										<args>
-											<jarToCopy>${project.artifactId}-${project.version}.jar</jarToCopy>
-										</args>
-									</build>
+									<name>mysql:8</name>
 									<run>
+										<env>
+											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+											<MYSQL_DATABASE>db-progetto</MYSQL_DATABASE>
+										</env>
+										<ports>
+											<port>3306:3306</port>
+
+										</ports>
 										<wait>
-											<log>Hello World!</log>
-											<exit>0</exit>
-											<time>10000</time>
+											<time>100000</time>
 										</wait>
 									</run>
 								</image>
@@ -177,17 +188,16 @@
 						</configuration>
 						<executions>
 							<execution>
-								<id>docker:build</id>
-								<phase>package</phase>
+								<id>docker:start</id>
+								<phase>pre-integration-test</phase>
 								<goals>
-									<goal>build</goal>
+									<goal>start</goal>
 								</goals>
 							</execution>
 							<execution>
-								<id>docker:start</id>
-								<phase>verify</phase>
+								<id>docker:stop</id>
+								<phase>post-integration-test</phase>
 								<goals>
-									<goal>start</goal>
 									<goal>stop</goal>
 								</goals>
 							</execution>
@@ -199,3 +209,5 @@
 
 	</profiles>
 </project>
+
+

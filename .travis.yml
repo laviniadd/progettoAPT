@@ -2,16 +2,9 @@ language: java
 matrix:
    include:
    -  jdk: openjdk8
-# always build this environment
-   -  jdk: openjdk9
-# only on PR
-      if: type IN (pull_request)
-   -  os: osx
-# only on PR
-      osx_image: xcode10.1
-      if: type IN (pull_request)
+      env: ADDITIONAL_MAVEN_ARGS="-Pdocker -Pjacoco coveralls:report sonar:sonar"
 services:
-- docker
+   - docker
 addons:
   sonarcloud:
     organization: "laviniadd"
@@ -24,4 +17,4 @@ cache:
    - $HOME/.sonar/cache
 
 script:
- - mvn -f progetto/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
+ - mvn -f progetto/pom.xml clean verify $ADDITIONAL_MAVEN_ARGS
