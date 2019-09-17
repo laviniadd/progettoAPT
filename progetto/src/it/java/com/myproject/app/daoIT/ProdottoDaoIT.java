@@ -20,7 +20,6 @@ public class ProdottoDaoIT extends ITDao{
 	
 	@Override
 	protected void init(TransactionTemplate transaction) throws InitializationError {
-		// TODO Auto-generated method stub
 		prodottoDao = new ProdottoDao(transaction);
 		this.transaction = transaction;
 	}
