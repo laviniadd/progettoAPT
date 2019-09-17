@@ -22,12 +22,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
@@ -50,11 +45,6 @@
 			<artifactId>assertj-core</artifactId>
 			<version>3.13.2</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-testing</artifactId>
-			<version>5.2.2.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.pitest</groupId>
@@ -96,34 +86,6 @@
 							<sources>
 								<source>src/it/java</source>
 							</sources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>add-resource</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>add-resource</goal>
-						</goals>
-						<configuration>
-							<resources>
-								<resource>
-									<directory>src/it/resources</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>add-test-resource</id>
-						<goals>
-							<goal>add-test-resource</goal>
-						</goals>
-						<configuration>
-							<resources>
-								<resource>
-									<!-- Don't forget <directory> label -->
-									<directory>src/it/resources</directory>
-								</resource>
-							</resources>
 						</configuration>
 					</execution>
 				</executions>
@@ -218,7 +180,7 @@
 
 										</ports>
 										<wait>
-											<time>120000</time>
+											<time>100000</time>
 										</wait>
 									</run>
 								</image>
