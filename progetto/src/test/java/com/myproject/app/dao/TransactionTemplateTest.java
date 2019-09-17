@@ -22,7 +22,6 @@ public class TransactionTemplateTest extends JpaTest {
 			transactionTemplate.executeTransaction(null);
 		});
 
-		// then
 		assertThat(thrown).isInstanceOf(NullPointerException.class);
 
 	}
