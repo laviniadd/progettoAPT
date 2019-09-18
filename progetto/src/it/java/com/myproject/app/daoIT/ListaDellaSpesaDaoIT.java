@@ -46,6 +46,28 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 		assertThat(listaSpesaDao.findById(listaSpesa.getId())).isEqualTo(listaSpesa);
 	}
 
+	@Test
+	public void testFindAllListaDellaSpesaWhenDatabaseIsNotEmpty() {
+		lista = new ListaSpesa();
+		listaSpesa = new ListaSpesa();
+
+		addListToDatabase(lista);
+		addListToDatabase(listaSpesa);
+
+		assertThat(listaSpesaDao.findAll()).containsExactly(lista, listaSpesa);
+	}
+
+	@Test
+	public void testDeleteLista() {
+		lista = new ListaSpesa();
+		addListToDatabase(lista);
+
+		listaSpesaDao.delete(lista.getId());
+
+		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase(lista);
+		assertThat(retrievedShoppingList).isEmpty();
+	}
+
 	private void addListToDatabase(ListaSpesa listaDaSalvare) {
 		transaction.executeTransaction((em) -> {
 			em.persist(listaDaSalvare);
