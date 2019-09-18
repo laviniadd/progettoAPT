@@ -24,13 +24,10 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 	@Test
 	public void testSaveListaDellaSpesa() {
 		lista = new ListaSpesa();
-		lista.setName("lista1");
+
 		listaDao.save(lista);
 
-		List<ListaSpesa> retrievedList = transaction.executeTransaction((em) -> {
-			return em.createQuery("select e from ListaSpesa e where e.name = :name", ListaSpesa.class)
-					.setParameter("name", lista.getName()).getResultList();
-		});
+		List<ListaSpesa> retrievedList = retrieveShoppingListToDatabase(lista);
 
 		assertThat(retrievedList).containsExactly(lista);
 	}
@@ -68,10 +65,28 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 		assertThat(listaDao.findAll()).isEmpty();
 	}
 
+	@Test
+	public void testDeleteLista() {
+		lista = new ListaSpesa();
+		addListToDatabase(lista);
+		
+		listaDao.delete(lista.getId());
+		
+		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase(lista);
+		assertThat(retrievedShoppingList).isEmpty();
+	}
+	
 	private void addListToDatabase(ListaSpesa listaDaSalvare) {
 		transaction.executeTransaction((em) -> {
 			em.persist(listaDaSalvare);
 			return null;
+		});
+	}
+	
+	private List<ListaSpesa> retrieveShoppingListToDatabase(ListaSpesa listaSpesaDaRecuperare) {
+		return transaction.executeTransaction((em) -> {
+			return em.createQuery("select e from ListaSpesa e where e.id = :id", ListaSpesa.class)
+					.setParameter("id", listaSpesaDaRecuperare.getId()).getResultList();
 		});
 	}
 

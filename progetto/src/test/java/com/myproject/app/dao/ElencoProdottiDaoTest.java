@@ -26,10 +26,7 @@ public class ElencoProdottiDaoTest extends JpaTest {
 		elencoProdotti = new ElencoProdotti();
 		elencoProdottiDao.save(elencoProdotti);
 
-		List<ElencoProdotti> retrievedElencoProdotti = transaction.executeTransaction((em) -> {
-			return em.createQuery("select e from ElencoProdotti e where e.id = :id", ElencoProdotti.class)
-					.setParameter("id", elencoProdotti.getId()).getResultList();
-		});
+		List<ElencoProdotti> retrievedElencoProdotti = retrieveElencoProdottiToDatabase(elencoProdotti);
 
 		assertThat(retrievedElencoProdotti).containsExactly(elencoProdotti);
 	}
@@ -66,6 +63,17 @@ public class ElencoProdottiDaoTest extends JpaTest {
 		assertThat(elencoProdottiDao.findAll()).isEmpty();
 	}
 
+	@Test
+	public void testDeleteElencoProdotti() {
+		elencoProdotti = new ElencoProdotti();
+		addListOfProductsToDatabase(elencoProdotti);
+		
+		elencoProdottiDao.delete(elencoProdotti.getId());
+		
+		List<ElencoProdotti> retrievedElencoProdotti = retrieveElencoProdottiToDatabase(elencoProdotti);
+		assertThat(retrievedElencoProdotti).isEmpty();
+	}
+	
 	private void addListOfProductsToDatabase(ElencoProdotti elencoProdottoDaPersistere) {
 		transaction.executeTransaction((em) -> {
 			em.persist(elencoProdottoDaPersistere);
@@ -73,6 +81,13 @@ public class ElencoProdottiDaoTest extends JpaTest {
 			return null;
 		});
 
+	}
+	
+	private List<ElencoProdotti> retrieveElencoProdottiToDatabase(ElencoProdotti elencoProdottoDaRecuperare) {
+		return transaction.executeTransaction((em) -> {
+			return em.createQuery("select e from ElencoProdotti e where e.id = :id", ElencoProdotti.class)
+					.setParameter("id", elencoProdottoDaRecuperare.getId()).getResultList();
+		});
 	}
 
 }

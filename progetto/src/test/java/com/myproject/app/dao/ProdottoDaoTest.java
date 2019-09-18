@@ -25,13 +25,11 @@ public class ProdottoDaoTest extends JpaTest {
 	@Test
 	public void testsaveProdotto() {
 		verdura = new Prodotto();
-		verdura.setName("carota");
+
 		prodottoDao.save(verdura);
 
-		List<Prodotto> retrievedProduct = transaction.executeTransaction((em) -> {
-			return em.createQuery("select e from Prodotto e where e.name = :name", Prodotto.class)
-					.setParameter("name", verdura.getName()).getResultList();
-		});
+		List<Prodotto> retrievedProduct = retrieveProductToDatabase(verdura);
+		
 		assertThat(retrievedProduct).containsExactly(verdura);
 	}
 
@@ -51,8 +49,6 @@ public class ProdottoDaoTest extends JpaTest {
 		assertThat(prodottoDao.findById(Long.valueOf(1))).isNull();
 	}
 
-	
-
 	@Test
 	public void testFindAllProdottiWhenDatabaseIsNotEmpty() {
 		frutta = new Prodotto();
@@ -68,7 +64,18 @@ public class ProdottoDaoTest extends JpaTest {
 	public void testFindAllProdottiWhenDatabaseIsEmpty() {
 		assertThat(prodottoDao.findAll()).isEmpty();
 	}
-	
+
+	@Test
+	public void testDeleteProdotto() {
+		frutta = new Prodotto();
+		addProductToDatabase(frutta);
+		
+		prodottoDao.delete(frutta.getId());
+		
+		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
+		assertThat(retrievedProduct).isEmpty();
+	}
+
 	private void addProductToDatabase(Prodotto prodottoDaPersistere) {
 		transaction.executeTransaction((em) -> {
 			em.persist(prodottoDaPersistere);
@@ -76,4 +83,12 @@ public class ProdottoDaoTest extends JpaTest {
 			return null;
 		});
 	}
+	
+	private List<Prodotto> retrieveProductToDatabase(Prodotto prodottoDaRecuperare) {
+		return transaction.executeTransaction((em) -> {
+			return em.createQuery("select e from Prodotto e where e.id = :id", Prodotto.class)
+					.setParameter("id", prodottoDaRecuperare.getId()).getResultList();
+		});
+	}
+
 }
