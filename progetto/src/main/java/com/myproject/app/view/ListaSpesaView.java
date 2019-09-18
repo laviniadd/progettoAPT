@@ -11,4 +11,19 @@ public class ListaSpesaView {
 		return;
 	}
 
+	public void showNewLista(ListaSpesa newShoppingList) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showError(String errorMessage, ListaSpesa listaAlreadyExist) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showRemovedList(ListaSpesa deletedShoppingList) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
