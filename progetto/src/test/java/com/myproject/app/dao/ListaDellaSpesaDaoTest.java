@@ -8,16 +8,16 @@ import org.junit.Test;
 import org.junit.runners.model.InitializationError;
 import com.myproject.app.model.ListaSpesa;
 
-public class listaDellaSpesaDaoTest extends JpaTest {
+public class ListaDellaSpesaDaoTest extends JpaTest {
 
-	private ListaDellaSpesaDao listaDao;
+	private ListaDellaSpesaDao listaSpesaDao;
 	private ListaSpesa lista;
 	private ListaSpesa listaSpesa;
 	private TransactionTemplate transaction;
 
 	@Override
 	protected void init(TransactionTemplate transaction) throws InitializationError {
-		listaDao = new ListaDellaSpesaDao(transaction);
+		listaSpesaDao = new ListaDellaSpesaDao(transaction);
 		this.transaction = transaction;
 	}
 
@@ -25,7 +25,7 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 	public void testSaveListaDellaSpesa() {
 		lista = new ListaSpesa();
 
-		listaDao.save(lista);
+		listaSpesaDao.save(lista);
 
 		List<ListaSpesa> retrievedList = retrieveShoppingListToDatabase(lista);
 
@@ -40,13 +40,13 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 		addListToDatabase(lista);
 		addListToDatabase(listaSpesa);
 				
-		assertThat(listaDao.findById(listaSpesa.getId())).isEqualTo(listaSpesa);
+		assertThat(listaSpesaDao.findById(listaSpesa.getId())).isEqualTo(listaSpesa);
 	}
 
 	@Test
 	public void testListaDellaSpesaFindByIdNotFound() {
 
-		assertThat(listaDao.findById(Long.valueOf(1))).isNull();
+		assertThat(listaSpesaDao.findById(Long.valueOf(1))).isNull();
 	}
 
 	@Test
@@ -57,12 +57,12 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 		addListToDatabase(lista);
 		addListToDatabase(listaSpesa);
 
-		assertThat(listaDao.findAll()).containsExactly(lista, listaSpesa);
+		assertThat(listaSpesaDao.findAll()).containsExactly(lista, listaSpesa);
 	}
 
 	@Test
 	public void testFindAllListaDellaSpesaWhenDatabaseIsEmpty() {
-		assertThat(listaDao.findAll()).isEmpty();
+		assertThat(listaSpesaDao.findAll()).isEmpty();
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class listaDellaSpesaDaoTest extends JpaTest {
 		lista = new ListaSpesa();
 		addListToDatabase(lista);
 		
-		listaDao.delete(lista.getId());
+		listaSpesaDao.delete(lista.getId());
 		
 		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase(lista);
 		assertThat(retrievedShoppingList).isEmpty();
