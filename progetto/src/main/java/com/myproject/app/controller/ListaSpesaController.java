@@ -24,11 +24,12 @@ public class ListaSpesaController {
 		if (listaAlreadyExist != null) {
 			listaView.showError("This shopping list already exist", listaAlreadyExist);
 
-			return;
+		} else {
+
+			listaDao.save(lista);
+			listaView.showNewLista(lista);
 		}
 
-		listaDao.save(lista);
-		listaView.showNewLista(lista);
 	}
 
 	public void deleteListaSpesa(ListaSpesa listaDaCancellare) {

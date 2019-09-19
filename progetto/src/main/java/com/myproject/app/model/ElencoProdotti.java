@@ -1,18 +1,18 @@
 package com.myproject.app.model;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import javax.persistence.*;
 
 @Entity
 public class ElencoProdotti extends BaseEntity {
 	
-	private HashSet<Prodotto> prodottiAndQuantity;
+	private HashMap<Prodotto, Integer> prodottiAndQuantity;
 	private ListaSpesa listaSpesa;
 
 	public ElencoProdotti() {
 	}
 
-	public ElencoProdotti(ListaSpesa listaSpesa, HashSet<Prodotto> prodottiAndQuantity) {
+	public ElencoProdotti(ListaSpesa listaSpesa, HashMap<Prodotto, Integer> prodottiAndQuantity) {
 		this.prodottiAndQuantity = prodottiAndQuantity;
 		this.listaSpesa = listaSpesa;
 	}
@@ -29,12 +29,13 @@ public class ElencoProdotti extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Prodotto.class)
 	@JoinColumn(name = "elenco_prodotto_id")
-	public HashSet<Prodotto> getProdottiAndQuantity() {
+	public HashMap<Prodotto, Integer> getProdottiAndQuantity() {
 		return prodottiAndQuantity;
 	}
 
-	public void setProdottiAndQuantity(HashSet<Prodotto> prodottiAndQuantity) {
+	public void setProdottiAndQuantity(HashMap<Prodotto, Integer> prodottiAndQuantity) {
 		this.prodottiAndQuantity = prodottiAndQuantity;
 	}
+	
 	
 }
