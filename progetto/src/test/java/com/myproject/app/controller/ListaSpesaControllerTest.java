@@ -42,7 +42,7 @@ public class ListaSpesaControllerTest {
 	}
 
 	@Test
-	public void testNewListaWhenListaDoesNotAlreadyExist() {
+	public void testSaveNewListaWhenListaDoesNotAlreadyExist() {
 		ListaSpesa lista = new ListaSpesa();
 
 		when(listaSpesaDao.findById(lista.getId())).thenReturn(null);
@@ -55,14 +55,14 @@ public class ListaSpesaControllerTest {
 	}
 
 	@Test
-	public void testListaWhenListaAlreadyExist() {
-		ListaSpesa lista = new ListaSpesa();
+	public void testSaveListaWhenListaAlreadyExist() {
+		ListaSpesa listaDaSalvare = new ListaSpesa();
 
-		when(listaSpesaDao.findById(lista.getId())).thenReturn(lista);
+		when(listaSpesaDao.findById(listaDaSalvare.getId())).thenReturn(listaDaSalvare);
 
-		listaSpesaController.saveNewLista(lista);
+		listaSpesaController.saveNewLista(listaDaSalvare);
 
-		verify(listaSpesaView).showError("This shopping list already exist", lista);
+		verify(listaSpesaView).showError("This shopping list already exist", listaDaSalvare);
 		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
 	}
 
@@ -75,6 +75,7 @@ public class ListaSpesaControllerTest {
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
 		
 		verify(listaSpesaDao).delete(listaDaCancellare.getId());
+		verify(listaSpesaView).showRemovedList(listaDaCancellare);
 	}
 	
 	@Test

@@ -10,7 +10,6 @@ public class ElencoProdottiController {
 	private ElencoProdottiDao elencoProdottiDao;
 
 	private ElencoProdottiController(ElencoProdottiView elencoProdottiView, ElencoProdottiDao elencoProdottiDao) {
-		super();
 		this.elencoProdottiView = elencoProdottiView;
 		this.elencoProdottiDao = elencoProdottiDao;
 	}
@@ -25,10 +24,23 @@ public class ElencoProdottiController {
 
 		if (elencoProdottiAlreadyExist != null) {
 			elencoProdottiView.showError("This list of products already exist", elencoProdottiAlreadyExist);
-		} else {
-			elencoProdottiDao.save(elencoProdottiDaSalvare);
-			elencoProdottiView.showNewElencoProdotti(elencoProdottiDaSalvare);
+			return;
 		}
+		elencoProdottiDao.save(elencoProdottiDaSalvare);
+		elencoProdottiView.showNewElencoProdotti(elencoProdottiDaSalvare);
+
+	}
+
+	public void deleteElencoProdotti(ElencoProdotti elencoProdottiDaCancellare) {
+		ElencoProdotti elencoProdottiAlreadyExist = elencoProdottiDao.findById(elencoProdottiDaCancellare.getId());
+
+		if (elencoProdottiAlreadyExist != null) {
+			elencoProdottiDao.delete(elencoProdottiAlreadyExist.getId());
+			elencoProdottiView.showElencoProdottiRemoved(elencoProdottiAlreadyExist);
+
+		}
+		elencoProdottiView.showError("This list of products not exist", elencoProdottiDaCancellare);
+
 	}
 
 }

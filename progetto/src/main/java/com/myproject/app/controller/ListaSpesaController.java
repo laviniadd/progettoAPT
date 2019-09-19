@@ -23,12 +23,11 @@ public class ListaSpesaController {
 
 		if (listaAlreadyExist != null) {
 			listaView.showError("This shopping list already exist", listaAlreadyExist);
-
-		} else {
-
-			listaDao.save(lista);
-			listaView.showNewLista(lista);
+			return;
 		}
+
+		listaDao.save(lista);
+		listaView.showNewLista(lista);
 
 	}
 
@@ -38,9 +37,8 @@ public class ListaSpesaController {
 		if (listaAlreadyExist != null) {
 			listaDao.delete(listaAlreadyExist.getId());
 			listaView.showRemovedList(listaAlreadyExist);
-		} else {
-			listaView.showError("This shopping list does not exist", listaDaCancellare);
 		}
+		listaView.showError("This shopping list does not exist", listaDaCancellare);
 	}
 
 }

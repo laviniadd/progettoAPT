@@ -40,7 +40,7 @@ public class ElencoProdottiControllerTest {
 
 		verify(elencoProdottiView).showAllElencoProdotti(elencoProdottiInListaSpesa);
 	}
-	
+
 	@Test
 	public void testSaveNewElencoProdottiWhenElencoProdottiDoesNotAlreadyExist() {
 		ElencoProdotti elencoProdotti = new ElencoProdotti();
@@ -54,5 +54,40 @@ public class ElencoProdottiControllerTest {
 		inOrder.verify(elencoProdottiView).showNewElencoProdotti(elencoProdotti);
 	}
 
+	@Test
+	public void testSaveElencoProdottiWhenElencoProdottiAlreadyExist() {
+		ElencoProdotti elencoProdotti = new ElencoProdotti();
 
+		when(elencoProdottiDao.findById(elencoProdotti.getId())).thenReturn(elencoProdotti);
+
+		elencoProdottiController.saveNewElencoProdotti(elencoProdotti);
+
+		verify(elencoProdottiView).showError("This list of products already exist", elencoProdotti);
+		verifyNoMoreInteractions(ignoreStubs(elencoProdottiDao));
+	}
+
+	@Test
+	public void testDeleteElencoProdottiWhenElencoProdottiExists() {
+		ElencoProdotti elencoProdottiDaCancellare = new ElencoProdotti();
+
+		when(elencoProdottiDao.findById(elencoProdottiDaCancellare.getId())).thenReturn(elencoProdottiDaCancellare);
+
+		elencoProdottiController.deleteElencoProdotti(elencoProdottiDaCancellare);
+
+		InOrder inOrder = inOrder(elencoProdottiDao, elencoProdottiView);
+		inOrder.verify(elencoProdottiDao).delete(elencoProdottiDaCancellare.getId());
+		inOrder.verify(elencoProdottiView).showElencoProdottiRemoved(elencoProdottiDaCancellare);
+	}
+
+	@Test
+	public void testDeleteElencoProdottiWhenElencoProdottiAlreadyNotExists() {
+		ElencoProdotti elencoProdottiDaCancellare = new ElencoProdotti();
+
+		when(elencoProdottiDao.findById(elencoProdottiDaCancellare.getId())).thenReturn(null);
+
+		elencoProdottiController.deleteElencoProdotti(elencoProdottiDaCancellare);
+
+		verify(elencoProdottiView).showError("This list of products not exist", elencoProdottiDaCancellare);
+
+	}
 }

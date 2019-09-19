@@ -20,4 +20,9 @@ public class ElencoProdottiView {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void showElencoProdottiRemoved(ElencoProdotti elencoProdottiCancellato) {
+		// TODO Auto-generated method stub
+		
+	}
 }
