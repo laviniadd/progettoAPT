@@ -1,22 +1,24 @@
 package com.myproject.app.model;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
 public class ElencoProdotti extends BaseEntity {
+	
+	private Set<Prodotto> prodotti;
+	private ListaSpesa listaSpesa;
+	private int quantity;
 
 	public ElencoProdotti() {
 	}
 
-	public ElencoProdotti(ListaSpesa listaSpesa, Prodotto prodotto, int quantity) {
-		this.prodotto = prodotto;
+	public ElencoProdotti(ListaSpesa listaSpesa, Set<Prodotto> prodotti, int quantity) {
+		this.prodotti = prodotti;
 		this.listaSpesa = listaSpesa;
 		this.quantity = quantity;
 	}
-
-	private Prodotto prodotto;
-	private ListaSpesa listaSpesa;
-	private int quantity;
 
 	public int getQuantity() {
 		return quantity;
@@ -35,15 +37,17 @@ public class ElencoProdotti extends BaseEntity {
 	public void setListaSpesa(ListaSpesa listaSpesa) {
 		this.listaSpesa = listaSpesa;
 	}
-
-	@ManyToOne(fetch = FetchType.EAGER)
+	
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Prodotto.class)
 	@JoinColumn(name = "prodotto_id")
-	public Prodotto getProdotto() {
-		return prodotto;
+	public Set<Prodotto> getProdotti() {
+		return prodotti;
 	}
 
-	public void setProdotto(Prodotto prodotto) {
-		this.prodotto = prodotto;
+	public void setProdotti(Set<Prodotto> prodotti) {
+		this.prodotti = prodotti;
 	}
 
+	
+	
 }
