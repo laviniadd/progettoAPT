@@ -15,7 +15,6 @@ public class ListaSpesa extends BaseEntity {
 	}
 	
 	public ListaSpesa(String name, Set<ElencoProdotti> elencoProdotti) {
-		super();
 		this.name = name;
 		this.elencoProdotti = elencoProdotti;
 	}

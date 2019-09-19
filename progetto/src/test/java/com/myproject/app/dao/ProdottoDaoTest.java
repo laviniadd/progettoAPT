@@ -43,6 +43,11 @@ public class ProdottoDaoTest extends JpaTest {
 
 		assertThat(prodottoDao.findById(frutta.getId())).isEqualTo(frutta);
 	}
+	
+	@Test
+	public void testProdottoFindByIdNull() {
+		assertThat(prodottoDao.findById(null)).isEqualTo(null);
+	}
 
 	@Test
 	public void testProdottoFindByIdNotFound() {
@@ -74,6 +79,13 @@ public class ProdottoDaoTest extends JpaTest {
 		
 		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
 		assertThat(retrievedProduct).isEmpty();
+	}
+	
+	@Test
+	public void testDeleteProdottoNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.delete(null);
+		});
 	}
 
 	private void addProductToDatabase(Prodotto prodottoDaPersistere) {

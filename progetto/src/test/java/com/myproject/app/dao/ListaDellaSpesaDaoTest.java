@@ -39,8 +39,13 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 
 		addListToDatabase(lista);
 		addListToDatabase(listaSpesa);
-				
+
 		assertThat(listaSpesaDao.findById(listaSpesa.getId())).isEqualTo(listaSpesa);
+	}
+
+	@Test
+	public void testListaDellaSpesaFindByIdNull() {
+		assertThat(listaSpesaDao.findById(null)).isEqualTo(null);
 	}
 
 	@Test
@@ -69,20 +74,27 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	public void testDeleteLista() {
 		lista = new ListaSpesa();
 		addListToDatabase(lista);
-		
+
 		listaSpesaDao.delete(lista.getId());
-		
+
 		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase(lista);
 		assertThat(retrievedShoppingList).isEmpty();
 	}
-	
+
+	@Test
+	public void testDeleteListaNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			listaSpesaDao.delete(null);
+		});
+	}
+
 	private void addListToDatabase(ListaSpesa listaDaSalvare) {
 		transaction.executeTransaction((em) -> {
 			em.persist(listaDaSalvare);
 			return null;
 		});
 	}
-	
+
 	private List<ListaSpesa> retrieveShoppingListToDatabase(ListaSpesa listaSpesaDaRecuperare) {
 		return transaction.executeTransaction((em) -> {
 			return em.createQuery("select e from ListaSpesa e where e.id = :id", ListaSpesa.class)

@@ -1,6 +1,7 @@
 package com.myproject.app.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.util.List;
 
@@ -41,6 +42,11 @@ public class ElencoProdottiDaoTest extends JpaTest {
 
 		assertThat(elencoProdottiDao.findById(elencoProdottiSpesa.getId())).isEqualTo(elencoProdottiSpesa);
 	}
+	
+	@Test
+	public void testElencoProdottiFindByIdNull() {
+		assertThat(elencoProdottiDao.findById(null)).isEqualTo(null);
+	}
 
 	@Test
 	public void testElencoProdottiFindByIdNotFound() {
@@ -72,6 +78,13 @@ public class ElencoProdottiDaoTest extends JpaTest {
 		
 		List<ElencoProdotti> retrievedElencoProdotti = retrieveElencoProdottiToDatabase(elencoProdotti);
 		assertThat(retrievedElencoProdotti).isEmpty();
+	}
+	
+	@Test
+	public void testDeleteElencoProdottiNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			elencoProdottiDao.delete(null);
+		});
 	}
 	
 	private void addListOfProductsToDatabase(ElencoProdotti elencoProdottoDaPersistere) {

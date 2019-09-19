@@ -19,6 +19,9 @@ public class BaseRepository<T> {
 	}
 
 	public T findById(Long id) {
+		if (id == null) {
+			return null;
+		}
 		return transaction.executeTransaction(em -> em.find(classType, id));
 	}
 
@@ -27,13 +30,17 @@ public class BaseRepository<T> {
 		return transaction.executeTransaction(
 				em -> em.createQuery("SELECT t FROM " + classTypeString + " t", classType).getResultList());
 	}
-	
+
 	public void delete(Long idEntityDaCancellare) {
+		if (idEntityDaCancellare == null) {
+			throw new IllegalArgumentException();
+		}
 		transaction.executeTransaction(em -> {
 			T entityRecuperataDaCancellare = em.find(classType, idEntityDaCancellare);
 			em.remove(entityRecuperataDaCancellare);
 			return null;
+
 		});
-		
+
 	}
 }
