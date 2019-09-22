@@ -2,7 +2,8 @@ package com.myproject.app.dao;
 
 import java.util.List;
 
-public class BaseRepository<T> {
+public class BaseRepository<T>{
+		
 	private TransactionTemplate transaction;
 	private Class<T> classType;
 
@@ -41,6 +42,5 @@ public class BaseRepository<T> {
 			return null;
 
 		});
-
 	}
 }

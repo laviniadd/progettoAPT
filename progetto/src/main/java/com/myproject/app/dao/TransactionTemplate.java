@@ -26,6 +26,7 @@ public class TransactionTemplate {
 
 			return returnValue;
 		} catch (Exception e) {
+			System.out.println(e);
 			throw new NullPointerException();
 		}
 	}

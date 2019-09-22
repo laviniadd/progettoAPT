@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.model.ListaSpesa;
-import com.myproject.app.view.ListaSpesaView;
+import com.myproject.app.view.AppViewInterface;
 
 public class ListaSpesaControllerTest {
 	@InjectMocks
@@ -21,7 +21,7 @@ public class ListaSpesaControllerTest {
 	@Mock
 	private ListaDellaSpesaDao listaSpesaDao;
 	@Mock
-	private ListaSpesaView listaSpesaView;
+	private AppViewInterface listaSpesaView;
 
 	@Before
 	public void setUp() throws Exception {
@@ -37,7 +37,7 @@ public class ListaSpesaControllerTest {
 
 		listaSpesaController.allListeSpesa();
 
-		verify(listaSpesaView).showAllListeSpesa(listeSpesa);
+		verify(listaSpesaView).showAllEntity(listeSpesa);
 
 	}
 
@@ -51,7 +51,7 @@ public class ListaSpesaControllerTest {
 
 		InOrder inOrder = inOrder(listaSpesaDao, listaSpesaView);
 		inOrder.verify(listaSpesaDao).save(lista);
-		inOrder.verify(listaSpesaView).showNewLista(lista);
+		inOrder.verify(listaSpesaView).showNewEntity(lista);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ListaSpesaControllerTest {
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
 		
 		verify(listaSpesaDao).delete(listaDaCancellare.getId());
-		verify(listaSpesaView).showRemovedList(listaDaCancellare);
+		verify(listaSpesaView).showRemovedEntity(listaDaCancellare);
 	}
 	
 	@Test

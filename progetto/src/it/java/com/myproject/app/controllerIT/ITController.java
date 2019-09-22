@@ -31,7 +31,6 @@ public abstract class ITController {
 		transaction.executeTransaction((em) -> {
 			em.createNativeQuery("DELETE FROM Prodotto").executeUpdate();
 			em.createNativeQuery("DELETE FROM ListaSpesa").executeUpdate();
-			em.createNativeQuery("DELETE FROM ElencoProdotti").executeUpdate();
 			return null;
 		});
 

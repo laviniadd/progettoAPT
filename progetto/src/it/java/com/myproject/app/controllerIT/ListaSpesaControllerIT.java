@@ -12,14 +12,14 @@ import com.myproject.app.controller.ListaSpesaController;
 import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.dao.TransactionTemplate;
 import com.myproject.app.model.ListaSpesa;
-import com.myproject.app.view.ListaSpesaView;
+import com.myproject.app.view.AppViewInterface;
 
 public class ListaSpesaControllerIT extends ITController {
 
 	private ListaSpesaController listaSpesaController;
 
 	@Mock
-	private ListaSpesaView listaSpesaView;
+	private AppViewInterface listaSpesaView;
 
 	private ListaDellaSpesaDao listaSpesaDao;
 
@@ -41,7 +41,7 @@ public class ListaSpesaControllerIT extends ITController {
 
 		listaSpesaController.allListeSpesa();
 
-		verify(listaSpesaView).showAllListeSpesa(asList(listaSpesa));
+		verify(listaSpesaView).showAllEntity(asList(listaSpesa));
 
 	}
 
@@ -49,6 +49,6 @@ public class ListaSpesaControllerIT extends ITController {
 	public void testSaveNewListaWhenListaDoesNotAlreadyExist() {
 		ListaSpesa lista = new ListaSpesa();
 		listaSpesaController.saveNewLista(lista);
-		verify(listaSpesaView).showNewLista(lista);
+		verify(listaSpesaView).showNewEntity(lista);
 	}
 }

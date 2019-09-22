@@ -2,20 +2,20 @@ package com.myproject.app.controller;
 
 import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.model.ListaSpesa;
-import com.myproject.app.view.ListaSpesaView;
+import com.myproject.app.view.AppViewInterface;
 
 public class ListaSpesaController {
 
-	private ListaSpesaView listaView;
+	private AppViewInterface listaView;
 	private ListaDellaSpesaDao listaDao;
 
-	public ListaSpesaController(ListaSpesaView listaView, ListaDellaSpesaDao listaRepository) {
+	public ListaSpesaController(AppViewInterface listaView, ListaDellaSpesaDao listaRepository) {
 		this.listaView = listaView;
 		this.listaDao = listaRepository;
 	}
 
 	public void allListeSpesa() {
-		listaView.showAllListeSpesa(listaDao.findAll());
+		listaView.showAllEntity(listaDao.findAll());
 	}
 
 	public void saveNewLista(ListaSpesa lista) {
@@ -27,7 +27,7 @@ public class ListaSpesaController {
 		}
 
 		listaDao.save(lista);
-		listaView.showNewLista(lista);
+		listaView.showNewEntity(lista);
 
 	}
 
@@ -36,7 +36,7 @@ public class ListaSpesaController {
 
 		if (listaAlreadyExist != null) {
 			listaDao.delete(listaAlreadyExist.getId());
-			listaView.showRemovedList(listaAlreadyExist);
+			listaView.showRemovedEntity(listaAlreadyExist);
 		}
 		listaView.showError("This shopping list does not exist", listaDaCancellare);
 	}

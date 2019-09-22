@@ -9,6 +9,7 @@ import org.junit.runners.model.InitializationError;
 
 import com.myproject.app.model.Prodotto;
 
+
 public class ProdottoDaoTest extends JpaTest {
 	private TransactionTemplate transaction;
 
