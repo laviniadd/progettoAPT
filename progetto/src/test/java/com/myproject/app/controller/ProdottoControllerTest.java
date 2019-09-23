@@ -132,6 +132,20 @@ public class ProdottoControllerTest {
 
 		verify(prodottoView).showError("This product does not exist", prodottoDaModificare);
 	}
+	
+	@Test
+	public void testUpdateProductWithNoNewQuantityWhenProductExists() {
+		Prodotto prodottoDaModificare = new Prodotto();
+		prodottoDaModificare.setName("mela");
+		prodottoDaModificare.setQuantity(2);
+
+		when(prodottoDao.findById(prodottoDaModificare.getId())).thenReturn(null);
+
+		prodottoController.updateProduct(prodottoDaModificare, "pera", -1);
+
+		verify(prodottoView).showError("This product does not exist", prodottoDaModificare);
+	}
+
 
 
 }
