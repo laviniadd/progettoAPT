@@ -6,11 +6,11 @@ import com.myproject.app.model.ListaSpesa;
 
 public interface AppViewInterface {
 	
-	public void showAllEntity(List<ListaSpesa> entityDaMostrare);
+	public void showAllEntity(List<ListaSpesa> entitiesDaMostrare);
 
-	public void showError(String string, ListaSpesa elencoEntity);
+	public void showError(String errorMessage, ListaSpesa entity);
 
-	public void showNewEntity(ListaSpesa elencoEntity);
+	public void showNewEntity(ListaSpesa entity);
 
-	public void showRemovedEntity(ListaSpesa elencoEntityCancellate);
+	public void showRemovedEntity(ListaSpesa entityCancellate);
 }
