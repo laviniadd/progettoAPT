@@ -2,6 +2,7 @@ package com.myproject.app.daoIT;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -67,6 +68,30 @@ public class ProdottoDaoIT extends ITDao{
 		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
 		assertThat(retrievedProduct).isEmpty();
 	}
+	
+	@Test
+	public void testUpdateProduct() {
+		frutta = new Prodotto();
+		frutta.setName("mela");
+		frutta.setQuantity(3);
+		addProductToDatabase(frutta);
+		
+		prodottoDao.updateProduct(frutta, "pera", 4);
+		
+		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
+		List<String> names = new ArrayList<String>();
+		List<String> quantities = new ArrayList<String>();
+
+		for (Prodotto prodotto : retrievedProduct) {
+		  names.add(prodotto.getName());
+		  quantities.add(String.valueOf(prodotto.getQuantity()));
+		}
+		//TODO CONTROLLARE SE VA BENE CHE CONTROLLO LA QUANTITA' COME UNA STRINGA
+		assertThat(names).containsExactly("pera");
+		assertThat(quantities).containsExactly("4");
+		assertThat(retrievedProduct).containsExactly(frutta);
+	}
+	
 	
 	private List<Prodotto> retrieveProductToDatabase(Prodotto prodottoDaRecuperare) {
 		return transaction.executeTransaction((em) -> {
