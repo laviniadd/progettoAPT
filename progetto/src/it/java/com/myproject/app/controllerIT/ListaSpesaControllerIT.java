@@ -51,4 +51,13 @@ public class ListaSpesaControllerIT extends ITController {
 		listaSpesaController.saveNewLista(lista);
 		verify(listaSpesaView).showNewEntity(lista);
 	}
+	
+	@Test
+	public void testDeleteListaWhenListaAlreadyExists() {
+		ListaSpesa listaDaCancellare = new ListaSpesa();
+		listaSpesaDao.save(listaDaCancellare);				
+		listaSpesaController.deleteListaSpesa(listaDaCancellare);
+		
+		verify(listaSpesaView).showRemovedEntity(listaDaCancellare);
+	}
 }
