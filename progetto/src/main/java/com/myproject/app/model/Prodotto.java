@@ -37,4 +37,9 @@ public class Prodotto extends BaseEntity {
 	public void setListaSpesa(ListaSpesa listaSpesa) {
 		this.listaSpesa = listaSpesa;
 	}
+
+	@Override
+	public String toString() {
+		return name+" "+quantity;
+	}
 }

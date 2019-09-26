@@ -2,20 +2,20 @@ package com.myproject.app.controller;
 
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.Prodotto;
-import com.myproject.app.view.ProdottoViewInterface;
+import com.myproject.app.view.AppViewInterface;
 
 public class ProdottoController {
 
-	private ProdottoViewInterface prodottoView;
+	private AppViewInterface prodottoView;
 	private ProdottoDao prodottoDao;
 
-	public ProdottoController(ProdottoViewInterface prodottoView, ProdottoDao prodottoRepository) {
+	public ProdottoController(AppViewInterface prodottoView, ProdottoDao prodottoRepository) {
 		this.prodottoView = prodottoView;
 		this.prodottoDao = prodottoRepository;
 	}
 
 	public void allProducts() {
-		prodottoView.showAllProducts(prodottoDao.findAll());
+		prodottoView.showAllEntities(prodottoDao.findAll());
 	}
 
 	public void saveNewProduct(Prodotto prodotto) {
@@ -25,9 +25,8 @@ public class ProdottoController {
 			prodottoView.showError("This product already exist", productAlreadyExist);
 			return;
 		}
-
 		prodottoDao.save(prodotto);
-		prodottoView.showNewProduct(prodotto);
+		prodottoView.showNewEntity(prodotto);
 
 	}
 
@@ -36,7 +35,7 @@ public class ProdottoController {
 
 		if (productAlreadyExist != null) {
 			prodottoDao.delete(productAlreadyExist.getId());
-			prodottoView.showRemovedProduct(productAlreadyExist);
+			prodottoView.showRemovedEntity(productAlreadyExist);
 		}
 		prodottoView.showError("This product does not exist", prodottoDaCancellare);
 	}
@@ -47,7 +46,7 @@ public class ProdottoController {
 		if (productAlreadyExist != null && !nuovoNomeProdotto.isEmpty() && nuovoNomeProdotto != null
 				&& nuovaQuantitaProdotto > 0) {
 			prodottoDao.updateProduct(prodottoDaModificare, nuovoNomeProdotto, nuovaQuantitaProdotto);
-			prodottoView.showNewProduct(productAlreadyExist);
+			prodottoView.showNewEntity(productAlreadyExist);
 		}
 		prodottoView.showError("This product does not exist", prodottoDaModificare);
 	}

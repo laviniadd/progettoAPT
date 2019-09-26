@@ -31,6 +31,14 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 
 		assertThat(retrievedList).containsExactly(lista);
 	}
+	
+	@Test
+	public void testSaveNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			listaSpesaDao.save(null);
+		});
+	}
+
 
 	@Test
 	public void testListaDellaSpesaFindById() {
@@ -46,6 +54,12 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	@Test
 	public void testListaDellaSpesaFindByIdNull() {
 		assertThat(listaSpesaDao.findById(null)).isEqualTo(null);
+	}
+	
+	@Test
+	public void testListaDellaSpesaNotAlreadySavedFindByIdNull() {
+		ListaSpesa listaSpesaNotSaved = new ListaSpesa();
+		assertThat(listaSpesaDao.findById(listaSpesaNotSaved.getId())).isEqualTo(null);
 	}
 
 	@Test

@@ -12,13 +12,13 @@ import com.myproject.app.controller.ProdottoController;
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.dao.TransactionTemplate;
 import com.myproject.app.model.Prodotto;
-import com.myproject.app.view.ProdottoViewInterface;
+import com.myproject.app.view.AppViewInterface;
 
 public class ProdottoControllerIT extends ITController{
 	private ProdottoController prodottoController;
 	
 	@Mock
-	private ProdottoViewInterface prodottoView;
+	private AppViewInterface prodottoView;
 	
 	private ProdottoDao prodottoDao;
 	
@@ -40,7 +40,7 @@ public class ProdottoControllerIT extends ITController{
 		
 		prodottoController.allProducts();
 
-		verify(prodottoView).showAllProducts(asList(prodotto));
+		verify(prodottoView).showAllEntities(asList(prodotto));
 
 	}
 	
@@ -50,7 +50,7 @@ public class ProdottoControllerIT extends ITController{
 			
 		prodottoController.saveNewProduct(prodotto);
 		
-		verify(prodottoView).showNewProduct(prodotto);
+		verify(prodottoView).showNewEntity(prodotto);
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ public class ProdottoControllerIT extends ITController{
 
 		prodottoController.deleteProduct(prodottoDaCancellare);
 
-		verify(prodottoView).showRemovedProduct(prodottoDaCancellare);
+		verify(prodottoView).showRemovedEntity(prodottoDaCancellare);
 	}
 
 	@Test
@@ -74,6 +74,6 @@ public class ProdottoControllerIT extends ITController{
 
 		prodottoController.updateProduct(prodottoDaModificare, "pera", 3);
 
-		verify(prodottoView).showNewProduct(prodottoDaModificare);
+		verify(prodottoView).showNewEntity(prodottoDaModificare);
 	}
 }

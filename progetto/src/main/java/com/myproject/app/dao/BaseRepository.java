@@ -13,6 +13,9 @@ public class BaseRepository<T>{
 	}
 
 	public void save(T entityDaSalvare) {
+		if(entityDaSalvare == null) {
+			throw new IllegalArgumentException();
+		}
 		transaction.executeTransaction(em -> {
 			em.persist(entityDaSalvare);
 			return null;

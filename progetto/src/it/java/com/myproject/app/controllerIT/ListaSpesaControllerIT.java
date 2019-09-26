@@ -41,7 +41,7 @@ public class ListaSpesaControllerIT extends ITController {
 
 		listaSpesaController.allListeSpesa();
 
-		verify(listaSpesaView).showAllEntity(asList(listaSpesa));
+		verify(listaSpesaView).showAllEntities(asList(listaSpesa));
 
 	}
 

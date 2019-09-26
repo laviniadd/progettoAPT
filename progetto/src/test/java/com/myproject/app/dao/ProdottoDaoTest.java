@@ -36,6 +36,13 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
+	public void testSaveNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.save(null);
+		});
+	}
+	
+	@Test
 	public void testProdottoFindById() {
 		verdura = new Prodotto();
 		frutta = new Prodotto();
@@ -51,6 +58,12 @@ public class ProdottoDaoTest extends JpaTest {
 		assertThat(prodottoDao.findById(null)).isEqualTo(null);
 	}
 
+	@Test
+	public void testProductNotAlreadySavedFindByIdNull() {
+		Prodotto prodottoNotSaved = new Prodotto();
+		assertThat(prodottoDao.findById(prodottoNotSaved.getId())).isEqualTo(null);
+	}
+	
 	@Test
 	public void testProdottoFindByIdNotFound() {
 		assertThat(prodottoDao.findById(Long.valueOf(1))).isNull();

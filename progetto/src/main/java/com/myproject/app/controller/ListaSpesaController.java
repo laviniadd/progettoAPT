@@ -15,7 +15,7 @@ public class ListaSpesaController {
 	}
 
 	public void allListeSpesa() {
-		listaView.showAllEntity(listaDao.findAll());
+		listaView.showAllEntities(listaDao.findAll());
 	}
 
 	public void saveNewLista(ListaSpesa lista) {
@@ -25,10 +25,8 @@ public class ListaSpesaController {
 			listaView.showError("This shopping list already exist", listaAlreadyExist);
 			return;
 		}
-
 		listaDao.save(lista);
 		listaView.showNewEntity(lista);
-
 	}
 
 	public void deleteListaSpesa(ListaSpesa listaDaCancellare) {

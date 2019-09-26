@@ -37,7 +37,7 @@ public class ListaSpesaControllerTest {
 
 		listaSpesaController.allListeSpesa();
 
-		verify(listaSpesaView).showAllEntity(listeSpesa);
+		verify(listaSpesaView).showAllEntities(listeSpesa);
 
 	}
 
@@ -65,7 +65,7 @@ public class ListaSpesaControllerTest {
 		verify(listaSpesaView).showError("This shopping list already exist", listaDaSalvare);
 		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
 	}
-
+	
 	@Test
 	public void testDeleteListaWhenListaAlreadyExists() {
 		ListaSpesa listaDaCancellare = new ListaSpesa();

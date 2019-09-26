@@ -18,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.Prodotto;
-import com.myproject.app.view.ProdottoViewInterface;
+import com.myproject.app.view.AppViewInterface;
 
 public class ProdottoControllerTest {
 	@InjectMocks
@@ -28,7 +28,7 @@ public class ProdottoControllerTest {
 	private ProdottoDao prodottoDao;
 
 	@Mock
-	private ProdottoViewInterface prodottoView;
+	private AppViewInterface prodottoView;
 
 	@Before
 	public void setUp() throws Exception {
@@ -44,7 +44,7 @@ public class ProdottoControllerTest {
 
 		prodottoController.allProducts();
 
-		verify(prodottoView).showAllProducts(prodotti);
+		verify(prodottoView).showAllEntities(prodotti);
 
 	}
 
@@ -55,7 +55,7 @@ public class ProdottoControllerTest {
 		prodottoController.saveNewProduct(prodotto);
 		InOrder inOrder = inOrder(prodottoDao, prodottoView);
 		inOrder.verify(prodottoDao).save(prodotto);
-		inOrder.verify(prodottoView).showNewProduct(prodotto);
+		inOrder.verify(prodottoView).showNewEntity(prodotto);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class ProdottoControllerTest {
 		prodottoController.deleteProduct(prodottoDaCancellare);
 
 		verify(prodottoDao).delete(prodottoDaCancellare.getId());
-		verify(prodottoView).showRemovedProduct(prodottoDaCancellare);
+		verify(prodottoView).showRemovedEntity(prodottoDaCancellare);
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class ProdottoControllerTest {
 		prodottoController.updateProduct(prodottoDaModificare, "pera", 3);
 
 		verify(prodottoDao).updateProduct(prodottoDaModificare, "pera", 3);
-		verify(prodottoView).showNewProduct(prodottoDaModificare);
+		verify(prodottoView).showNewEntity(prodottoDaModificare);
 	}
 	
 	@Test
