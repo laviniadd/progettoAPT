@@ -2,6 +2,8 @@ package com.myproject.app.view;
 
 import java.awt.EventQueue;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,12 +20,12 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 
 import javax.swing.DefaultListModel;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.event.ListSelectionListener;
@@ -42,8 +44,8 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	private JLabel lblErrorMessageListaLabel;
 	private JLabel lblProdotto;
 	private JTextField textProdotto;
+	private JTextField textQuantita;
 	private JLabel lblQuantita;
-	private JSpinner spinner;
 	private JButton btnAggiungiProdotto;
 	private JScrollPane scrollPane_1;
 	private JButton btnCancellaProdottoSelezionato;
@@ -53,12 +55,14 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	private JLabel lblErrorMessageProdottoLabel;
 	private JLabel lblErrorMessageProdottoEQuantitaLabel;
 
-	private JList<Prodotto> listaProdotti;
-	private JList<ListaSpesa> listaListe;
-	private DefaultListModel<Prodotto> listaProdottiModel;
-	private DefaultListModel<ListaSpesa> listaListeSpesaModel;
+	private JList<String> listaProdotti;
+	private JList<String> listaListe;
+	private DefaultListModel<String> listaProdottiModel;
+	private DefaultListModel<String> listaListeSpesaModel;
 
 	private ListaSpesaController listaSpesaController;
+
+	private AppViewInterface appViewInterface;
 
 	/**
 	 * Launch the application.
@@ -74,14 +78,13 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		});
 	}
 
-	public DefaultListModel<ListaSpesa> getListaListeSpesaModel() {
+	public DefaultListModel<String> getListaListeSpesaModel() {
 		return listaListeSpesaModel;
 	}
-	
-	public DefaultListModel<Prodotto> getListaProdottiModel() {
+
+	public DefaultListModel<String> getListaProdottiModel() {
 		return listaProdottiModel;
 	}
-
 
 	public void setListaSpesaController(ListaSpesaController listaSpesaController) {
 		this.listaSpesaController = listaSpesaController;
@@ -117,7 +120,6 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				btnCreaLista.setEnabled(!txtNomeLista.getText().trim().isEmpty());
-				btnSalvaLista.setEnabled(!txtNomeLista.getText().trim().isEmpty());
 			}
 		};
 		txtNomeLista.addKeyListener(btnCreaListaEnabler);
@@ -148,8 +150,8 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		gbc_scrollPane.gridy = 2;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		listaListeSpesaModel = new DefaultListModel<>();
-		listaListe = new JList<ListaSpesa>(listaListeSpesaModel);
+		listaListeSpesaModel = new DefaultListModel<String>();
+		listaListe = new JList<>(listaListeSpesaModel);
 		listaListe.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				btnCancellaListaSelezionata.setEnabled(listaListe.getSelectedIndex() != -1);
@@ -172,8 +174,8 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		btnModificaAggiungiProdotti.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				textProdotto.setEnabled(true);
-				spinner.setEnabled(true);
+				textProdotto.setEditable(true);
+				textQuantita.setEditable(true);
 			}
 		});
 		btnModificaAggiungiProdotti.setEnabled(false);
@@ -184,7 +186,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		contentPane.add(btnModificaAggiungiProdotti, gbc_btnModificaaggiungiProdotti);
 
 		lblErrorMessageListaLabel = new JLabel("");
-		lblErrorMessageListaLabel.setName("errorMessageLabel");
+		lblErrorMessageListaLabel.setName("errorMessageLabelList");
 		GridBagConstraints gbc_lblErrorMessageListaLabel = new GridBagConstraints();
 		gbc_lblErrorMessageListaLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_lblErrorMessageListaLabel.gridwidth = 2;
@@ -200,15 +202,19 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		contentPane.add(lblProdotto, gbc_lblProdotto);
 
 		textProdotto = new JTextField();
+		textProdotto.setEditable(false);
 		KeyAdapter btnAggiungiProdottoEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				btnAggiungiProdotto
-						.setEnabled(!textProdotto.getText().trim().isEmpty() && !((Integer) spinner.getValue() < 1));
+				try {
+					btnAggiungiProdotto.setEnabled(!textProdotto.getText().trim().isEmpty()
+							&& !(Integer.parseInt(textQuantita.getText().trim()) < 1));
+				} catch (NumberFormatException nfe) {
+					btnAggiungiProdotto.setEnabled(false);
+				}
 			}
 		};
 		textProdotto.addKeyListener(btnAggiungiProdottoEnabler);
-		textProdotto.setEnabled(false);
 		textProdotto.setName("prodottoTextBox");
 		GridBagConstraints gbc_textProdotto = new GridBagConstraints();
 		gbc_textProdotto.insets = new Insets(0, 0, 5, 0);
@@ -220,23 +226,32 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		lblQuantita = new JLabel("Quantità:");
 		GridBagConstraints gbc_lblQuantit = new GridBagConstraints();
+		gbc_lblQuantit.anchor = GridBagConstraints.EAST;
 		gbc_lblQuantit.insets = new Insets(0, 0, 5, 5);
 		gbc_lblQuantit.gridx = 0;
 		gbc_lblQuantit.gridy = 6;
 		contentPane.add(lblQuantita, gbc_lblQuantit);
 
-		spinner = new JSpinner();
-		spinner.setName("quantita");
-		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-		spinner.setEnabled(false);
-		GridBagConstraints gbc_spinner = new GridBagConstraints();
-		gbc_spinner.insets = new Insets(0, 0, 5, 0);
-		gbc_spinner.anchor = GridBagConstraints.WEST;
-		gbc_spinner.gridx = 1;
-		gbc_spinner.gridy = 6;
-		contentPane.add(spinner, gbc_spinner);
+		textQuantita = new JTextField();
+		textQuantita.setEditable(false);
+		textQuantita.setText("1");
+		textQuantita.addKeyListener(btnAggiungiProdottoEnabler);
+		textQuantita.setName("quantitaTextBox");
+		GridBagConstraints gbc_textQuantita = new GridBagConstraints();
+		gbc_textQuantita.insets = new Insets(0, 0, 5, 0);
+		gbc_textQuantita.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textQuantita.gridx = 1;
+		gbc_textQuantita.gridy = 6;
+		contentPane.add(textQuantita, gbc_textQuantita);
+		textQuantita.setColumns(10);
 
 		btnAggiungiProdotto = new JButton("Aggiungi Prodotto");
+		btnAggiungiProdotto.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				btnSalvaLista.setEnabled(true);
+			}
+		});
 		btnAggiungiProdotto.setEnabled(false);
 		GridBagConstraints gbc_btnAggiungiProdotto = new GridBagConstraints();
 		gbc_btnAggiungiProdotto.insets = new Insets(0, 0, 5, 0);
@@ -248,7 +263,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		lblErrorMessageProdottoEQuantitaLabel = new JLabel("");
 		GridBagConstraints gbc_lblErrorMessageProdottoEQuantitaLabel = new GridBagConstraints();
 		gbc_lblErrorMessageProdottoEQuantitaLabel.gridwidth = 2;
-		gbc_lblErrorMessageProdottoEQuantitaLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblErrorMessageProdottoEQuantitaLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_lblErrorMessageProdottoEQuantitaLabel.gridx = 0;
 		gbc_lblErrorMessageProdottoEQuantitaLabel.gridy = 8;
 		contentPane.add(lblErrorMessageProdottoEQuantitaLabel, gbc_lblErrorMessageProdottoEQuantitaLabel);
@@ -262,7 +277,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		gbc_scrollPane_1.gridy = 9;
 		contentPane.add(scrollPane_1, gbc_scrollPane_1);
 
-		listaProdottiModel = new DefaultListModel<>();
+		listaProdottiModel = new DefaultListModel<String>();
 		listaProdotti = new JList<>(listaProdottiModel);
 		listaProdotti.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -291,6 +306,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		contentPane.add(btnModificaProdottoSelezionato, gbc_btnModificaProdottoSelezionato);
 
 		lblErrorMessageProdottoLabel = new JLabel("");
+		lblErrorMessageProdottoLabel.setName("errorMessageProductLabel");
 		GridBagConstraints gbc_lblErrorMessageProdottoLabel = new GridBagConstraints();
 		gbc_lblErrorMessageProdottoLabel.gridwidth = 2;
 		gbc_lblErrorMessageProdottoLabel.insets = new Insets(0, 0, 5, 0);
@@ -307,34 +323,61 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		contentPane.add(btnSalvaLista, gbc_btnSalvaLista);
 	}
 
+	@Override
+	public <T> void showAllEntities(List<T> entitiesDaMostrare) {
+		if(!entitiesDaMostrare.isEmpty()) {
+			List<String> entitiesDaMostrareString = entitiesDaMostrare.stream()
+					.map(object -> Objects.toString(object, null)).collect(Collectors.toList());
+
+			if (entitiesDaMostrare.get(0).getClass() == ListaSpesa.class) {
+				entitiesDaMostrareString.stream().forEach(listaListeSpesaModel::addElement);
+			}
+			if (entitiesDaMostrare.get(0).getClass() == Prodotto.class) {
+				entitiesDaMostrareString.stream().forEach(listaProdottiModel::addElement);
+			}
+		}
+	}
+
+	@Override
+	public <T> void showNewEntity(T entity) {
+		if (entity.getClass() == ListaSpesa.class) {
+			listaListeSpesaModel.addElement(entity.toString());
+			resetErrorLabel();
+		}
+		if (entity.getClass() == Prodotto.class) {
+			listaProdottiModel.addElement(entity.toString());
+			resetErrorLabel();
+		}
+	}
+
+	@Override
+	public <T> void showRemovedEntity(T entityCancellate) {
+
+		if (entityCancellate.getClass() == ListaSpesa.class) {
+			listaListeSpesaModel.removeElement(entityCancellate.toString());
+			resetErrorLabel();
+		}
+		if (entityCancellate.getClass() == Prodotto.class) {
+			listaProdottiModel.removeElement(entityCancellate.toString());
+			resetErrorLabel();
+		}
+	}
+
+	@Override
+	public <T> void showError(String errorMessage, T entity) {
+		if (errorMessage == "This shopping list already exist" || errorMessage == "This shopping list does not exist") {
+			lblErrorMessageListaLabel.setText(errorMessage + ": " + entity);
+		}
+		if (errorMessage == "This product already exist") {
+			lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
+		}
+		if (errorMessage == "This product does not exist") {
+			lblErrorMessageProdottoLabel.setText(errorMessage + ": " + entity);
+		}
+	}
+
 	private void resetErrorLabel() {
 		lblErrorMessageListaLabel.setText(" ");
 
 	}
-
-	@Override
-	public void showAllEntity(List<ListaSpesa> entitiesDaMostrare) {
-		entitiesDaMostrare.stream().forEach(listaListeSpesaModel::addElement);
-		
-	}
-
-	@Override
-	public void showError(String errorMessage, ListaSpesa entity) {
-		lblErrorMessageListaLabel.setText(errorMessage + ": " + entity);
-	}
-
-	@Override
-	public void showNewEntity(ListaSpesa entity) {
-		listaListeSpesaModel.addElement(entity);
-		resetErrorLabel();
-		
-	}
-
-	@Override
-	public void showRemovedEntity(ListaSpesa entityCancellate) {
-		listaListeSpesaModel.removeElement(entityCancellate);
-		resetErrorLabel();
-		
-	}
-
 }

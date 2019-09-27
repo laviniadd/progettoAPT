@@ -40,6 +40,6 @@ public class Prodotto extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return name+" "+quantity;
+		return quantity+" "+name;
 	}
 }

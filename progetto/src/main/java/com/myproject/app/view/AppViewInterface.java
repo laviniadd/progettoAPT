@@ -2,15 +2,13 @@ package com.myproject.app.view;
 
 import java.util.List;
 
-import com.myproject.app.model.ListaSpesa;
-
 public interface AppViewInterface {
 	
-	public void showAllEntity(List<ListaSpesa> entitiesDaMostrare);
+	public <T> void showAllEntities(List<T> entitiesDaMostrare);
 
-	public void showError(String errorMessage, ListaSpesa entity);
+	public <T> void showError(String errorMessage, T entity);
 
-	public void showNewEntity(ListaSpesa entity);
+	public <T> void showNewEntity(T entity);
 
-	public void showRemovedEntity(ListaSpesa entityCancellate);
+	public <T> void showRemovedEntity(T entityCancellate);
 }

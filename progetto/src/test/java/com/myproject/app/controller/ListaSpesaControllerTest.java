@@ -1,5 +1,6 @@
 package com.myproject.app.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -40,7 +41,7 @@ public class ListaSpesaControllerTest {
 		verify(listaSpesaView).showAllEntities(listeSpesa);
 
 	}
-
+	
 	@Test
 	public void testSaveNewListaWhenListaDoesNotAlreadyExist() {
 		ListaSpesa lista = new ListaSpesa();
