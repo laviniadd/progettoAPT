@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 public class ListaSpesa extends BaseEntity {
-	
+
 	private String name;
 
 	public String getName() {

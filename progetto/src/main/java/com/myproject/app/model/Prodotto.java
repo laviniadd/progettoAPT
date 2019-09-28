@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Prodotto extends BaseEntity {
-	
+
 	private String name;
 	private int quantity;
 	private ListaSpesa listaSpesa;
@@ -27,9 +27,9 @@ public class Prodotto extends BaseEntity {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="listaSpesa_id")
+	@JoinColumn(name = "listaSpesa_id")
 	public ListaSpesa getListaSpesa() {
 		return listaSpesa;
 	}
@@ -40,6 +40,6 @@ public class Prodotto extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return quantity+" "+name;
+		return quantity + " " + name;
 	}
 }
