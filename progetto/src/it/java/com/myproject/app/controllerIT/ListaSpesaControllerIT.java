@@ -46,18 +46,20 @@ public class ListaSpesaControllerIT extends ITController {
 	}
 
 	@Test
-	public void testSaveNewListaWhenListaDoesNotAlreadyExist() {
+	public void testSaveNewListaWithNameWhenListaDoesNotAlreadyExist() {
 		ListaSpesa lista = new ListaSpesa();
+		lista.setName("lista della spesa");
+
 		listaSpesaController.saveNewLista(lista);
 		verify(listaSpesaView).showNewEntity(lista);
 	}
-	
+
 	@Test
 	public void testDeleteListaWhenListaAlreadyExists() {
 		ListaSpesa listaDaCancellare = new ListaSpesa();
-		listaSpesaDao.save(listaDaCancellare);				
+		listaSpesaDao.save(listaDaCancellare);
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
-		
+
 		verify(listaSpesaView).showRemovedEntity(listaDaCancellare);
 	}
 }
