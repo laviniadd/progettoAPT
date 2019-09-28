@@ -1,8 +1,11 @@
 package com.myproject.app.dao;
 
+import java.util.List;
+
+import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
 
-public class ProdottoDao extends BaseRepository<Prodotto>{
+public class ProdottoDao extends BaseRepository<Prodotto> {
 
 	private TransactionTemplate transaction;
 
@@ -15,7 +18,6 @@ public class ProdottoDao extends BaseRepository<Prodotto>{
 		if (prodottoDaModificare == null) {
 			throw new IllegalArgumentException();
 		}
-		
 		transaction.executeTransaction(em -> {
 			Prodotto prodottoInDB = em.find(Prodotto.class, prodottoDaModificare.getId());
 			prodottoInDB.setName(nuovoNomeProdotto);
@@ -25,4 +27,13 @@ public class ProdottoDao extends BaseRepository<Prodotto>{
 		});
 	}
 
+	public List<Prodotto> findAllProductOfAList(ListaSpesa lista) {
+		if (lista == null) {
+			throw new IllegalArgumentException();
+		}
+		return transaction.executeTransaction((em) -> {
+			return em.createQuery("select e from Prodotto e where e.listaSpesa.id = :listaSpesa", Prodotto.class)
+					.setParameter("listaSpesa", lista.getId()).getResultList();
+		});
+	}
 }
