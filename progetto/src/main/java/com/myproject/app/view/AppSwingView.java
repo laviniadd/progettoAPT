@@ -2,14 +2,14 @@ package com.myproject.app.view;
 
 import java.awt.EventQueue;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.myproject.app.controller.ListaSpesaController;
+import com.myproject.app.controller.ProdottoController;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
 
@@ -20,9 +20,7 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 
 import javax.swing.DefaultListModel;
-import javax.swing.InputVerifier;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
@@ -54,15 +52,14 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	private JButton btnCreaLista;
 	private JLabel lblErrorMessageProdottoLabel;
 	private JLabel lblErrorMessageProdottoEQuantitaLabel;
-
-	private JList<String> listaProdotti;
-	private JList<String> listaListe;
-	private DefaultListModel<String> listaProdottiModel;
-	private DefaultListModel<String> listaListeSpesaModel;
+	private ListaSpesa listaDaAssociareAiProdotti;
+	private JList<Prodotto> listaProdotti;
+	private JList<ListaSpesa> listaListe;
+	private DefaultListModel<Prodotto> listaProdottiModel;
+	private DefaultListModel<ListaSpesa> listaListeSpesaModel;
 
 	private ListaSpesaController listaSpesaController;
-
-	private AppViewInterface appViewInterface;
+	private ProdottoController prodottoController;
 
 	/**
 	 * Launch the application.
@@ -78,16 +75,17 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		});
 	}
 
-	public DefaultListModel<String> getListaListeSpesaModel() {
+	public DefaultListModel<ListaSpesa> getListaListeSpesaModel() {
 		return listaListeSpesaModel;
 	}
 
-	public DefaultListModel<String> getListaProdottiModel() {
+	public DefaultListModel<Prodotto> getListaProdottiModel() {
 		return listaProdottiModel;
 	}
 
-	public void setListaSpesaController(ListaSpesaController listaSpesaController) {
+	public void setViewController(ListaSpesaController listaSpesaController, ProdottoController prodottoController) {
 		this.listaSpesaController = listaSpesaController;
+		this.prodottoController = prodottoController;
 	}
 
 	/**
@@ -133,6 +131,12 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		txtNomeLista.setColumns(10);
 
 		btnCreaLista = new JButton("Crea Lista");
+		btnCreaLista.addActionListener(e -> {
+			ListaSpesa listaDaSalvare = new ListaSpesa();
+			listaDaSalvare.setName(txtNomeLista.getText());
+			listaSpesaController.saveNewLista(listaDaSalvare);
+		});
+
 		btnCreaLista.setEnabled(false);
 		GridBagConstraints gbc_btnCreaLista = new GridBagConstraints();
 		gbc_btnCreaLista.insets = new Insets(0, 0, 5, 0);
@@ -150,7 +154,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		gbc_scrollPane.gridy = 2;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		listaListeSpesaModel = new DefaultListModel<String>();
+		listaListeSpesaModel = new DefaultListModel<ListaSpesa>();
 		listaListe = new JList<>(listaListeSpesaModel);
 		listaListe.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -163,6 +167,8 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		listaListe.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		btnCancellaListaSelezionata = new JButton("Cancella Lista selezionata");
+		btnCancellaListaSelezionata
+				.addActionListener(e -> listaSpesaController.deleteListaSpesa(listaListe.getSelectedValue()));
 		btnCancellaListaSelezionata.setEnabled(false);
 		GridBagConstraints gbc_btnCancellaListaSelezionata = new GridBagConstraints();
 		gbc_btnCancellaListaSelezionata.insets = new Insets(0, 0, 5, 5);
@@ -176,6 +182,10 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			public void mouseClicked(MouseEvent e) {
 				textProdotto.setEditable(true);
 				textQuantita.setEditable(true);
+				listaDaAssociareAiProdotti = new ListaSpesa();
+				listaDaAssociareAiProdotti = listaListe.getSelectedValue();
+				prodottoController.allProductsGivenAList(listaDaAssociareAiProdotti);
+				
 			}
 		});
 		btnModificaAggiungiProdotti.setEnabled(false);
@@ -196,6 +206,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		lblProdotto = new JLabel("Prodotto:");
 		GridBagConstraints gbc_lblProdotto = new GridBagConstraints();
+		gbc_lblProdotto.anchor = GridBagConstraints.EAST;
 		gbc_lblProdotto.insets = new Insets(0, 0, 5, 5);
 		gbc_lblProdotto.gridx = 0;
 		gbc_lblProdotto.gridy = 5;
@@ -250,6 +261,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				btnSalvaLista.setEnabled(true);
+				Prodotto prodottoDaAggiungere = new Prodotto();
+				prodottoDaAggiungere.setName(textProdotto.getText());
+				prodottoDaAggiungere.setQuantity(Integer.parseInt(textQuantita.getText()));
+				prodottoDaAggiungere.setListaSpesa(listaDaAssociareAiProdotti);
+				prodottoController.saveNewProduct(prodottoDaAggiungere);
 			}
 		});
 		btnAggiungiProdotto.setEnabled(false);
@@ -277,7 +293,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		gbc_scrollPane_1.gridy = 9;
 		contentPane.add(scrollPane_1, gbc_scrollPane_1);
 
-		listaProdottiModel = new DefaultListModel<String>();
+		listaProdottiModel = new DefaultListModel<Prodotto>();
 		listaProdotti = new JList<>(listaProdottiModel);
 		listaProdotti.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -290,6 +306,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		scrollPane_1.setViewportView(listaProdotti);
 
 		btnCancellaProdottoSelezionato = new JButton("Cancella Prodotto Selezionato");
+		btnCancellaProdottoSelezionato.addActionListener(e -> prodottoController.deleteProduct(listaProdotti.getSelectedValue()));
 		btnCancellaProdottoSelezionato.setEnabled(false);
 		GridBagConstraints gbc_btnCancellaProdottoSelezionato = new GridBagConstraints();
 		gbc_btnCancellaProdottoSelezionato.insets = new Insets(0, 0, 5, 5);
@@ -315,6 +332,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		contentPane.add(lblErrorMessageProdottoLabel, gbc_lblErrorMessageProdottoLabel);
 
 		btnSalvaLista = new JButton("Salva Lista");
+		//btnSalvaLista.addActionListener(e -> )); TODO
 		btnSalvaLista.setEnabled(false);
 		GridBagConstraints gbc_btnSalvaLista = new GridBagConstraints();
 		gbc_btnSalvaLista.gridwidth = 2;
@@ -325,15 +343,16 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 	@Override
 	public <T> void showAllEntities(List<T> entitiesDaMostrare) {
-		if(!entitiesDaMostrare.isEmpty()) {
-			List<String> entitiesDaMostrareString = entitiesDaMostrare.stream()
-					.map(object -> Objects.toString(object, null)).collect(Collectors.toList());
-
+		if (!entitiesDaMostrare.isEmpty()) {
 			if (entitiesDaMostrare.get(0).getClass() == ListaSpesa.class) {
-				entitiesDaMostrareString.stream().forEach(listaListeSpesaModel::addElement);
+				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
+					listaListeSpesaModel.addElement((ListaSpesa) entitiesDaMostrare.get(i));
+				}
 			}
 			if (entitiesDaMostrare.get(0).getClass() == Prodotto.class) {
-				entitiesDaMostrareString.stream().forEach(listaProdottiModel::addElement);
+				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
+					listaProdottiModel.addElement((Prodotto) entitiesDaMostrare.get(i));
+				}
 			}
 		}
 	}
@@ -341,11 +360,10 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	@Override
 	public <T> void showNewEntity(T entity) {
 		if (entity.getClass() == ListaSpesa.class) {
-			listaListeSpesaModel.addElement(entity.toString());
+			listaListeSpesaModel.addElement((ListaSpesa) entity);
 			resetErrorLabel();
-		}
-		if (entity.getClass() == Prodotto.class) {
-			listaProdottiModel.addElement(entity.toString());
+		} else if (entity.getClass() == Prodotto.class) {
+			listaProdottiModel.addElement((Prodotto) entity);
 			resetErrorLabel();
 		}
 	}
@@ -354,11 +372,10 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	public <T> void showRemovedEntity(T entityCancellate) {
 
 		if (entityCancellate.getClass() == ListaSpesa.class) {
-			listaListeSpesaModel.removeElement(entityCancellate.toString());
+			listaListeSpesaModel.removeElement(entityCancellate);
 			resetErrorLabel();
-		}
-		if (entityCancellate.getClass() == Prodotto.class) {
-			listaProdottiModel.removeElement(entityCancellate.toString());
+		} else if (entityCancellate.getClass() == Prodotto.class) {
+			listaProdottiModel.removeElement(entityCancellate);
 			resetErrorLabel();
 		}
 	}
@@ -378,6 +395,5 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 	private void resetErrorLabel() {
 		lblErrorMessageListaLabel.setText(" ");
-
 	}
 }
