@@ -1,6 +1,7 @@
 package com.myproject.app.controller;
 
 import com.myproject.app.dao.ProdottoDao;
+import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
 import com.myproject.app.view.AppViewInterface;
 
@@ -18,6 +19,10 @@ public class ProdottoController {
 		prodottoView.showAllEntities(prodottoDao.findAll());
 	}
 
+	public void allProductsGivenAList(ListaSpesa lista) {
+		prodottoView.showAllEntities(prodottoDao.findAllProductOfAList(lista));
+	}
+
 	public void saveNewProduct(Prodotto prodotto) {
 		Prodotto productAlreadyExist = prodottoDao.findById(prodotto.getId());
 
@@ -25,7 +30,7 @@ public class ProdottoController {
 			prodottoView.showError("This product already exist", productAlreadyExist);
 			return;
 		} else if (prodotto.getName() == null || prodotto.getName() == "" || prodotto.getName() == " "
-				|| prodotto.getQuantity() < 1) {
+				|| prodotto.getQuantity() < 1 || prodotto.getListaSpesa() == null) {
 			prodottoView.showError("This product has no valid name or quantity values", productAlreadyExist);
 		} else {
 			prodottoDao.save(prodotto);
@@ -53,4 +58,5 @@ public class ProdottoController {
 		}
 		prodottoView.showError("This product does not exist", prodottoDaModificare);
 	}
+
 }

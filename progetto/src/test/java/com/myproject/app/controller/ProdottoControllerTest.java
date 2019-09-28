@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.myproject.app.dao.ProdottoDao;
+import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
 import com.myproject.app.view.AppViewInterface;
 
@@ -49,24 +51,44 @@ public class ProdottoControllerTest {
 	}
 
 	@Test
-	public void testSaveNewProductWithNameAndQuantityWhenProductDoesNotAlreadyExist() {
+	public void testAllProductsInAGivenList() {
+		List<Prodotto> prodotti = new ArrayList<Prodotto>();
+		Prodotto prodotto1 = new Prodotto();
+		Prodotto prodotto2 = new Prodotto();
+		prodotti.add(prodotto1);
+		prodotti.add(prodotto2);
+		ListaSpesa listaDaCuiRiprendereProdotti = new ListaSpesa();
+
+		when(prodottoDao.findAllProductOfAList(listaDaCuiRiprendereProdotti)).thenReturn(prodotti);
+
+		prodottoController.allProductsGivenAList(listaDaCuiRiprendereProdotti);
+
+		verify(prodottoView).showAllEntities(prodotti);
+	}
+
+	@Test
+	public void testSaveNewProductWithNameAndQuantityInAListCreatedWhenProductDoesNotAlreadyExist() {
+		ListaSpesa lista = new ListaSpesa();
+
 		Prodotto prodotto = new Prodotto();
 		prodotto.setName("Mela");
 		prodotto.setQuantity(2);
+		prodotto.setListaSpesa(lista);
+
 		when(prodottoDao.findById(prodotto.getId())).thenReturn(null);
 		prodottoController.saveNewProduct(prodotto);
-		
+
 		InOrder inOrder = inOrder(prodottoDao, prodottoView);
 		inOrder.verify(prodottoDao).save(prodotto);
 		inOrder.verify(prodottoView).showNewEntity(prodotto);
 	}
-	
+
 	@Test
-	public void testSaveNewProductWithNoNameAndQuantityWhenProductDoesNotAlreadyExist() {
+	public void testSaveNewProductWithNoNameNoQuantityNoListWhenProductDoesNotAlreadyExist() {
 		Prodotto prodotto = new Prodotto();
 		when(prodottoDao.findById(prodotto.getId())).thenReturn(null);
 		prodottoController.saveNewProduct(prodotto);
-		
+
 		verify(prodottoView).showError("This product has no valid name or quantity values", null);
 		verifyNoMoreInteractions(ignoreStubs(prodottoDao));
 	}
@@ -105,7 +127,7 @@ public class ProdottoControllerTest {
 
 		verify(prodottoView).showError("This product does not exist", prodottoDaCancellare);
 	}
-	
+
 	@Test
 	public void testUpdateProductWhenProductExists() {
 		Prodotto prodottoDaModificare = new Prodotto();
@@ -119,7 +141,7 @@ public class ProdottoControllerTest {
 		verify(prodottoDao).updateProduct(prodottoDaModificare, "pera", 3);
 		verify(prodottoView).showNewEntity(prodottoDaModificare);
 	}
-	
+
 	@Test
 	public void testUpdateProductWhenProductNotExists() {
 		Prodotto prodottoDaModificare = new Prodotto();
@@ -132,7 +154,7 @@ public class ProdottoControllerTest {
 
 		verify(prodottoView).showError("This product does not exist", prodottoDaModificare);
 	}
-	
+
 	@Test
 	public void testUpdateProductWithNoNewNameWhenProductExists() {
 		Prodotto prodottoDaModificare = new Prodotto();
@@ -145,7 +167,7 @@ public class ProdottoControllerTest {
 
 		verify(prodottoView).showError("This product does not exist", prodottoDaModificare);
 	}
-	
+
 	@Test
 	public void testUpdateProductWithNoNewQuantityWhenProductExists() {
 		Prodotto prodottoDaModificare = new Prodotto();
@@ -158,7 +180,5 @@ public class ProdottoControllerTest {
 
 		verify(prodottoView).showError("This product does not exist", prodottoDaModificare);
 	}
-
-
 
 }
