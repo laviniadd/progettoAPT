@@ -49,13 +49,26 @@ public class ProdottoControllerTest {
 	}
 
 	@Test
-	public void testSaveNewProductWhenProductDoesNotAlreadyExist() {
+	public void testSaveNewProductWithNameAndQuantityWhenProductDoesNotAlreadyExist() {
 		Prodotto prodotto = new Prodotto();
+		prodotto.setName("Mela");
+		prodotto.setQuantity(2);
 		when(prodottoDao.findById(prodotto.getId())).thenReturn(null);
 		prodottoController.saveNewProduct(prodotto);
+		
 		InOrder inOrder = inOrder(prodottoDao, prodottoView);
 		inOrder.verify(prodottoDao).save(prodotto);
 		inOrder.verify(prodottoView).showNewEntity(prodotto);
+	}
+	
+	@Test
+	public void testSaveNewProductWithNoNameAndQuantityWhenProductDoesNotAlreadyExist() {
+		Prodotto prodotto = new Prodotto();
+		when(prodottoDao.findById(prodotto.getId())).thenReturn(null);
+		prodottoController.saveNewProduct(prodotto);
+		
+		verify(prodottoView).showError("This product has no valid name or quantity values", null);
+		verifyNoMoreInteractions(ignoreStubs(prodottoDao));
 	}
 
 	@Test

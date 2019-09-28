@@ -1,6 +1,5 @@
 package com.myproject.app.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -43,8 +42,9 @@ public class ListaSpesaControllerTest {
 	}
 	
 	@Test
-	public void testSaveNewListaWhenListaDoesNotAlreadyExist() {
+	public void testSaveNewListaWithNameWhenListaDoesNotAlreadyExist() {
 		ListaSpesa lista = new ListaSpesa();
+		lista.setName("lista della spesa");
 
 		when(listaSpesaDao.findById(lista.getId())).thenReturn(null);
 
@@ -53,6 +53,18 @@ public class ListaSpesaControllerTest {
 		InOrder inOrder = inOrder(listaSpesaDao, listaSpesaView);
 		inOrder.verify(listaSpesaDao).save(lista);
 		inOrder.verify(listaSpesaView).showNewEntity(lista);
+	}
+	
+	@Test
+	public void testSaveNewListaWithNoNameWhenListaDoesNotAlreadyExist() {
+		ListaSpesa lista = new ListaSpesa();
+
+		when(listaSpesaDao.findById(lista.getId())).thenReturn(null);
+
+		listaSpesaController.saveNewLista(lista);
+		
+		verify(listaSpesaView).showError("This shopping list does not have name", null);
+		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
 	}
 
 	@Test

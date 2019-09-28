@@ -24,10 +24,13 @@ public class ProdottoController {
 		if (productAlreadyExist != null) {
 			prodottoView.showError("This product already exist", productAlreadyExist);
 			return;
+		} else if (prodotto.getName() == null || prodotto.getName() == "" || prodotto.getName() == " "
+				|| prodotto.getQuantity() < 1) {
+			prodottoView.showError("This product has no valid name or quantity values", productAlreadyExist);
+		} else {
+			prodottoDao.save(prodotto);
+			prodottoView.showNewEntity(prodotto);
 		}
-		prodottoDao.save(prodotto);
-		prodottoView.showNewEntity(prodotto);
-
 	}
 
 	public void deleteProduct(Prodotto prodottoDaCancellare) {
@@ -42,7 +45,7 @@ public class ProdottoController {
 
 	public void updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
 		Prodotto productAlreadyExist = prodottoDao.findById(prodottoDaModificare.getId());
-		
+
 		if (productAlreadyExist != null && !nuovoNomeProdotto.isEmpty() && nuovoNomeProdotto != null
 				&& nuovaQuantitaProdotto > 0) {
 			prodottoDao.updateProduct(prodottoDaModificare, nuovoNomeProdotto, nuovaQuantitaProdotto);
