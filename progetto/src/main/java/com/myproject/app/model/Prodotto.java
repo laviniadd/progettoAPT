@@ -12,6 +12,17 @@ public class Prodotto extends BaseEntity {
 	private int quantity;
 	private ListaSpesa listaSpesa;
 
+	public Prodotto(String name, int quantity, ListaSpesa listaSpesa) {
+		super();
+		this.name = name;
+		this.quantity = quantity;
+		this.listaSpesa = listaSpesa;
+	}
+
+	public Prodotto() {
+		super();
+	}
+
 	public String getName() {
 		return name;
 	}

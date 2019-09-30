@@ -7,6 +7,13 @@ public class ListaSpesa extends BaseEntity {
 
 	private String name;
 
+	public ListaSpesa() {
+	}
+
+	public ListaSpesa(String name) {
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}
