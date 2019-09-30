@@ -17,18 +17,21 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 	public void updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
 		if (prodottoDaModificare == null) {
 			throw new IllegalArgumentException();
+		} else if (prodottoDaModificare.getId() == null) {
+			throw new IllegalArgumentException();
 		}
 		transaction.executeTransaction(em -> {
 			Prodotto prodottoInDB = em.find(Prodotto.class, prodottoDaModificare.getId());
 			prodottoInDB.setName(nuovoNomeProdotto);
 			prodottoInDB.setQuantity(nuovaQuantitaProdotto);
-			em.persist(prodottoInDB);
+			em.merge(prodottoInDB);
 			return null;
 		});
+
 	}
 
 	public List<Prodotto> findAllProductOfAList(ListaSpesa lista) {
-		if (lista == null) {
+		if (lista.getId() == null) {
 			throw new IllegalArgumentException();
 		}
 		return transaction.executeTransaction((em) -> {

@@ -129,9 +129,8 @@ public class ProdottoDaoTest extends JpaTest {
 
 	@Test
 	public void testUpdateProduct() {
-		frutta = new Prodotto();
-		frutta.setName("mela");
-		frutta.setQuantity(3);
+		frutta = new Prodotto("mela", 3, null);
+		
 		addProductToDatabase(frutta);
 
 		prodottoDao.updateProduct(frutta, "pera", 4);
@@ -154,6 +153,13 @@ public class ProdottoDaoTest extends JpaTest {
 	public void testUpdateProdottoNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			prodottoDao.updateProduct(null, null, 0);
+		});
+	}
+	
+	@Test
+	public void testUpdateProdottoIsNotPersisted() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.updateProduct(new Prodotto(), null, 0);
 		});
 	}
 
