@@ -54,7 +54,7 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testProdottoFindByIdNull() {
+	public void testProductFindByIdNull() {
 		assertThat(prodottoDao.findById(null)).isEqualTo(null);
 	}
 
@@ -65,10 +65,51 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testProdottoFindByIdNotFound() {
+	public void testProductFindByIdNotFound() {
 		assertThat(prodottoDao.findById(Long.valueOf(1))).isNull();
 	}
 
+	public void testProductFindByName() {
+		frutta = new Prodotto("mela", 1, null);
+			
+		addProductToDatabase(frutta);
+
+		assertThat(prodottoDao.findByName(frutta.getName())).containsExactly(frutta);
+	}
+	
+	@Test
+	public void testProductFindByNameNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findByName(null);
+		});
+	}
+	
+	@Test
+	public void testProductFindByNameEmpty() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findByName("");
+		});
+	}
+	
+	@Test
+	public void testProductFindByNameEmptySpace() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findByName(" ");
+		});
+	}
+	
+	@Test
+	public void testProductNotAlreadySavedFindByName() {
+		verdura = new Prodotto("carota", 1, null);
+		assertThat(prodottoDao.findByName(verdura.getName())).isEmpty();
+	}
+	
+	@Test
+	public void testProductFindByNameNotFound() {
+		assertThat(prodottoDao.findByName("mela")).isEmpty();
+	}
+	
+	
 	@Test
 	public void testFindAllProdottiWhenDatabaseIsNotEmpty() {
 		frutta = new Prodotto();

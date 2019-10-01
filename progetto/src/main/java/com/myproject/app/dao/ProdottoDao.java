@@ -14,18 +14,18 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 		this.transaction = transaction;
 	}
 
-	public void updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
+	public Prodotto updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
 		if (prodottoDaModificare == null) {
 			throw new IllegalArgumentException();
 		} else if (prodottoDaModificare.getId() == null) {
 			throw new IllegalArgumentException();
 		}
-		transaction.executeTransaction(em -> {
+		return transaction.executeTransaction(em -> {
 			Prodotto prodottoInDB = em.find(Prodotto.class, prodottoDaModificare.getId());
 			prodottoInDB.setName(nuovoNomeProdotto);
 			prodottoInDB.setQuantity(nuovaQuantitaProdotto);
 			em.merge(prodottoInDB);
-			return null;
+			return prodottoInDB;
 		});
 
 	}

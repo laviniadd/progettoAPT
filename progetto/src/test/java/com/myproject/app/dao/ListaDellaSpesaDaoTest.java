@@ -1,7 +1,6 @@
 package com.myproject.app.dao;
 
 import static org.assertj.core.api.Assertions.*;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -31,14 +30,13 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 
 		assertThat(retrievedList).containsExactly(lista);
 	}
-	
+
 	@Test
 	public void testSaveNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			listaSpesaDao.save(null);
 		});
 	}
-
 
 	@Test
 	public void testListaDellaSpesaFindById() {
@@ -55,7 +53,7 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	public void testListaDellaSpesaFindByIdNull() {
 		assertThat(listaSpesaDao.findById(null)).isEqualTo(null);
 	}
-	
+
 	@Test
 	public void testListaDellaSpesaNotAlreadySavedFindByIdNull() {
 		ListaSpesa listaSpesaNotSaved = new ListaSpesa();
@@ -66,6 +64,49 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	public void testListaDellaSpesaFindByIdNotFound() {
 
 		assertThat(listaSpesaDao.findById(Long.valueOf(1))).isNull();
+	}
+
+	@Test
+	public void testListaDellaSpesaFindByName() {
+		lista = new ListaSpesa("lista");
+		listaSpesa = new ListaSpesa("listaSpesa");
+
+		addListToDatabase(lista);
+		addListToDatabase(listaSpesa);
+
+		assertThat(listaSpesaDao.findByName(listaSpesa.getName())).containsExactly(listaSpesa);
+	}
+
+	@Test
+	public void testListaDellaSpesaFindByNameNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			listaSpesaDao.findByName(null);
+		});
+	}
+
+	@Test
+	public void testListaDellaSpesaFindByNameEmpty() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			listaSpesaDao.findByName("");
+		});
+	}
+
+	@Test
+	public void testListaDellaSpesaFindByNameEmptySpace() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			listaSpesaDao.findByName(" ");
+		});
+	}
+
+	@Test
+	public void testListaDellaSpesaNotAlreadySavedFindByName() {
+		ListaSpesa listaSpesaNotSaved = new ListaSpesa("Lista");
+		assertThat(listaSpesaDao.findByName(listaSpesaNotSaved.getName())).isEmpty();
+	}
+
+	@Test
+	public void testListaDellaSpesaFindByNameNotFound() {
+		assertThat(listaSpesaDao.findByName("Lista")).isEmpty();
 	}
 
 	@Test

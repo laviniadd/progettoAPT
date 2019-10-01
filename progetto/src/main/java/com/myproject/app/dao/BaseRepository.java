@@ -2,8 +2,8 @@ package com.myproject.app.dao;
 
 import java.util.List;
 
-public class BaseRepository<T>{
-		
+public class BaseRepository<T> {
+
 	private TransactionTemplate transaction;
 	private Class<T> classType;
 
@@ -13,7 +13,7 @@ public class BaseRepository<T>{
 	}
 
 	public void save(T entityDaSalvare) {
-		if(entityDaSalvare == null) {
+		if (entityDaSalvare == null) {
 			throw new IllegalArgumentException();
 		}
 		transaction.executeTransaction(em -> {
@@ -27,6 +27,16 @@ public class BaseRepository<T>{
 			return null;
 		}
 		return transaction.executeTransaction(em -> em.find(classType, id));
+	}
+
+	public List<T> findByName(String name) {
+		if (name == null || name == "" || name == " ") {
+			throw new IllegalArgumentException();
+		}
+		String classTypeString = classType.getCanonicalName();
+		return transaction.executeTransaction(em ->
+			em.createQuery("select e from " + classTypeString + " e where e.name = :name", classType)
+					.setParameter("name", name).getResultList());
 	}
 
 	public List<T> findAll() {
