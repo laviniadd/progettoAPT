@@ -130,16 +130,16 @@ public class ProdottoControllerTest {
 
 	@Test
 	public void testUpdateProductWhenProductExists() {
-		Prodotto prodottoDaModificare = new Prodotto();
-		prodottoDaModificare.setName("mela");
-		prodottoDaModificare.setQuantity(2);
-
+		Prodotto prodottoDaModificare = new Prodotto("Mela", 2, null);
+		Prodotto prodottoModificato = new Prodotto("pera", 3, null);
+		
 		when(prodottoDao.findById(prodottoDaModificare.getId())).thenReturn(prodottoDaModificare);
+		when(prodottoDao.updateProduct(prodottoDaModificare, "pera", 3)).thenReturn(prodottoModificato);
 
 		prodottoController.updateProduct(prodottoDaModificare, "pera", 3);
 
 		verify(prodottoDao).updateProduct(prodottoDaModificare, "pera", 3);
-		verify(prodottoView).showNewEntity(prodottoDaModificare);
+		verify(prodottoView).showNewEntity(prodottoModificato);
 	}
 
 	@Test
