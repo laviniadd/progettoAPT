@@ -47,6 +47,14 @@ public class ProdottoDaoIT extends ITDao {
 		assertThat(prodottoDao.findById(frutta.getId())).isEqualTo(frutta);
 	}
 
+	public void testProductFindByName() {
+		frutta = new Prodotto("mela", 1, null);
+			
+		addProductToDatabase(frutta);
+
+		assertThat(prodottoDao.findByName(frutta.getName())).containsExactly(frutta);
+	}
+	
 	@Test
 	public void testFindAllProdottiWhenDatabaseIsNotEmpty() {
 		frutta = new Prodotto();

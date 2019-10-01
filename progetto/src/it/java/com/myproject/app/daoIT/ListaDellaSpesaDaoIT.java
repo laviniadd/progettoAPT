@@ -47,6 +47,17 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 	}
 
 	@Test
+	public void testListaDellaSpesaFindByName() {
+		lista = new ListaSpesa("lista");
+		listaSpesa = new ListaSpesa("listaSpesa");
+
+		addListToDatabase(lista);
+		addListToDatabase(listaSpesa);
+
+		assertThat(listaSpesaDao.findByName(listaSpesa.getName())).containsExactly(listaSpesa);
+	}
+	
+	@Test
 	public void testFindAllListaDellaSpesaWhenDatabaseIsNotEmpty() {
 		lista = new ListaSpesa();
 		listaSpesa = new ListaSpesa();
