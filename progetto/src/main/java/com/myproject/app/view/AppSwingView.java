@@ -3,7 +3,6 @@ package com.myproject.app.view;
 import java.awt.EventQueue;
 import java.util.List;
 
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -30,6 +29,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AppSwingView extends JFrame implements AppViewInterface {
 
@@ -48,7 +49,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	private JScrollPane scrollPane_1;
 	private JButton btnCancellaProdottoSelezionato;
 	private JButton btnModificaProdottoSelezionato;
-	private JButton btnSalvaLista;
+	private JButton btnSalvaProdottoModificato;
 	private JButton btnCreaLista;
 	private JLabel lblErrorMessageProdottoLabel;
 	private JLabel lblErrorMessageProdottoEQuantitaLabel;
@@ -184,8 +185,8 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 				textQuantita.setEditable(true);
 				listaDaAssociareAiProdotti = new ListaSpesa();
 				listaDaAssociareAiProdotti = listaListe.getSelectedValue();
+				//listaProdottiModel.clear();//TODO SE QUANDO VOGLIO VEDERE I PRODOTTI DI PIU' LISTE IN SEQUENZA I PRODOTTI SI SOMMANO
 				prodottoController.allProductsGivenAList(listaDaAssociareAiProdotti);
-				
 			}
 		});
 		btnModificaAggiungiProdotti.setEnabled(false);
@@ -260,23 +261,34 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		btnAggiungiProdotto.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				btnSalvaLista.setEnabled(true);
-				Prodotto prodottoDaAggiungere = new Prodotto();
-				prodottoDaAggiungere.setName(textProdotto.getText());
-				prodottoDaAggiungere.setQuantity(Integer.parseInt(textQuantita.getText()));
-				prodottoDaAggiungere.setListaSpesa(listaDaAssociareAiProdotti);
+				Prodotto prodottoDaAggiungere = new Prodotto(textProdotto.getText(),
+						Integer.parseInt(textQuantita.getText()), listaDaAssociareAiProdotti);
 				prodottoController.saveNewProduct(prodottoDaAggiungere);
 			}
 		});
+
+		btnSalvaProdottoModificato = new JButton("Salva Prodotto Modificato");
+		btnSalvaProdottoModificato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				prodottoController.updateProduct(listaProdotti.getSelectedValue(), textProdotto.getText(), Integer.parseInt(textQuantita.getText()));
+				listaProdottiModel.removeElement(listaProdotti.getSelectedValue());
+			}
+		});
+		btnSalvaProdottoModificato.setEnabled(false);
+		GridBagConstraints gbc_btnSalvaProdottoModificato = new GridBagConstraints();
+		gbc_btnSalvaProdottoModificato.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSalvaProdottoModificato.gridx = 0;
+		gbc_btnSalvaProdottoModificato.gridy = 7;
+		contentPane.add(btnSalvaProdottoModificato, gbc_btnSalvaProdottoModificato);
 		btnAggiungiProdotto.setEnabled(false);
 		GridBagConstraints gbc_btnAggiungiProdotto = new GridBagConstraints();
 		gbc_btnAggiungiProdotto.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAggiungiProdotto.gridwidth = 2;
-		gbc_btnAggiungiProdotto.gridx = 0;
+		gbc_btnAggiungiProdotto.gridx = 1;
 		gbc_btnAggiungiProdotto.gridy = 7;
 		contentPane.add(btnAggiungiProdotto, gbc_btnAggiungiProdotto);
 
 		lblErrorMessageProdottoEQuantitaLabel = new JLabel("");
+		lblErrorMessageProdottoEQuantitaLabel.setName("errorMessageProductModifiedLabel");
 		GridBagConstraints gbc_lblErrorMessageProdottoEQuantitaLabel = new GridBagConstraints();
 		gbc_lblErrorMessageProdottoEQuantitaLabel.gridwidth = 2;
 		gbc_lblErrorMessageProdottoEQuantitaLabel.insets = new Insets(0, 0, 5, 0);
@@ -306,7 +318,8 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		scrollPane_1.setViewportView(listaProdotti);
 
 		btnCancellaProdottoSelezionato = new JButton("Cancella Prodotto Selezionato");
-		btnCancellaProdottoSelezionato.addActionListener(e -> prodottoController.deleteProduct(listaProdotti.getSelectedValue()));
+		btnCancellaProdottoSelezionato
+				.addActionListener(e -> prodottoController.deleteProduct(listaProdotti.getSelectedValue()));
 		btnCancellaProdottoSelezionato.setEnabled(false);
 		GridBagConstraints gbc_btnCancellaProdottoSelezionato = new GridBagConstraints();
 		gbc_btnCancellaProdottoSelezionato.insets = new Insets(0, 0, 5, 5);
@@ -315,6 +328,18 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		contentPane.add(btnCancellaProdottoSelezionato, gbc_btnCancellaProdottoSelezionato);
 
 		btnModificaProdottoSelezionato = new JButton("Modifica Prodotto Selezionato");
+		btnModificaProdottoSelezionato.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				btnSalvaProdottoModificato.setEnabled(true);
+				btnCancellaProdottoSelezionato.setEnabled(false);
+				Prodotto prodotto = listaProdotti.getSelectedValue();
+				textProdotto.setEditable(true);
+				textQuantita.setEditable(true);
+				textProdotto.setText(prodotto.getName());
+				textQuantita.setText(String.valueOf(prodotto.getQuantity()));
+			}
+		});
 		btnModificaProdottoSelezionato.setEnabled(false);
 		GridBagConstraints gbc_btnModificaProdottoSelezionato = new GridBagConstraints();
 		gbc_btnModificaProdottoSelezionato.insets = new Insets(0, 0, 5, 0);
@@ -330,29 +355,21 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		gbc_lblErrorMessageProdottoLabel.gridx = 0;
 		gbc_lblErrorMessageProdottoLabel.gridy = 11;
 		contentPane.add(lblErrorMessageProdottoLabel, gbc_lblErrorMessageProdottoLabel);
-
-		btnSalvaLista = new JButton("Salva Lista");
-		//btnSalvaLista.addActionListener(e -> )); TODO
-		btnSalvaLista.setEnabled(false);
-		GridBagConstraints gbc_btnSalvaLista = new GridBagConstraints();
-		gbc_btnSalvaLista.gridwidth = 2;
-		gbc_btnSalvaLista.gridx = 0;
-		gbc_btnSalvaLista.gridy = 12;
-		contentPane.add(btnSalvaLista, gbc_btnSalvaLista);
 	}
 
 	@Override
 	public <T> void showAllEntities(List<T> entitiesDaMostrare) {
-		if (!entitiesDaMostrare.isEmpty()) {
-			if (entitiesDaMostrare.get(0).getClass() == ListaSpesa.class) {
-				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
-					listaListeSpesaModel.addElement((ListaSpesa) entitiesDaMostrare.get(i));
-				}
+		if (entitiesDaMostrare.isEmpty()) {
+			return;
+		}
+		if (entitiesDaMostrare.get(0).getClass() == ListaSpesa.class) {
+			for (int i = 0; i < entitiesDaMostrare.size(); i++) {
+				listaListeSpesaModel.addElement((ListaSpesa) entitiesDaMostrare.get(i));
 			}
-			if (entitiesDaMostrare.get(0).getClass() == Prodotto.class) {
-				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
-					listaProdottiModel.addElement((Prodotto) entitiesDaMostrare.get(i));
-				}
+		}
+		if (entitiesDaMostrare.get(0).getClass() == Prodotto.class) {
+			for (int i = 0; i < entitiesDaMostrare.size(); i++) {
+				listaProdottiModel.addElement((Prodotto) entitiesDaMostrare.get(i));
 			}
 		}
 	}
@@ -390,10 +407,13 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		}
 		if (errorMessage == "This product does not exist") {
 			lblErrorMessageProdottoLabel.setText(errorMessage + ": " + entity);
+			lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
 		}
 	}
 
 	private void resetErrorLabel() {
 		lblErrorMessageListaLabel.setText(" ");
+		lblErrorMessageProdottoEQuantitaLabel.setText(" ");
+		lblErrorMessageProdottoLabel.setText(" ");
 	}
 }
