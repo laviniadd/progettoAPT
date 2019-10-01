@@ -41,11 +41,12 @@ public class ProdottoController {
 	public void deleteProduct(Prodotto prodottoDaCancellare) {
 		Prodotto productAlreadyExist = prodottoDao.findById(prodottoDaCancellare.getId());
 
-		if (productAlreadyExist != null) {
+		if (productAlreadyExist == null) {
+			prodottoView.showError("This product does not exist", prodottoDaCancellare);
+		} else {
 			prodottoDao.delete(productAlreadyExist.getId());
 			prodottoView.showRemovedEntity(productAlreadyExist);
 		}
-		prodottoView.showError("This product does not exist", prodottoDaCancellare);
 	}
 
 	public void updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
@@ -53,8 +54,8 @@ public class ProdottoController {
 
 		if (productAlreadyExist != null && !nuovoNomeProdotto.isEmpty() && nuovoNomeProdotto != null
 				&& nuovaQuantitaProdotto > 0) {
-			prodottoDao.updateProduct(prodottoDaModificare, nuovoNomeProdotto, nuovaQuantitaProdotto);
-			prodottoView.showNewEntity(productAlreadyExist);
+			Prodotto prodottoModificato = prodottoDao.updateProduct(prodottoDaModificare, nuovoNomeProdotto, nuovaQuantitaProdotto);
+			prodottoView.showNewEntity(prodottoModificato);
 		}
 		prodottoView.showError("This product does not exist", prodottoDaModificare);
 	}

@@ -28,17 +28,19 @@ public class ListaSpesaController {
 		} else {
 			listaDao.save(lista);
 			listaView.showNewEntity(lista);
-		}		
+		}
 	}
 
 	public void deleteListaSpesa(ListaSpesa listaDaCancellare) {
 		ListaSpesa listaAlreadyExist = listaDao.findById(listaDaCancellare.getId());
 
-		if (listaAlreadyExist != null) {
+		if (listaAlreadyExist == null) {
+			listaView.showError("This shopping list does not exist", listaDaCancellare);
+		} else {
 			listaDao.delete(listaAlreadyExist.getId());
 			listaView.showRemovedEntity(listaAlreadyExist);
 		}
-		listaView.showError("This shopping list does not exist", listaDaCancellare);
+		
 	}
 
 }
