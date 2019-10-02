@@ -22,6 +22,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -29,8 +30,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class AppSwingView extends JFrame implements AppViewInterface {
 
@@ -132,12 +131,13 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		txtNomeLista.setColumns(10);
 
 		btnCreaLista = new JButton("Crea Lista");
-		btnCreaLista.addActionListener(e -> {
-			ListaSpesa listaDaSalvare = new ListaSpesa();
-			listaDaSalvare.setName(txtNomeLista.getText());
-			listaSpesaController.saveNewLista(listaDaSalvare);
-		});
+		btnCreaLista.addActionListener(e -> new Thread(() -> {
+			/*
+			 * try { Thread.sleep(1000); } catch (InterruptedException e1) { }
+			 */
 
+			listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText()));
+		}).start());
 		btnCreaLista.setEnabled(false);
 		GridBagConstraints gbc_btnCreaLista = new GridBagConstraints();
 		gbc_btnCreaLista.insets = new Insets(0, 0, 5, 0);
@@ -185,7 +185,8 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 				textQuantita.setEditable(true);
 				listaDaAssociareAiProdotti = new ListaSpesa();
 				listaDaAssociareAiProdotti = listaListe.getSelectedValue();
-				//listaProdottiModel.clear();//TODO SE QUANDO VOGLIO VEDERE I PRODOTTI DI PIU' LISTE IN SEQUENZA I PRODOTTI SI SOMMANO
+				// listaProdottiModel.clear();//TODO SE QUANDO VOGLIO VEDERE I PRODOTTI DI PIU'
+				// LISTE IN SEQUENZA I PRODOTTI SI SOMMANO
 				prodottoController.allProductsGivenAList(listaDaAssociareAiProdotti);
 			}
 		});
@@ -268,11 +269,10 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		});
 
 		btnSalvaProdottoModificato = new JButton("Salva Prodotto Modificato");
-		btnSalvaProdottoModificato.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				prodottoController.updateProduct(listaProdotti.getSelectedValue(), textProdotto.getText(), Integer.parseInt(textQuantita.getText()));
-				listaProdottiModel.removeElement(listaProdotti.getSelectedValue());
-			}
+		btnSalvaProdottoModificato.addActionListener(e -> {
+			prodottoController.updateProduct(listaProdotti.getSelectedValue(), textProdotto.getText(),
+					Integer.parseInt(textQuantita.getText()));
+			listaProdottiModel.removeElement(listaProdotti.getSelectedValue());
 		});
 		btnSalvaProdottoModificato.setEnabled(false);
 		GridBagConstraints gbc_btnSalvaProdottoModificato = new GridBagConstraints();
@@ -333,6 +333,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			public void mouseClicked(MouseEvent e) {
 				btnSalvaProdottoModificato.setEnabled(true);
 				btnCancellaProdottoSelezionato.setEnabled(false);
+				btnAggiungiProdotto.setEnabled(false);
 				Prodotto prodotto = listaProdotti.getSelectedValue();
 				textProdotto.setEditable(true);
 				textQuantita.setEditable(true);
@@ -363,25 +364,35 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			return;
 		}
 		if (entitiesDaMostrare.get(0).getClass() == ListaSpesa.class) {
-			for (int i = 0; i < entitiesDaMostrare.size(); i++) {
-				listaListeSpesaModel.addElement((ListaSpesa) entitiesDaMostrare.get(i));
-			}
+			SwingUtilities.invokeLater(() -> {
+				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
+					listaListeSpesaModel.addElement((ListaSpesa) entitiesDaMostrare.get(i));
+				}
+			});
 		}
 		if (entitiesDaMostrare.get(0).getClass() == Prodotto.class) {
-			for (int i = 0; i < entitiesDaMostrare.size(); i++) {
-				listaProdottiModel.addElement((Prodotto) entitiesDaMostrare.get(i));
-			}
+			SwingUtilities.invokeLater(() -> {
+				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
+					listaProdottiModel.addElement((Prodotto) entitiesDaMostrare.get(i));
+				}
+			});
 		}
 	}
 
 	@Override
 	public <T> void showNewEntity(T entity) {
 		if (entity.getClass() == ListaSpesa.class) {
-			listaListeSpesaModel.addElement((ListaSpesa) entity);
-			resetErrorLabel();
-		} else if (entity.getClass() == Prodotto.class) {
-			listaProdottiModel.addElement((Prodotto) entity);
-			resetErrorLabel();
+			SwingUtilities.invokeLater(() -> {
+				listaListeSpesaModel.addElement((ListaSpesa) entity);
+				resetErrorLabel();
+			});
+
+		}
+		if (entity.getClass() == Prodotto.class) {
+			SwingUtilities.invokeLater(() -> {
+				listaProdottiModel.addElement((Prodotto) entity);
+				resetErrorLabel();
+			});
 		}
 	}
 
@@ -389,25 +400,32 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	public <T> void showRemovedEntity(T entityCancellate) {
 
 		if (entityCancellate.getClass() == ListaSpesa.class) {
-			listaListeSpesaModel.removeElement(entityCancellate);
-			resetErrorLabel();
-		} else if (entityCancellate.getClass() == Prodotto.class) {
-			listaProdottiModel.removeElement(entityCancellate);
-			resetErrorLabel();
+			SwingUtilities.invokeLater(() -> {
+				listaListeSpesaModel.removeElement(entityCancellate);
+				resetErrorLabel();
+			});
+		}
+		if (entityCancellate.getClass() == Prodotto.class) {
+			SwingUtilities.invokeLater(() -> {
+				listaProdottiModel.removeElement(entityCancellate);
+				resetErrorLabel();
+			});
 		}
 	}
 
 	@Override
 	public <T> void showError(String errorMessage, T entity) {
-		if (errorMessage == "This shopping list already exist" || errorMessage == "This shopping list does not exist") {
-			lblErrorMessageListaLabel.setText(errorMessage + ": " + entity);
+		if (errorMessage == "This shopping list already exist") {
+			SwingUtilities.invokeLater(() -> lblErrorMessageListaLabel.setText(errorMessage + ": " + entity));
 		}
 		if (errorMessage == "This product already exist") {
-			lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
+			SwingUtilities
+					.invokeLater(() -> lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity));
 		}
-		if (errorMessage == "This product does not exist") {
-			lblErrorMessageProdottoLabel.setText(errorMessage + ": " + entity);
-			lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
+		if (errorMessage == "This product has no valid name or quantity values") {
+			SwingUtilities.invokeLater(() -> {
+				lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
+			});
 		}
 	}
 
@@ -415,5 +433,22 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		lblErrorMessageListaLabel.setText(" ");
 		lblErrorMessageProdottoEQuantitaLabel.setText(" ");
 		lblErrorMessageProdottoLabel.setText(" ");
+	}
+
+	@Override
+	public <T> void showErrorEntityNotFound(String errorMessage, T entity) {
+		if (errorMessage == "This product does not exist") {
+			SwingUtilities.invokeLater(() -> {
+				lblErrorMessageProdottoLabel.setText(errorMessage + ": " + entity);
+				lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
+				listaProdottiModel.removeElement(entity);
+			});
+		}
+		if (errorMessage == "This shopping list does not exist") {
+			SwingUtilities.invokeLater(() -> {
+				lblErrorMessageListaLabel.setText(errorMessage + ": " + entity);
+				listaListeSpesaModel.removeElement(entity);	
+			});
+		}
 	}
 }

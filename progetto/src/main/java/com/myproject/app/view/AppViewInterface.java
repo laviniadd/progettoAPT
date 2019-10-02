@@ -11,4 +11,6 @@ public interface AppViewInterface {
 	public <T> void showNewEntity(T entity);
 
 	public <T> void showRemovedEntity(T entityCancellate);
+
+	public <T> void showErrorEntityNotFound(String errorMessage, T entity);
 }
