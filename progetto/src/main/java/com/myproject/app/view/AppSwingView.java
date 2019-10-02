@@ -132,10 +132,10 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		btnCreaLista = new JButton("Crea Lista");
 		btnCreaLista.addActionListener(e -> new Thread(() -> {
+
 			/*
 			 * try { Thread.sleep(1000); } catch (InterruptedException e1) { }
 			 */
-
 			listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText()));
 		}).start());
 		btnCreaLista.setEnabled(false);
@@ -415,14 +415,14 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 	@Override
 	public <T> void showError(String errorMessage, T entity) {
-		if (errorMessage == "This shopping list already exist") {
+		if (errorMessage.equals("This shopping list already exist")) {
 			SwingUtilities.invokeLater(() -> lblErrorMessageListaLabel.setText(errorMessage + ": " + entity));
 		}
-		if (errorMessage == "This product already exist") {
+		if (errorMessage.equals("This product already exist")) {
 			SwingUtilities
 					.invokeLater(() -> lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity));
 		}
-		if (errorMessage == "This product has no valid name or quantity values") {
+		if (errorMessage.equals("This product has no valid name or quantity values")) {
 			SwingUtilities.invokeLater(() -> {
 				lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
 			});
@@ -437,17 +437,17 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 	@Override
 	public <T> void showErrorEntityNotFound(String errorMessage, T entity) {
-		if (errorMessage == "This product does not exist") {
+		if (errorMessage.equals("This product does not exist")) {
 			SwingUtilities.invokeLater(() -> {
 				lblErrorMessageProdottoLabel.setText(errorMessage + ": " + entity);
 				lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
 				listaProdottiModel.removeElement(entity);
 			});
 		}
-		if (errorMessage == "This shopping list does not exist") {
+		if (errorMessage.equals("This shopping list does not exist")) {
 			SwingUtilities.invokeLater(() -> {
 				lblErrorMessageListaLabel.setText(errorMessage + ": " + entity);
-				listaListeSpesaModel.removeElement(entity);	
+				listaListeSpesaModel.removeElement(entity);
 			});
 		}
 	}
