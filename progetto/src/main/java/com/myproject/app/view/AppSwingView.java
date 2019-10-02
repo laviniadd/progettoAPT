@@ -363,14 +363,14 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		if (entitiesDaMostrare.isEmpty()) {
 			return;
 		}
-		if (entitiesDaMostrare.get(0).getClass() == ListaSpesa.class) {
+		if (entitiesDaMostrare.get(0).getClass().equals(ListaSpesa.class)) {
 			SwingUtilities.invokeLater(() -> {
 				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
 					listaListeSpesaModel.addElement((ListaSpesa) entitiesDaMostrare.get(i));
 				}
 			});
 		}
-		if (entitiesDaMostrare.get(0).getClass() == Prodotto.class) {
+		if (entitiesDaMostrare.get(0).getClass().equals(Prodotto.class)) {
 			SwingUtilities.invokeLater(() -> {
 				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
 					listaProdottiModel.addElement((Prodotto) entitiesDaMostrare.get(i));
@@ -381,14 +381,14 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 	@Override
 	public <T> void showNewEntity(T entity) {
-		if (entity.getClass() == ListaSpesa.class) {
+		if (entity.getClass().equals(ListaSpesa.class)) {
 			SwingUtilities.invokeLater(() -> {
 				listaListeSpesaModel.addElement((ListaSpesa) entity);
 				resetErrorLabel();
 			});
 
 		}
-		if (entity.getClass() == Prodotto.class) {
+		if (entity.getClass().equals(Prodotto.class)) {
 			SwingUtilities.invokeLater(() -> {
 				listaProdottiModel.addElement((Prodotto) entity);
 				resetErrorLabel();
@@ -399,13 +399,13 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	@Override
 	public <T> void showRemovedEntity(T entityCancellate) {
 
-		if (entityCancellate.getClass() == ListaSpesa.class) {
+		if (entityCancellate.getClass().equals(ListaSpesa.class)) {
 			SwingUtilities.invokeLater(() -> {
 				listaListeSpesaModel.removeElement(entityCancellate);
 				resetErrorLabel();
 			});
 		}
-		if (entityCancellate.getClass() == Prodotto.class) {
+		if (entityCancellate.getClass().equals(Prodotto.class)) {
 			SwingUtilities.invokeLater(() -> {
 				listaProdottiModel.removeElement(entityCancellate);
 				resetErrorLabel();
