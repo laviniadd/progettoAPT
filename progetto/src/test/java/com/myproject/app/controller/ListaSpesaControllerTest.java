@@ -99,7 +99,7 @@ public class ListaSpesaControllerTest {
 		
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
 		
-		verify(listaSpesaView).showError("This shopping list does not exist", listaDaCancellare);
+		verify(listaSpesaView).showErrorEntityNotFound("This shopping list does not exist", listaDaCancellare);
 	}
 
 }

@@ -35,7 +35,7 @@ public class ListaSpesaController {
 		ListaSpesa listaAlreadyExist = listaDao.findById(listaDaCancellare.getId());
 
 		if (listaAlreadyExist == null) {
-			listaView.showError("This shopping list does not exist", listaDaCancellare);
+			listaView.showErrorEntityNotFound("This shopping list does not exist", listaDaCancellare);
 		} else {
 			listaDao.delete(listaAlreadyExist.getId());
 			listaView.showRemovedEntity(listaAlreadyExist);

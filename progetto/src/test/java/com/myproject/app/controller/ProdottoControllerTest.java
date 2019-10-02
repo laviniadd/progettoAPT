@@ -125,7 +125,7 @@ public class ProdottoControllerTest {
 
 		prodottoController.deleteProduct(prodottoDaCancellare);
 
-		verify(prodottoView).showError("This product does not exist", prodottoDaCancellare);
+		verify(prodottoView).showErrorEntityNotFound("This product does not exist", prodottoDaCancellare);
 	}
 
 	@Test
