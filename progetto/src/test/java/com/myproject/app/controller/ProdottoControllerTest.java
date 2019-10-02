@@ -152,7 +152,7 @@ public class ProdottoControllerTest {
 
 		prodottoController.updateProduct(prodottoDaModificare, "pera", 3);
 
-		verify(prodottoView).showError("This product does not exist", prodottoDaModificare);
+		verify(prodottoView).showErrorEntityNotFound("This product does not exist", prodottoDaModificare);
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class ProdottoControllerTest {
 
 		prodottoController.updateProduct(prodottoDaModificare, null, 3);
 
-		verify(prodottoView).showError("This product does not exist", prodottoDaModificare);
+		verify(prodottoView).showErrorEntityNotFound("This product does not exist", prodottoDaModificare);
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class ProdottoControllerTest {
 
 		prodottoController.updateProduct(prodottoDaModificare, "pera", -1);
 
-		verify(prodottoView).showError("This product does not exist", prodottoDaModificare);
+		verify(prodottoView).showErrorEntityNotFound("This product does not exist", prodottoDaModificare);
 	}
 
 }
