@@ -1,9 +1,6 @@
 package com.myproject.app.viewIT;
 
 import javax.persistence.EntityManager;
-import static org.assertj.swing.timing.Pause.pause;
-import static org.assertj.swing.timing.Timeout.timeout;
-import org.assertj.swing.timing.Condition;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -30,7 +27,6 @@ import com.myproject.app.view.AppSwingView;
 
 @RunWith(GUITestRunner.class)
 public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
-	private static final long TIMEOUT = 5000;
 	protected EntityManager entityManager;
 	private static EntityManagerFactory entityManagerFactory;
 	private TransactionTemplate transaction;
@@ -214,7 +210,7 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("quantitaTextBox").setText("");
 		window.textBox("quantitaTextBox").enterText("2");
 		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).click();
-		assertThat(prodottoDaModificare.getName() == "Mela" && prodottoDaModificare.getQuantity() == 2);
+		assertThat(prodottoDaModificare.getName().equals("Mela") && prodottoDaModificare.getQuantity() == 2);
 	}
 
 	@Test

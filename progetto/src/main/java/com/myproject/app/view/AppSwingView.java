@@ -131,13 +131,9 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		txtNomeLista.setColumns(10);
 
 		btnCreaLista = new JButton("Crea Lista");
-		btnCreaLista.addActionListener(e -> new Thread(() -> {
-
-			/*
-			 * try { Thread.sleep(1000); } catch (InterruptedException e1) { }
-			 */
+		btnCreaLista.addActionListener(e -> {
 			listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText()));
-		}).start());
+		});
 		btnCreaLista.setEnabled(false);
 		GridBagConstraints gbc_btnCreaLista = new GridBagConstraints();
 		gbc_btnCreaLista.insets = new Insets(0, 0, 5, 0);
@@ -185,8 +181,6 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 				textQuantita.setEditable(true);
 				listaDaAssociareAiProdotti = new ListaSpesa();
 				listaDaAssociareAiProdotti = listaListe.getSelectedValue();
-				// listaProdottiModel.clear();//TODO SE QUANDO VOGLIO VEDERE I PRODOTTI DI PIU'
-				// LISTE IN SEQUENZA I PRODOTTI SI SOMMANO
 				prodottoController.allProductsGivenAList(listaDaAssociareAiProdotti);
 			}
 		});

@@ -31,7 +31,6 @@ import org.junit.Test;
 
 @RunWith(GUITestRunner.class)
 public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
-	private static final int TIMEOUT = 5000;
 	private FrameFixture window;
 	private AppSwingView appSwingView;
 
@@ -352,7 +351,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void testCreateListButtonShouldTriggerListControllerSaveNewList() {
 		window.textBox("nomeListaTextBox").enterText("Lista della spesa");
 		window.button(JButtonMatcher.withText("Crea Lista")).click();
-		verify(listaSpesaController, timeout(TIMEOUT)).saveNewLista(new ListaSpesa("Lista della spesa"));
+		verify(listaSpesaController).saveNewLista(new ListaSpesa("Lista della spesa"));
 	}
 
 	@Test
