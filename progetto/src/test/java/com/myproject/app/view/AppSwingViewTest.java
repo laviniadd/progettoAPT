@@ -42,6 +42,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Override
 	public void onSetUp() {
 		MockitoAnnotations.initMocks(this);
+		
 		GuiActionRunner.execute(() -> {
 			appSwingView = new AppSwingView();
 			appSwingView.setViewController(listaSpesaController, prodottoController);
@@ -306,8 +307,9 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		Prodotto prodotto = new Prodotto("Mela", 1, null);
 		appSwingView.showNewEntity(prodotto);
 		String[] listContents = window.list("elencoProdotti").contents();
-		assertThat(listContents).containsExactly(prodotto.toString());
+		
 		window.label("errorMessageLabelList").requireText(" ");
+		assertThat(listContents).containsExactly(prodotto.toString());
 	}
 
 	@Test
@@ -325,8 +327,8 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		String[] listContents = window.list("elencoListe").contents();
 
-		assertThat(listContents).containsExactly(lista2.toString());
 		window.label("errorMessageLabelList").requireText(" ");
+		assertThat(listContents).containsExactly(lista2.toString());
 	}
 
 	@Test
