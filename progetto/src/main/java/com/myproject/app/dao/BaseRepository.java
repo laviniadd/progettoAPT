@@ -32,7 +32,7 @@ public class BaseRepository<T> {
 	}
 
 	public List<T> findByName(String name) {
-		if (name == null || name == "" || name == " ") {
+		if (name == null || name.equals("") || name.equals(" ")) {
 			throw new IllegalArgumentException();
 		}
 		String classTypeString = classType.getCanonicalName();
