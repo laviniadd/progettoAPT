@@ -15,9 +15,7 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 	}
 
 	public Prodotto updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
-		if (prodottoDaModificare == null) {
-			throw new IllegalArgumentException();
-		} else if (prodottoDaModificare.getId() == null) {
+		if (prodottoDaModificare == null || prodottoDaModificare.getId() == null) {
 			throw new IllegalArgumentException();
 		}
 		return transaction.executeTransaction(em -> {
@@ -34,9 +32,9 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 		if (lista.getId() == null) {
 			throw new IllegalArgumentException();
 		}
-		return transaction.executeTransaction((em) -> {
-			return em.createQuery("select e from Prodotto e where e.listaSpesa.id = :listaSpesa", Prodotto.class)
-					.setParameter("listaSpesa", lista.getId()).getResultList();
-		});
+		return transaction.executeTransaction(em -> 
+			 em.createQuery("select e from Prodotto e where e.listaSpesa.id = :listaSpesa", Prodotto.class)
+					.setParameter("listaSpesa", lista.getId()).getResultList()
+		);
 	}
 }
