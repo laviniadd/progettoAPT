@@ -102,7 +102,6 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Cancella Lista selezionata")).click();
 		assertThat(window.list("elencoListe").contents()).isEmpty();
-		assertThat(window.label("errorMessageLabelList").requireText(" "));
 	}
 
 	@Test
@@ -163,8 +162,9 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("quantitaTextBox").setText("");
 		window.textBox("quantitaTextBox").enterText("-1");
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).click();
-		window.label("errorMessageProductModifiedLabel")
-				.requireText("This product has no valid name or quantity values: " + null);
+		assertThat(window.list("elencoProdotti").contents()).isEmpty();
+		
+		assertThat(window.label("errorMessageProductModifiedLabel").text()).isEqualTo("This product has no valid name or quantity values: null");
 	}
 
 	@Test
@@ -178,7 +178,6 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.list("elencoProdotti").selectItem(0);
 		window.button(JButtonMatcher.withText("Cancella Prodotto Selezionato")).click();
 		assertThat(window.list("elencoProdotti").contents()).isEmpty();
-		assertThat(window.label("errorMessageProductLabel").requireText(" "));
 	}
 
 	@Test
@@ -210,7 +209,8 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("quantitaTextBox").setText("");
 		window.textBox("quantitaTextBox").enterText("2");
 		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).click();
-		assertThat(prodottoDaModificare.getName().equals("Mela") && prodottoDaModificare.getQuantity() == 2);
+		assertThat(window.textBox("prodottoTextBox").text()).isEqualTo("Mela");
+		assertThat(window.textBox("quantitaTextBox").text()).isEqualTo("2");
 	}
 
 	@Test
@@ -221,13 +221,10 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> appSwingView.getListaProdottiModel().addElement(prodottoDaModificare));
 		window.list("elencoProdotti").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica Prodotto Selezionato")).click();
-		window.textBox("prodottoTextBox").setText("");
-		window.textBox("prodottoTextBox").enterText("Mela");
-		window.textBox("quantitaTextBox").setText("");
-		window.textBox("quantitaTextBox").enterText("2");
+		
 		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).click();
-		window.label("errorMessageProductModifiedLabel")
-				.requireText("This product does not exist: " + prodottoDaModificare);
+				
+		assertThat(window.label("errorMessageProductModifiedLabel").text()).isEqualTo("This product does not exist: 1 Pera");
 	}
 
 }
