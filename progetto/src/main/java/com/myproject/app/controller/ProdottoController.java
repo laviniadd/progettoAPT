@@ -6,7 +6,7 @@ import com.myproject.app.model.Prodotto;
 import com.myproject.app.view.AppViewInterface;
 
 public class ProdottoController {
-
+private String productNotExists = "This product does not exist";
 	private AppViewInterface prodottoView;
 	private ProdottoDao prodottoDao;
 
@@ -27,7 +27,6 @@ public class ProdottoController {
 		Prodotto productAlreadyExist = prodottoDao.findById(prodotto.getId());
 		if (productAlreadyExist != null) {
 			prodottoView.showError("This product already exist", productAlreadyExist);
-			return;
 		} else if (prodotto.getName() == null || prodotto.getName().equals("") || prodotto.getName().equals(" ")
 				|| prodotto.getQuantity() < 1 || prodotto.getListaSpesa() == null) {
 			prodottoView.showError("This product has no valid name or quantity values", productAlreadyExist);
@@ -41,7 +40,7 @@ public class ProdottoController {
 		Prodotto productAlreadyExist = prodottoDao.findById(prodottoDaCancellare.getId());
 
 		if (productAlreadyExist == null) {
-			prodottoView.showErrorEntityNotFound("This product does not exist", prodottoDaCancellare);
+			prodottoView.showErrorEntityNotFound(productNotExists, prodottoDaCancellare);
 		} else {
 			prodottoDao.delete(productAlreadyExist.getId());
 			prodottoView.showRemovedEntity(productAlreadyExist);
@@ -52,10 +51,10 @@ public class ProdottoController {
 		Prodotto productAlreadyExist = prodottoDao.findById(prodottoDaModificare.getId());
 
 		if (nuovoNomeProdotto == null || productAlreadyExist == null) {
-			prodottoView.showErrorEntityNotFound("This product does not exist", prodottoDaModificare);
+			prodottoView.showErrorEntityNotFound(productNotExists, prodottoDaModificare);
 		} else {
 			if (nuovoNomeProdotto.equals("") || nuovoNomeProdotto.equals(" ") || nuovaQuantitaProdotto < 1) {
-				prodottoView.showErrorEntityNotFound("This product does not exist", prodottoDaModificare);
+				prodottoView.showErrorEntityNotFound(productNotExists, prodottoDaModificare);
 			} else {
 				Prodotto prodottoModificato = prodottoDao.updateProduct(prodottoDaModificare, nuovoNomeProdotto,
 						nuovaQuantitaProdotto);
