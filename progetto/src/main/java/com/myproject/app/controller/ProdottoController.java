@@ -25,11 +25,10 @@ public class ProdottoController {
 
 	public void saveNewProduct(Prodotto prodotto) {
 		Prodotto productAlreadyExist = prodottoDao.findById(prodotto.getId());
-
 		if (productAlreadyExist != null) {
 			prodottoView.showError("This product already exist", productAlreadyExist);
 			return;
-		} else if (prodotto.getName() == null || prodotto.getName() == "" || prodotto.getName() == " "
+		} else if (prodotto.getName() == null || prodotto.getName().equals("") || prodotto.getName().equals(" ")
 				|| prodotto.getQuantity() < 1 || prodotto.getListaSpesa() == null) {
 			prodottoView.showError("This product has no valid name or quantity values", productAlreadyExist);
 		} else {

@@ -12,7 +12,6 @@
 		
 		<class>com.myproject.app.model.ListaSpesa</class>
 		<class>com.myproject.app.model.Prodotto</class>
-		<class>com.myproject.app.model.ElencoProdotti</class>
 		<!-- Specify names of managed persistable classes -->
 		
 		<properties>

@@ -2,6 +2,9 @@ package com.myproject.app.dao;
 
 import java.util.List;
 
+import com.myproject.app.model.ListaSpesa;
+import com.myproject.app.model.Prodotto;
+
 public class BaseRepository<T> {
 
 	private TransactionTemplate transaction;
@@ -40,9 +43,15 @@ public class BaseRepository<T> {
 	}
 
 	public List<T> findAll() {
-		String classTypeString = classType.getCanonicalName();
-		return transaction.executeTransaction(
-				em -> em.createQuery("SELECT t FROM " + classTypeString + " t", classType).getResultList());
+		if(classType.equals(ListaSpesa.class)) {
+			return transaction.executeTransaction(
+					em -> em.createQuery("SELECT t FROM ListaSpesa t", classType).getResultList());
+		}
+		if(classType.equals(Prodotto.class)) {
+			return transaction.executeTransaction(
+					em -> em.createQuery("SELECT t FROM Prodotto t", classType).getResultList());
+		}
+		return null;
 	}
 
 	public void delete(Long idEntityDaCancellare) {

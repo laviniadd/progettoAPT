@@ -1,6 +1,6 @@
 package com.myproject.app.view;
 
-import java.awt.EventQueue;
+//import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -63,17 +63,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 	/**
 	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				AppSwingView frame = new AppSwingView();
-				frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
+	 *//*
+		 * public static void main(String[] args) { EventQueue.invokeLater(() -> { try {
+		 * AppSwingView frame = new AppSwingView(); frame.setVisible(true); } catch
+		 * (Exception e) { e.printStackTrace(); } }); }
+		 */
 
 	public DefaultListModel<ListaSpesa> getListaListeSpesaModel() {
 		return listaListeSpesaModel;
