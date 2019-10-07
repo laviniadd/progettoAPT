@@ -48,7 +48,7 @@ public class ShoppingListSwingApp implements Callable<Void> {
 	public Void call() throws Exception {
 		EventQueue.invokeLater(() -> {
 			try {
-				Map<String, String> configOverrides = new HashMap<String, String>();
+				Map<String, String> configOverrides = new HashMap<>();
 				configOverrides.put("hibernate.connection.url", mysqlHost);
 				configOverrides.put("hibernate.connection.password", password);
 				configOverrides.put("hibernate.connection.username", username);
