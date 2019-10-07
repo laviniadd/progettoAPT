@@ -51,12 +51,18 @@ public class ProdottoController {
 	public void updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
 		Prodotto productAlreadyExist = prodottoDao.findById(prodottoDaModificare.getId());
 
-		if (productAlreadyExist != null && !nuovoNomeProdotto.isEmpty() && nuovoNomeProdotto != null
-				&& nuovaQuantitaProdotto > 0) {
-			Prodotto prodottoModificato = prodottoDao.updateProduct(prodottoDaModificare, nuovoNomeProdotto, nuovaQuantitaProdotto);
-			prodottoView.showNewEntity(prodottoModificato);
+		if (nuovoNomeProdotto == null || productAlreadyExist == null) {
+			prodottoView.showErrorEntityNotFound("This product does not exist", prodottoDaModificare);
+		} else {
+			if (nuovoNomeProdotto.equals("") || nuovoNomeProdotto.equals(" ") || nuovaQuantitaProdotto < 1) {
+				prodottoView.showErrorEntityNotFound("This product does not exist", prodottoDaModificare);
+			} else {
+				Prodotto prodottoModificato = prodottoDao.updateProduct(prodottoDaModificare, nuovoNomeProdotto,
+						nuovaQuantitaProdotto);
+				prodottoView.showNewEntity(prodottoModificato);
+			}
 		}
-		prodottoView.showErrorEntityNotFound("This product does not exist", prodottoDaModificare);
+
 	}
 
 }

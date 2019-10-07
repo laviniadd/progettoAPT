@@ -56,6 +56,32 @@ public class ListaSpesaControllerTest {
 	}
 	
 	@Test
+	public void testSaveNewListaWithNameWhenNameListIsEmptyString() {
+		ListaSpesa lista = new ListaSpesa();
+		lista.setName(" ");
+
+		when(listaSpesaDao.findById(lista.getId())).thenReturn(null);
+
+		listaSpesaController.saveNewLista(lista);
+
+		verify(listaSpesaView).showError("This shopping list does not have name", null);
+		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
+	}
+	
+	@Test
+	public void testSaveNewListaWithNameWhenNameListIsEmpty() {
+		ListaSpesa lista = new ListaSpesa();
+		lista.setName("");
+
+		when(listaSpesaDao.findById(lista.getId())).thenReturn(null);
+
+		listaSpesaController.saveNewLista(lista);
+
+		verify(listaSpesaView).showError("This shopping list does not have name", null);
+		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
+	}
+	
+	@Test
 	public void testSaveNewListaWithNoNameWhenListaDoesNotAlreadyExist() {
 		ListaSpesa lista = new ListaSpesa();
 
@@ -78,6 +104,8 @@ public class ListaSpesaControllerTest {
 		verify(listaSpesaView).showError("This shopping list already exist", listaDaSalvare);
 		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
 	}
+	
+	
 	
 	@Test
 	public void testDeleteListaWhenListaAlreadyExists() {

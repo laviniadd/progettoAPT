@@ -3,7 +3,6 @@ package com.myproject.app.dao;
 import java.util.List;
 
 import com.myproject.app.model.ListaSpesa;
-import com.myproject.app.model.Prodotto;
 
 public class BaseRepository<T> {
 
@@ -37,21 +36,19 @@ public class BaseRepository<T> {
 			throw new IllegalArgumentException();
 		}
 		String classTypeString = classType.getCanonicalName();
-		return transaction.executeTransaction(em ->
-			em.createQuery("select e from " + classTypeString + " e where e.name = :name", classType)
-					.setParameter("name", name).getResultList());
+		return transaction.executeTransaction(
+				em -> em.createQuery("select e from " + classTypeString + " e where e.name = :name", classType)
+						.setParameter("name", name).getResultList());
 	}
 
 	public List<T> findAll() {
-		if(classType.equals(ListaSpesa.class)) {
-			return transaction.executeTransaction(
-					em -> em.createQuery("SELECT t FROM ListaSpesa t", classType).getResultList());
+		if (classType.equals(ListaSpesa.class)) {
+			return transaction
+					.executeTransaction(em -> em.createQuery("SELECT t FROM ListaSpesa t", classType).getResultList());
+		} else {
+			return transaction
+					.executeTransaction(em -> em.createQuery("SELECT t FROM Prodotto t", classType).getResultList());
 		}
-		if(classType.equals(Prodotto.class)) {
-			return transaction.executeTransaction(
-					em -> em.createQuery("SELECT t FROM Prodotto t", classType).getResultList());
-		}
-		return null;
 	}
 
 	public void delete(Long idEntityDaCancellare) {

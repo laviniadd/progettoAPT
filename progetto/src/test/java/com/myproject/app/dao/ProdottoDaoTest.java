@@ -71,45 +71,44 @@ public class ProdottoDaoTest extends JpaTest {
 
 	public void testProductFindByName() {
 		frutta = new Prodotto("mela", 1, null);
-			
+
 		addProductToDatabase(frutta);
 
 		assertThat(prodottoDao.findByName(frutta.getName())).containsExactly(frutta);
 	}
-	
+
 	@Test
 	public void testProductFindByNameNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			prodottoDao.findByName(null);
 		});
 	}
-	
+
 	@Test
 	public void testProductFindByNameEmpty() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			prodottoDao.findByName("");
 		});
 	}
-	
+
 	@Test
 	public void testProductFindByNameEmptySpace() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			prodottoDao.findByName(" ");
 		});
 	}
-	
+
 	@Test
 	public void testProductNotAlreadySavedFindByName() {
 		verdura = new Prodotto("carota", 1, null);
 		assertThat(prodottoDao.findByName(verdura.getName())).isEmpty();
 	}
-	
+
 	@Test
 	public void testProductFindByNameNotFound() {
 		assertThat(prodottoDao.findByName("mela")).isEmpty();
 	}
-	
-	
+
 	@Test
 	public void testFindAllProdottiWhenDatabaseIsNotEmpty() {
 		frutta = new Prodotto();
@@ -151,6 +150,14 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
+	public void testFindANonPersistedProduct() {
+		ListaSpesa lista = new ListaSpesa();
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findAllProductOfAList(lista);
+		});
+	}
+
+	@Test
 	public void testDeleteProdotto() {
 		frutta = new Prodotto();
 		addProductToDatabase(frutta);
@@ -171,7 +178,7 @@ public class ProdottoDaoTest extends JpaTest {
 	@Test
 	public void testUpdateProduct() {
 		frutta = new Prodotto("mela", 3, null);
-		
+
 		addProductToDatabase(frutta);
 
 		prodottoDao.updateProduct(frutta, "pera", 4);
@@ -184,7 +191,6 @@ public class ProdottoDaoTest extends JpaTest {
 			names.add(prodotto.getName());
 			quantities.add(String.valueOf(prodotto.getQuantity()));
 		}
-		// TODO CONTROLLARE SE VA BENE CHE CONTROLLO LA QUANTITA' COME UNA STRINGA
 		assertThat(names).containsExactly("pera");
 		assertThat(quantities).containsExactly("4");
 		assertThat(retrievedProduct).containsExactly(frutta);
@@ -196,7 +202,7 @@ public class ProdottoDaoTest extends JpaTest {
 			prodottoDao.updateProduct(null, null, 0);
 		});
 	}
-	
+
 	@Test
 	public void testUpdateProdottoIsNotPersisted() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {

@@ -23,7 +23,7 @@ public class ListaSpesaController {
 
 		if (listaAlreadyExist != null) {
 			listaView.showError("This shopping list already exist", listaAlreadyExist);
-		} else if (lista.getName() == null || lista.getName() == "" || lista.getName() == " ") {
+		} else if (lista.getName() == null || lista.getName().equals("") || lista.getName().equals(" ")) {
 			listaView.showError("This shopping list does not have name", listaAlreadyExist);
 		} else {
 			listaDao.save(lista);
