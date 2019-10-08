@@ -1,4 +1,4 @@
-package com.myproject.app.daoIT;
+package com.myproject.app.controllerIT;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,13 +11,14 @@ import org.junit.runners.model.InitializationError;
 
 import com.myproject.app.dao.TransactionTemplate;
 
-public abstract class ITDao {
+public abstract class ITController {
+
 	protected EntityManager entityManager;
 	private static EntityManagerFactory entityManagerFactory;
 	private TransactionTemplate transaction;
 
 	@BeforeClass
-	public static void setUpClass() throws Exception{
+	public static void setUpClass() throws Exception {
 		entityManagerFactory = Persistence.createEntityManagerFactory("integration");
 	}
 
@@ -26,15 +27,15 @@ public abstract class ITDao {
 	@Before
 	public void setUp() throws InitializationError {
 		transaction = new TransactionTemplate(entityManagerFactory);
-		
+
 		transaction.executeTransaction((em) -> {
 			em.createNativeQuery("DELETE FROM Prodotto").executeUpdate();
 			em.createNativeQuery("DELETE FROM ListaSpesa").executeUpdate();
 			return null;
 		});
-		
+
 		init(transaction);
-		
+
 	}
 
 	@AfterClass

@@ -2,9 +2,10 @@ language: java
 matrix:
    include:
    -  jdk: openjdk8
-      env: ADDITIONAL_MAVEN_ARGS="-Pdocker -Pjacoco coveralls:report sonar:sonar"
+      env: DISPLAY=:99.0
 services:
    - docker
+   - xvfb
 addons:
   sonarcloud:
     organization: "laviniadd"
@@ -18,4 +19,4 @@ cache:
 
 script:
  - git fetch --unshallow
- - mvn -f progetto/pom.xml clean verify $ADDITIONAL_MAVEN_ARGS
+ - mvn -f progetto/pom.xml clean verify -Pdocker -Pjacoco coveralls:report sonar:sonar

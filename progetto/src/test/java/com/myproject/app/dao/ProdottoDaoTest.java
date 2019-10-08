@@ -2,11 +2,13 @@ package com.myproject.app.dao;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runners.model.InitializationError;
 
+import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
 
 public class ProdottoDaoTest extends JpaTest {
@@ -25,14 +27,19 @@ public class ProdottoDaoTest extends JpaTest {
 	@Test
 	public void testsaveProdotto() {
 		verdura = new Prodotto();
-		verdura.setName("carota");
+
 		prodottoDao.save(verdura);
 
-		List<Prodotto> retrievedProduct = transaction.executeTransaction((em) -> {
-			return em.createQuery("select e from Prodotto e where e.name = :name", Prodotto.class)
-					.setParameter("name", verdura.getName()).getResultList();
-		});
+		List<Prodotto> retrievedProduct = retrieveProductToDatabase(verdura);
+
 		assertThat(retrievedProduct).containsExactly(verdura);
+	}
+
+	@Test
+	public void testSaveNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.save(null);
+		});
 	}
 
 	@Test
@@ -47,11 +54,60 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testProdottoFindByIdNotFound() {
+	public void testProductFindByIdNull() {
+		assertThat(prodottoDao.findById(null)).isEqualTo(null);
+	}
+
+	@Test
+	public void testProductNotAlreadySavedFindByIdNull() {
+		Prodotto prodottoNotSaved = new Prodotto();
+		assertThat(prodottoDao.findById(prodottoNotSaved.getId())).isEqualTo(null);
+	}
+
+	@Test
+	public void testProductFindByIdNotFound() {
 		assertThat(prodottoDao.findById(Long.valueOf(1))).isNull();
 	}
 
-	
+	public void testProductFindByName() {
+		frutta = new Prodotto("mela", 1, null);
+
+		addProductToDatabase(frutta);
+
+		assertThat(prodottoDao.findByName(frutta.getName())).containsExactly(frutta);
+	}
+
+	@Test
+	public void testProductFindByNameNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findByName(null);
+		});
+	}
+
+	@Test
+	public void testProductFindByNameEmpty() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findByName("");
+		});
+	}
+
+	@Test
+	public void testProductFindByNameEmptySpace() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findByName(" ");
+		});
+	}
+
+	@Test
+	public void testProductNotAlreadySavedFindByName() {
+		verdura = new Prodotto("carota", 1, null);
+		assertThat(prodottoDao.findByName(verdura.getName())).isEmpty();
+	}
+
+	@Test
+	public void testProductFindByNameNotFound() {
+		assertThat(prodottoDao.findByName("mela")).isEmpty();
+	}
 
 	@Test
 	public void testFindAllProdottiWhenDatabaseIsNotEmpty() {
@@ -68,7 +124,92 @@ public class ProdottoDaoTest extends JpaTest {
 	public void testFindAllProdottiWhenDatabaseIsEmpty() {
 		assertThat(prodottoDao.findAll()).isEmpty();
 	}
-	
+
+	@Test
+	public void testFindAllProductsInAListWithSomeProductsWhenDatabaseIsNotEmpty() {
+		ListaSpesa lista = new ListaSpesa();
+		addListToDatabase(lista);
+
+		frutta = new Prodotto();
+		frutta.setListaSpesa(lista);
+		verdura = new Prodotto();
+		verdura.setListaSpesa(lista);
+
+		addProductToDatabase(frutta);
+		addProductToDatabase(verdura);
+
+		assertThat(prodottoDao.findAllProductOfAList(lista)).containsExactly(frutta, verdura);
+	}
+
+	@Test
+	public void testFindAllProductsInAEmptyListWhenDatabaseIsEmpty() {
+		ListaSpesa lista = new ListaSpesa();
+		addListToDatabase(lista);
+
+		assertThat(prodottoDao.findAllProductOfAList(lista)).isEmpty();
+	}
+
+	@Test
+	public void testFindANonPersistedProduct() {
+		ListaSpesa lista = new ListaSpesa();
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findAllProductOfAList(lista);
+		});
+	}
+
+	@Test
+	public void testDeleteProdotto() {
+		frutta = new Prodotto();
+		addProductToDatabase(frutta);
+
+		prodottoDao.delete(frutta.getId());
+
+		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
+		assertThat(retrievedProduct).isEmpty();
+	}
+
+	@Test
+	public void testDeleteProdottoNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.delete(null);
+		});
+	}
+
+	@Test
+	public void testUpdateProduct() {
+		frutta = new Prodotto("mela", 3, null);
+
+		addProductToDatabase(frutta);
+
+		prodottoDao.updateProduct(frutta, "pera", 4);
+
+		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
+		List<String> names = new ArrayList<String>();
+		List<String> quantities = new ArrayList<String>();
+
+		for (Prodotto prodotto : retrievedProduct) {
+			names.add(prodotto.getName());
+			quantities.add(String.valueOf(prodotto.getQuantity()));
+		}
+		assertThat(names).containsExactly("pera");
+		assertThat(quantities).containsExactly("4");
+		assertThat(retrievedProduct).containsExactly(frutta);
+	}
+
+	@Test
+	public void testUpdateProdottoNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.updateProduct(null, null, 0);
+		});
+	}
+
+	@Test
+	public void testUpdateProdottoIsNotPersisted() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.updateProduct(new Prodotto(), null, 0);
+		});
+	}
+
 	private void addProductToDatabase(Prodotto prodottoDaPersistere) {
 		transaction.executeTransaction((em) -> {
 			em.persist(prodottoDaPersistere);
@@ -76,4 +217,20 @@ public class ProdottoDaoTest extends JpaTest {
 			return null;
 		});
 	}
+
+	private void addListToDatabase(ListaSpesa listaDaSalvare) {
+		transaction.executeTransaction((em) -> {
+			em.persist(listaDaSalvare);
+			em.clear();
+			return null;
+		});
+	}
+
+	private List<Prodotto> retrieveProductToDatabase(Prodotto prodottoDaRecuperare) {
+		return transaction.executeTransaction((em) -> {
+			return em.createQuery("select e from Prodotto e where e.id = :id", Prodotto.class)
+					.setParameter("id", prodottoDaRecuperare.getId()).getResultList();
+		});
+	}
+
 }

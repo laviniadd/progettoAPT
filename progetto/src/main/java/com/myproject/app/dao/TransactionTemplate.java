@@ -5,8 +5,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 public class TransactionTemplate {
-	
-	private EntityManagerFactory emf; 
+
+	private EntityManagerFactory emf;
 
 	public TransactionTemplate(EntityManagerFactory emf) {
 		this.emf = emf;
@@ -26,6 +26,7 @@ public class TransactionTemplate {
 
 			return returnValue;
 		} catch (Exception e) {
+			System.err.println(e);
 			throw new NullPointerException();
 		}
 	}
