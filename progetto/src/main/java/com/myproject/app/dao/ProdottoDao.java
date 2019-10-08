@@ -23,7 +23,7 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 			prodottoInDB.setName(nuovoNomeProdotto);
 			prodottoInDB.setQuantity(nuovaQuantitaProdotto);
 			em.merge(prodottoInDB);
-			return null;
+			return prodottoInDB;
 		});
 
 	}
