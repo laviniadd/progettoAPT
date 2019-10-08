@@ -138,6 +138,7 @@
 				<configuration>
 					<excludes>
 						<exclude>com/myproject/app/model/**/*</exclude>
+						<exclude>**/ShoppingListSwingApp.*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
