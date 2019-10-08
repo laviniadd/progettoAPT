@@ -27,11 +27,11 @@ public class ShoppingListSwingApp implements Callable<Void> {
 	@Option(names = { "--db-name" }, description = "Database name")
 	private String databaseName = "dbprogetto";
 
-	@Option(names = { "--db-username" }, description = "Database name")
+	@Option(names = { "--db-username" }, description = "Database user")
 	private String username = "root";
 
-	@Option(names = { "--db-password" }, description = "Database name")
-	private String password = "root";
+	@Option(names = { "--db-password" }, description = "Database psw")
+	private String dbpsw = "root";
 
 	private ProdottoDao prodottoDao;
 	private ListaDellaSpesaDao listaDao;
@@ -50,7 +50,7 @@ public class ShoppingListSwingApp implements Callable<Void> {
 			try {
 				Map<String, String> configOverrides = new HashMap<>();
 				configOverrides.put("hibernate.connection.url", mysqlHost);
-				configOverrides.put("hibernate.connection.password", password);
+				configOverrides.put("hibernate.connection.password", dbpsw);
 				configOverrides.put("hibernate.connection.username", username);
 				configOverrides.put("hibernate.hbm2ddl.auto", "update");
 
