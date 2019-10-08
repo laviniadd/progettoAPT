@@ -68,7 +68,7 @@ public class ShoppingListSwingApp implements Callable<Void> {
 				listaController.allListeSpesa();
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.err.println(e);;
 			}
 		});
 		return null;
