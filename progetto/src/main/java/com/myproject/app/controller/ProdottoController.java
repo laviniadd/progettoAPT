@@ -28,7 +28,8 @@ private String productNotExists = "This product does not exist";
 		if (productAlreadyExist != null) {
 			prodottoView.showError("This product already exist", productAlreadyExist);
 		} else if (prodotto.getName() == null || prodotto.getName().equals("") || prodotto.getName().equals(" ")
-				|| prodotto.getQuantity() < 1 || prodotto.getListaSpesa() == null) {
+				|| prodotto.getQuantity() <= 0
+				|| prodotto.getListaSpesa() == null) {
 			prodottoView.showError("This product has no valid name or quantity values", productAlreadyExist);
 		} else {
 			prodottoDao.save(prodotto);
@@ -53,7 +54,7 @@ private String productNotExists = "This product does not exist";
 		if (nuovoNomeProdotto == null || productAlreadyExist == null) {
 			prodottoView.showErrorEntityNotFound(productNotExists, prodottoDaModificare);
 		} else {
-			if (nuovoNomeProdotto.equals("") || nuovoNomeProdotto.equals(" ") || nuovaQuantitaProdotto < 1) {
+			if (nuovoNomeProdotto.equals("") || nuovoNomeProdotto.equals(" ") || nuovaQuantitaProdotto <= 0) {
 				prodottoView.showErrorEntityNotFound(productNotExists, prodottoDaModificare);
 			} else {
 				Prodotto prodottoModificato = prodottoDao.updateProduct(prodottoDaModificare, nuovoNomeProdotto,
