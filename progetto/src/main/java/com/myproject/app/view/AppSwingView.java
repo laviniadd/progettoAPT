@@ -136,9 +136,9 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		txtNomeLista.setColumns(10);
 
 		btnCreaLista = new JButton("Crea Lista");
-		btnCreaLista.addActionListener(e -> {
-			listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText()));
-		});
+		btnCreaLista.addActionListener(e -> 
+			listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText()))
+		);
 		btnCreaLista.setEnabled(false);
 		GridBagConstraints gbc_btnCreaLista = new GridBagConstraints();
 		gbc_btnCreaLista.insets = new Insets(0, 0, 5, 0);
@@ -424,9 +424,9 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 					.invokeLater(() -> lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity));
 		}
 		if (errorMessage.equals("This product has no valid name or quantity values")) {
-			SwingUtilities.invokeLater(() -> {
-				lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity);
-			});
+			SwingUtilities.invokeLater(() ->
+				lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity)
+			);
 		}
 	}
 
