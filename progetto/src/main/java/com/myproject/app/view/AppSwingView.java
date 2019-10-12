@@ -76,24 +76,23 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		return listaProdottiModel;
 	}
 
-	public ProdottoController getProdottoController() {
-		return prodottoController;
-	}
-
-	public ListaSpesaController getListaSpesaController() {
-		return listaSpesaController;
-	}
+	/*
+	 * public ProdottoController getProdottoController() { return
+	 * prodottoController; }
+	 * 
+	 * public ListaSpesaController getListaSpesaController() { return
+	 * listaSpesaController; }
+	 */
 
 	public void setViewController(ListaSpesaController listaSpesaController, ProdottoController prodottoController) {
 		this.listaSpesaController = listaSpesaController;
 		this.prodottoController = prodottoController;
 	}
 
-	public void start() {
-		setVisible(true);
-		getListaSpesaController().allListeSpesa();
-	}
-
+	/*
+	 * public void start() { setVisible(true);
+	 * getListaSpesaController().allListeSpesa(); }
+	 */
 	/**
 	 * Create the frame.
 	 */
@@ -157,7 +156,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		gbc_scrollPane.gridy = 2;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		listaListeSpesaModel = new DefaultListModel<ListaSpesa>();
+		listaListeSpesaModel = new DefaultListModel<>();
 		listaListe = new JList<>(listaListeSpesaModel);
 		listaListe.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -307,7 +306,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		gbc_scrollPane_1.gridy = 9;
 		contentPane.add(scrollPane_1, gbc_scrollPane_1);
 
-		listaProdottiModel = new DefaultListModel<Prodotto>();
+		listaProdottiModel = new DefaultListModel<>();
 		listaProdotti = new JList<>(listaProdottiModel);
 		listaProdotti.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
