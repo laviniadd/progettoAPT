@@ -35,10 +35,16 @@ public class BaseRepository<T> {
 		if (name == null || name.equals("") || name.equals(" ")) {
 			throw new IllegalArgumentException();
 		}
-		String classTypeString = classType.getCanonicalName();
-		return transaction.executeTransaction(
-				em -> em.createQuery("select e from " + classTypeString + " e where e.name = :name", classType)
-						.setParameter("name", name).getResultList());
+		if (classType.equals(ListaSpesa.class)) {
+			return transaction.executeTransaction(
+					em -> em.createQuery("select e from ListaSpesa e where e.name = :name", classType)
+							.setParameter("name", name).getResultList());
+		} else {
+			return transaction.executeTransaction(
+					em -> em.createQuery("select e from Prodotto e where e.name = :name", classType)
+							.setParameter("name", name).getResultList());
+		}
+
 	}
 
 	public List<T> findAll() {
