@@ -1,16 +1,25 @@
 package com.myproject.app.controller;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
 import com.myproject.app.view.AppViewInterface;
 
 public class ProdottoController {
-private String productNotExists = "This product does not exist";
+
+	private String productNotExists = "This product does not exist";
 	private AppViewInterface prodottoView;
 	private ProdottoDao prodottoDao;
-
-	public ProdottoController(AppViewInterface prodottoView, ProdottoDao prodottoRepository) {
+	
+	/*
+	 * @Inject public ProdottoController(@ Assisted AppViewInterface prodottoView,
+	 * ProdottoDao prodottoRepository) { this.prodottoView = prodottoView;
+	 * this.prodottoDao = prodottoRepository; }
+	 */
+	
+	public ProdottoController( AppViewInterface prodottoView, ProdottoDao prodottoRepository) {
 		this.prodottoView = prodottoView;
 		this.prodottoDao = prodottoRepository;
 	}
@@ -28,8 +37,7 @@ private String productNotExists = "This product does not exist";
 		if (productAlreadyExist != null) {
 			prodottoView.showError("This product already exist", productAlreadyExist);
 		} else if (prodotto.getName() == null || prodotto.getName().equals("") || prodotto.getName().equals(" ")
-				|| prodotto.getQuantity() <= 0
-				|| prodotto.getListaSpesa() == null) {
+				|| prodotto.getQuantity() <= 0 || prodotto.getListaSpesa() == null) {
 			prodottoView.showError("This product has no valid name or quantity values", productAlreadyExist);
 		} else {
 			prodottoDao.save(prodotto);

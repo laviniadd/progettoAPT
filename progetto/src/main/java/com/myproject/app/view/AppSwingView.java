@@ -1,6 +1,5 @@
 package com.myproject.app.view;
 
-//import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -77,9 +76,22 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		return listaProdottiModel;
 	}
 
+	public ProdottoController getProdottoController() {
+		return prodottoController;
+	}
+
+	public ListaSpesaController getListaSpesaController() {
+		return listaSpesaController;
+	}
+
 	public void setViewController(ListaSpesaController listaSpesaController, ProdottoController prodottoController) {
 		this.listaSpesaController = listaSpesaController;
 		this.prodottoController = prodottoController;
+	}
+
+	public void start() {
+		setVisible(true);
+		getListaSpesaController().allListeSpesa();
 	}
 
 	/**
@@ -258,9 +270,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		btnSalvaProdottoModificato = new JButton("Salva Prodotto Modificato");
 		btnSalvaProdottoModificato.addActionListener(e -> {
+
 			prodottoController.updateProduct(listaProdotti.getSelectedValue(), textProdotto.getText(),
 					Integer.parseInt(textQuantita.getText()));
 			listaProdottiModel.removeElement(listaProdotti.getSelectedValue());
+
 		});
 		btnSalvaProdottoModificato.setEnabled(false);
 		GridBagConstraints gbc_btnSalvaProdottoModificato = new GridBagConstraints();

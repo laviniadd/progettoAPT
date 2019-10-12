@@ -2,6 +2,7 @@ package com.myproject.app.dao;
 
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
 
@@ -9,6 +10,7 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 
 	private TransactionTemplate transaction;
 
+	//@Inject
 	public ProdottoDao(TransactionTemplate transaction) {
 		super(transaction, Prodotto.class);
 		this.transaction = transaction;
@@ -32,9 +34,8 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 		if (lista.getId() == null) {
 			throw new IllegalArgumentException();
 		}
-		return transaction.executeTransaction(em -> 
-			 em.createQuery("select e from Prodotto e where e.listaSpesa.id = :listaSpesa", Prodotto.class)
-					.setParameter("listaSpesa", lista.getId()).getResultList()
-		);
+		return transaction.executeTransaction(
+				em -> em.createQuery("select e from Prodotto e where e.listaSpesa.id = :listaSpesa", Prodotto.class)
+						.setParameter("listaSpesa", lista.getId()).getResultList());
 	}
 }

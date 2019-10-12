@@ -69,6 +69,16 @@
 			<version>1.12.2</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assistedinject</artifactId>
+			<version>4.2.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -144,9 +154,7 @@
 				<executions>
 					<execution>
 						<goals>
-							<!-- binds by default to the phase "initialize" -->
 							<goal>prepare-agent</goal>
-							<!-- binds by default to the phase "verify" -->
 							<goal>report</goal>
 						</goals>
 					</execution>
