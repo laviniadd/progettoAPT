@@ -40,7 +40,7 @@ public class ShoppingListSwingApp implements Callable<Void> {
 	private ProdottoController prodottoController;
 	private ListaSpesaController listaController;
 	private TransactionTemplate transaction;
-	private static EntityManagerFactory entityManagerFactory;
+	private EntityManagerFactory entityManagerFactory;
 
 	public static void main(String[] args) {
 		CommandLine.call(new ShoppingListSwingApp(), args);
