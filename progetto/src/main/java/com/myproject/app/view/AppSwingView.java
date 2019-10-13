@@ -200,7 +200,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			public void keyReleased(KeyEvent e) {
 				try {
 					btnAggiungiProdotto.setEnabled(!textProdotto.getText().trim().isEmpty()
-							&& !(Integer.parseInt(textQuantita.getText().trim()) < 1));
+							&& Integer.parseInt(textQuantita.getText().trim()) >= 1);
 				} catch (NumberFormatException nfe) {
 					btnAggiungiProdotto.setEnabled(false);
 				}
