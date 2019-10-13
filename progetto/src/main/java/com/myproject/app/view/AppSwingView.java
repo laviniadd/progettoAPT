@@ -25,8 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -116,9 +114,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		txtNomeLista.setColumns(10);
 
 		btnCreaLista = new JButton("Crea Lista");
-		btnCreaLista.addActionListener(e -> 
-			listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText()))
-		);
+		btnCreaLista.addActionListener(e -> listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText())));
 		btnCreaLista.setEnabled(false);
 		GridBagConstraints gbc_btnCreaLista = new GridBagConstraints();
 		gbc_btnCreaLista.insets = new Insets(0, 0, 5, 0);
@@ -138,11 +134,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		listaListeSpesaModel = new DefaultListModel<>();
 		listaListe = new JList<>(listaListeSpesaModel);
-		listaListe.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				btnCancellaListaSelezionata.setEnabled(listaListe.getSelectedIndex() != -1);
-				btnModificaAggiungiProdotti.setEnabled(listaListe.getSelectedIndex() != -1);
-			}
+		listaListe.addListSelectionListener(e -> {
+
+			btnCancellaListaSelezionata.setEnabled(listaListe.getSelectedIndex() != -1);
+			btnModificaAggiungiProdotti.setEnabled(listaListe.getSelectedIndex() != -1);
+
 		});
 		listaListe.setName("elencoListe");
 		scrollPane.setViewportView(listaListe);
@@ -288,11 +284,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		listaProdottiModel = new DefaultListModel<>();
 		listaProdotti = new JList<>(listaProdottiModel);
-		listaProdotti.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				btnCancellaProdottoSelezionato.setEnabled(listaProdotti.getSelectedIndex() != -1);
-				btnModificaProdottoSelezionato.setEnabled(listaProdotti.getSelectedIndex() != -1);
-			}
+		listaProdotti.addListSelectionListener(e -> {
+
+			btnCancellaProdottoSelezionato.setEnabled(listaProdotti.getSelectedIndex() != -1);
+			btnModificaProdottoSelezionato.setEnabled(listaProdotti.getSelectedIndex() != -1);
+
 		});
 		listaProdotti.setName("elencoProdotti");
 		listaProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -404,9 +400,8 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 					.invokeLater(() -> lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity));
 		}
 		if (errorMessage.equals("This product has no valid name or quantity values")) {
-			SwingUtilities.invokeLater(() ->
-				lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity)
-			);
+			SwingUtilities
+					.invokeLater(() -> lblErrorMessageProdottoEQuantitaLabel.setText(errorMessage + ": " + entity));
 		}
 	}
 
