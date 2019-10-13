@@ -17,9 +17,8 @@ public class TransactionTemplateTest extends JpaTest {
 
 	@Test
 	public void testExceptionIsActive() {
-		assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> {
-			transactionTemplate.executeTransaction(null);
-		});
+		Object result = transactionTemplate.executeTransaction(null);
+		assertThat(result).isEqualTo(null);
 	}
 
 }

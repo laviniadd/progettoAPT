@@ -12,7 +12,6 @@
 		
 		<class>com.myproject.app.model.ListaSpesa</class>
 		<class>com.myproject.app.model.Prodotto</class>
-		<!-- Specify names of managed persistable classes -->
 		
 		<properties>
 			<property name="hibernate.connection.driver_class"

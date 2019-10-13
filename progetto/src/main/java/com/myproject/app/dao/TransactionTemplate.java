@@ -1,5 +1,8 @@
 package com.myproject.app.dao;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -26,8 +29,9 @@ public class TransactionTemplate {
 
 			return returnValue;
 		} catch (Exception e) {
-			System.err.println(e);
-			throw new NullPointerException();
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception:" +e);
+			return null;
 		}
+		
 	}
 }
