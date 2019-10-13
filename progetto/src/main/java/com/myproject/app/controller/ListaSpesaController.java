@@ -1,7 +1,5 @@
 package com.myproject.app.controller;
 
-/*import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;*/
 import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.view.AppViewInterface;
@@ -10,11 +8,6 @@ public class ListaSpesaController {
 
 	private AppViewInterface listaView;
 	private ListaDellaSpesaDao listaDao;
-	/*
-	 * @Inject public ListaSpesaController(@Assisted AppViewInterface listaView,
-	 * ListaDellaSpesaDao listaRepository) { this.listaView = listaView;
-	 * this.listaDao = listaRepository; }
-	 */
 
 	public ListaSpesaController(AppViewInterface listaView, ListaDellaSpesaDao listaRepository) {
 		this.listaView = listaView;

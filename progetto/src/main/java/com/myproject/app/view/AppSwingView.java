@@ -76,23 +76,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		return listaProdottiModel;
 	}
 
-	/*
-	 * public ProdottoController getProdottoController() { return
-	 * prodottoController; }
-	 * 
-	 * public ListaSpesaController getListaSpesaController() { return
-	 * listaSpesaController; }
-	 */
-
 	public void setViewController(ListaSpesaController listaSpesaController, ProdottoController prodottoController) {
 		this.listaSpesaController = listaSpesaController;
 		this.prodottoController = prodottoController;
 	}
 
-	/*
-	 * public void start() { setVisible(true);
-	 * getListaSpesaController().allListeSpesa(); }
-	 */
 	/**
 	 * Create the frame.
 	 */

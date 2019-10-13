@@ -4,13 +4,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
-import com.google.inject.Inject;
-
 public class TransactionTemplate {
 
 	private EntityManagerFactory emf;
 
-	//@Inject
 	public TransactionTemplate(EntityManagerFactory emf) {
 		this.emf = emf;
 	}

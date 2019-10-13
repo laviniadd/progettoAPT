@@ -2,7 +2,6 @@ package com.myproject.app.dao;
 
 import java.util.List;
 
-import com.google.inject.Inject;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
 
@@ -10,7 +9,6 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 
 	private TransactionTemplate transaction;
 
-	//@Inject
 	public ProdottoDao(TransactionTemplate transaction) {
 		super(transaction, Prodotto.class);
 		this.transaction = transaction;

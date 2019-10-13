@@ -8,13 +8,11 @@ import java.util.concurrent.Callable;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import com.google.inject.Guice;
 import com.myproject.app.controller.ListaSpesaController;
 import com.myproject.app.controller.ProdottoController;
 import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.dao.TransactionTemplate;
-import com.myproject.app.guice.AppSwingMySqlDefaultModule;
 import com.myproject.app.view.AppSwingView;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -50,12 +48,6 @@ public class ShoppingListSwingApp implements Callable<Void> {
 	public Void call() throws Exception {
 		EventQueue.invokeLater(() -> {
 			try {
-
-				/*
-				 * Guice.createInjector(new
-				 * AppSwingMySqlDefaultModule().mysqlHost(mysqlHost).mySqlUsername(username)
-				 * .mySqlPassword(dbpsw)).getInstance(AppSwingView.class).start();
-				 */
 				Map<String, String> configOverrides = new HashMap<>();
 				configOverrides.put("hibernate.connection.url", mysqlHost);
 				configOverrides.put("hibernate.connection.password", dbpsw);

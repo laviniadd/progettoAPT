@@ -1,7 +1,5 @@
 package com.myproject.app.controller;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
@@ -12,13 +10,7 @@ public class ProdottoController {
 	private String productNotExists = "This product does not exist";
 	private AppViewInterface prodottoView;
 	private ProdottoDao prodottoDao;
-	
-	/*
-	 * @Inject public ProdottoController(@ Assisted AppViewInterface prodottoView,
-	 * ProdottoDao prodottoRepository) { this.prodottoView = prodottoView;
-	 * this.prodottoDao = prodottoRepository; }
-	 */
-	
+		
 	public ProdottoController( AppViewInterface prodottoView, ProdottoDao prodottoRepository) {
 		this.prodottoView = prodottoView;
 		this.prodottoDao = prodottoRepository;
