@@ -51,22 +51,14 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	private JButton btnCreaLista;
 	private JLabel lblErrorMessageProdottoLabel;
 	private JLabel lblErrorMessageProdottoEQuantitaLabel;
-	private ListaSpesa listaDaAssociareAiProdotti;
+	private transient ListaSpesa listaDaAssociareAiProdotti;
 	private JList<Prodotto> listaProdotti;
 	private JList<ListaSpesa> listaListe;
 	private DefaultListModel<Prodotto> listaProdottiModel;
 	private DefaultListModel<ListaSpesa> listaListeSpesaModel;
 
-	private ListaSpesaController listaSpesaController;
-	private ProdottoController prodottoController;
-
-	/**
-	 * Launch the application.
-	 *//*
-		 * public static void main(String[] args) { EventQueue.invokeLater(() -> { try {
-		 * AppSwingView frame = new AppSwingView(); frame.setVisible(true); } catch
-		 * (Exception e) { e.printStackTrace(); } }); }
-		 */
+	private transient ListaSpesaController listaSpesaController;
+	private transient ProdottoController prodottoController;
 
 	public DefaultListModel<ListaSpesa> getListaListeSpesaModel() {
 		return listaListeSpesaModel;
