@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -67,7 +69,7 @@ public class ShoppingListSwingApp implements Callable<Void> {
 				listaController.allListeSpesa();
 
 			} catch (Exception e) {
-				System.err.println(e);
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception: "+ e);
 			}
 		});
 		return null;
