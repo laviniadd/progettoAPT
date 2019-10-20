@@ -79,9 +79,8 @@ public class ProdottoDaoIT extends ITDao {
 
 	@Test
 	public void testUpdateProduct() {
-		frutta = new Prodotto();
-		frutta.setName("mela");
-		frutta.setQuantity(3);
+		frutta = new Prodotto("mela", 3, null);
+		
 		addProductToDatabase(frutta);
 
 		prodottoDao.updateProduct(frutta, "pera", 4);
@@ -94,7 +93,6 @@ public class ProdottoDaoIT extends ITDao {
 			names.add(prodotto.getName());
 			quantities.add(String.valueOf(prodotto.getQuantity()));
 		}
-		// TODO CONTROLLARE SE VA BENE CHE CONTROLLO LA QUANTITA' COME UNA STRINGA
 		assertThat(names).containsExactly("pera");
 		assertThat(quantities).containsExactly("4");
 		assertThat(retrievedProduct).containsExactly(frutta);

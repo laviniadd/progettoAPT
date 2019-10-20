@@ -45,13 +45,14 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		//TODO DA' ERRORE PERCHè CCERCA SUBITO DI AVERE I PARAMETRI ANCHE SE STA ANCORA CREANDO IL CONTAINER???
 		Map<String, String> configOverrides = new HashMap<String, String>();
 		configOverrides.put("hibernate.connection.url", mysql.getJdbcUrl().toString());
 		configOverrides.put("hibernate.connection.password", mysql.getPassword().toString());
 		configOverrides.put("hibernate.connection.username", mysql.getUsername().toString());
 		configOverrides.put("hibernate.hbm2ddl.auto", "update");
 
-		entityManagerFactory = Persistence.createEntityManagerFactory("e2e", configOverrides);
+		entityManagerFactory = Persistence.createEntityManagerFactory("integration", configOverrides);
 	}
 
 	@Override

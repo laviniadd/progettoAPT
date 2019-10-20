@@ -56,7 +56,7 @@ public class ShoppingListSwingApp implements Callable<Void> {
 				configOverrides.put("hibernate.connection.username", username);
 				configOverrides.put("hibernate.hbm2ddl.auto", "update");
 
-				entityManagerFactory = Persistence.createEntityManagerFactory("e2e", configOverrides);
+				entityManagerFactory = Persistence.createEntityManagerFactory("integration", configOverrides);
 				transaction = new TransactionTemplate(entityManagerFactory);
 
 				listaDao = new ListaDellaSpesaDao(transaction);

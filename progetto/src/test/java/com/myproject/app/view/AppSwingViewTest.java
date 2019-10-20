@@ -119,6 +119,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("quantitaTextBox").enterText("2");
 
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireEnabled();
+		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).requireDisabled();
 	}
 
 	@Test
@@ -130,6 +131,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("quantitaTextBox").enterText("-5");
 
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireDisabled();
+		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).requireDisabled();
 	}
 
 	@Test
@@ -141,6 +143,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("quantitaTextBox").enterText("0");
 
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireDisabled();
+		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).requireDisabled();
 	}
 
 	@Test
@@ -170,6 +173,8 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		quantitaTextBox.setText("");
 		quantitaTextBox.enterText("1");
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireDisabled();
+		
+		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).requireDisabled();
 	}
 
 	@Test
@@ -203,6 +208,8 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("prodottoTextBox").text().toString().contains("Mela");
 		window.textBox("quantitaTextBox").requireEditable();
 		window.textBox("quantitaTextBox").text().toString().contains("2");
+		window.button(JButtonMatcher.withText("Modifica Prodotto Selezionato")).requireDisabled();
+		window.list("elencoProdotti").requireDisabled();
 	}
 
 	// --------------------
