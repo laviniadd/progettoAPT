@@ -49,7 +49,7 @@ public class ListaSpesaController {
 				listaDao.delete(listaAlreadyExist.getId());
 				listaView.showRemovedEntity(listaAlreadyExist);
 			} else {
-				while (prodottiDellaListaDaCancellare.size() > 0) {
+				while (!prodottiDellaListaDaCancellare.isEmpty()) {
 					Prodotto prodottoDaCancellare = prodottiDellaListaDaCancellare.remove(0);
 					prodottoDao.delete(prodottoDaCancellare.getId());
 					listaView.showRemovedEntity(prodottoDaCancellare);
