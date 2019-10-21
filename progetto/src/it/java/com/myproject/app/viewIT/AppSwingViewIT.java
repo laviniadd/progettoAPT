@@ -163,8 +163,6 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("quantitaTextBox").enterText("-1");
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).click();
 		assertThat(window.list("elencoProdotti").contents()).isEmpty();
-		
-		assertThat(window.label("errorMessageProductModifiedLabel").text()).isEqualTo("This product has no valid name or quantity values: null");
 	}
 
 	@Test
@@ -209,8 +207,7 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("quantitaTextBox").setText("");
 		window.textBox("quantitaTextBox").enterText("2");
 		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).click();
-		assertThat(window.textBox("prodottoTextBox").text()).isEqualTo("Mela");
-		assertThat(window.textBox("quantitaTextBox").text()).isEqualTo("2");
+		assertThat(window.list("elencoProdotti").contents()).contains("2 Mela");
 	}
 
 	@Test
@@ -221,10 +218,11 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> appSwingView.getListaProdottiModel().addElement(prodottoDaModificare));
 		window.list("elencoProdotti").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica Prodotto Selezionato")).click();
-		
+
 		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).click();
-				
-		assertThat(window.label("errorMessageProductModifiedLabel").text()).isEqualTo("This product does not exist: 1 Pera");
+
+		assertThat(window.label("errorMessageProductModifiedLabel").text())
+				.isEqualTo("This product does not exist: 1 Pera");
 	}
 
 }
