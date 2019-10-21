@@ -195,6 +195,11 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		quantitaTextBox.setText("");
 		quantitaTextBox.enterText("1");
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireDisabled();
+		
+		prodottoTextBox.setText("mela");
+		quantitaTextBox.setText("");
+		quantitaTextBox.enterText("-1");
+		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireDisabled();
 
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).requireDisabled();
 	}

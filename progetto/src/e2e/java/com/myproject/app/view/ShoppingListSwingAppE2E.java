@@ -45,7 +45,8 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		//TODO DA' ERRORE PERCHè CCERCA SUBITO DI AVERE I PARAMETRI ANCHE SE STA ANCORA CREANDO IL CONTAINER???
+		// TODO DA' ERRORE PERCHè CCERCA SUBITO DI AVERE I PARAMETRI ANCHE SE STA ANCORA
+		// CREANDO IL CONTAINER???
 		Map<String, String> configOverrides = new HashMap<String, String>();
 		configOverrides.put("hibernate.connection.url", mysql.getJdbcUrl().toString());
 		configOverrides.put("hibernate.connection.password", mysql.getPassword().toString());
@@ -162,20 +163,6 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 
 	@GUITest
-	public void testAddProductButtonError() {
-		window.list("elencoListe").selectItem("Lista coop");
-		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
-		window.textBox("prodottoTextBox").enterText("");
-		window.textBox("quantitaTextBox").setText("");
-		window.textBox("quantitaTextBox").enterText("2");
-		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).click();
-		assertThat(window.label("errorMessageProductModifiedLabel").text())
-				.contains("This product has no valid name or quantity values");
-	}
-
-	@Test
-
-	@GUITest
 	public void testDeleteProductButtonSuccess() {
 		window.list("elencoListe").selectItem("Lista con prodotti");
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
@@ -243,5 +230,4 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 			return null;
 		});
 	}
-
 }
