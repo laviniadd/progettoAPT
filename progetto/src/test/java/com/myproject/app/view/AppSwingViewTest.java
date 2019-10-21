@@ -42,7 +42,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Override
 	public void onSetUp() {
 		MockitoAnnotations.initMocks(this);
-		
+
 		GuiActionRunner.execute(() -> {
 			appSwingView = new AppSwingView();
 			appSwingView.setViewController(listaSpesaController, prodottoController);
@@ -111,7 +111,22 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
+	public void testWhenModifyAddButtonIsClickedShouldEnabledProductTextBoxes() {
+		ListaSpesa listaSpesa = new ListaSpesa("Spesa esselunga");
+
+		GuiActionRunner.execute(() -> appSwingView.getListaListeSpesaModel().addElement(listaSpesa));
+		window.list("elencoListe").selectItem(0);
+
+		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
+		window.textBox("prodottoTextBox").requireEditable();
+		window.textBox("quantitaTextBox").requireEditable();
+	}
+
+	@Test
 	public void testWhenProductTextBoxIsNotEmptyAndQuantitaTextBoxIsNotZeroOrNegativeThenAddProductButtonShouldBeEnabled() {
+		GuiActionRunner
+				.execute(() -> appSwingView.getListaListeSpesaModel().addElement(new ListaSpesa("Spesa esselunga")));
+		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
 
 		window.textBox("prodottoTextBox").enterText("Mela");
@@ -124,6 +139,9 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testWhenProductTextBoxIsNotEmptyAndQuantityTextBoxIsNegativeThenAddProductButtonShouldBeDisabled() {
+		GuiActionRunner
+				.execute(() -> appSwingView.getListaListeSpesaModel().addElement(new ListaSpesa("Spesa esselunga")));
+		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
 
 		window.textBox("prodottoTextBox").enterText("Mela");
@@ -136,8 +154,10 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testWhenProductTextBoxIsNotEmptyAndQuantityTextBoxIsZeroThenAddProductButtonShouldBeDisabled() {
+		GuiActionRunner
+				.execute(() -> appSwingView.getListaListeSpesaModel().addElement(new ListaSpesa("Spesa esselunga")));
+		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
-
 		window.textBox("prodottoTextBox").enterText("Mela");
 		window.textBox("quantitaTextBox").setText("");
 		window.textBox("quantitaTextBox").enterText("0");
@@ -148,8 +168,10 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testWhenProductTextBoxAndQuantityTextBoxIsBlankAddProductButtonShouldBeDisabled() {
+		GuiActionRunner
+				.execute(() -> appSwingView.getListaListeSpesaModel().addElement(new ListaSpesa("Spesa esselunga")));
+		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
-
 		JTextComponentFixture prodottoTextBox = window.textBox("prodottoTextBox");
 		JTextComponentFixture quantitaTextBox = window.textBox("quantitaTextBox");
 
@@ -173,7 +195,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		quantitaTextBox.setText("");
 		quantitaTextBox.enterText("1");
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireDisabled();
-		
+
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).requireDisabled();
 	}
 
@@ -212,7 +234,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("elencoProdotti").requireDisabled();
 	}
 
-	// --------------------
+//	// --------------------
 
 	@Test
 	public void testsShowAllLists() {
@@ -284,7 +306,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("errorMessageLabelList").requireText("This shopping list does not exist: " + lista1.toString());
 		assertThat(window.list("elencoListe").contents()).containsExactly("Spesa pam");
 	}
-	
+
 	@Test
 	public void testShowErrorProductNotFound() {
 		Prodotto prodotto1 = new Prodotto();
@@ -294,8 +316,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 			listModelOfProducts.addElement(prodotto1);
 			listModelOfProducts.addElement(prodotto2);
 		});
-		GuiActionRunner
-				.execute(() -> appSwingView.showErrorEntityNotFound("This product does not exist", prodotto1));
+		GuiActionRunner.execute(() -> appSwingView.showErrorEntityNotFound("This product does not exist", prodotto1));
 		window.label("errorMessageProductLabel").requireText("This product does not exist: " + prodotto1.toString());
 		assertThat(window.list("elencoProdotti").contents()).containsExactly(prodotto2.toString());
 	}
@@ -314,7 +335,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		Prodotto prodotto = new Prodotto("Mela", 1, null);
 		appSwingView.showNewEntity(prodotto);
 		String[] listContents = window.list("elencoProdotti").contents();
-		
+
 		window.label("errorMessageLabelList").requireText(" ");
 		assertThat(listContents).containsExactly(prodotto.toString());
 	}
@@ -381,6 +402,9 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testAddProductButtonShouldTriggerProductControllerSaveNewProduct() {
+		GuiActionRunner
+				.execute(() -> appSwingView.getListaListeSpesaModel().addElement(new ListaSpesa("Spesa esselunga")));
+		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
 		window.textBox("prodottoTextBox").enterText("Mela");
 		window.textBox("quantitaTextBox").setText("");

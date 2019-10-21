@@ -25,8 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class AppSwingView extends JFrame implements AppViewInterface {
 
@@ -91,6 +89,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		JLabel lblNomeLista = new JLabel("Nome Lista:");
 		GridBagConstraints gbc_lblNomeLista = new GridBagConstraints();
+		gbc_lblNomeLista.anchor = GridBagConstraints.EAST;
 		gbc_lblNomeLista.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNomeLista.gridx = 0;
 		gbc_lblNomeLista.gridy = 0;
@@ -117,7 +116,10 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		btnCreaLista.addActionListener(e -> {
 			listaDaAssociareAiProdotti = new ListaSpesa();
 			listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText()));
+			txtNomeLista.setText("");
 			btnCreaLista.setEnabled(false);
+			textProdotto.setEditable(false);
+			textQuantita.setEditable(false);
 		});
 		btnCreaLista.setEnabled(false);
 		GridBagConstraints gbc_btnCreaLista = new GridBagConstraints();
@@ -139,10 +141,13 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		listaListeSpesaModel = new DefaultListModel<>();
 		listaListe = new JList<>(listaListeSpesaModel);
 		listaListe.addListSelectionListener(e -> {
-
+			if (listaListe.getSelectedIndex() != -1) {
+				listaProdottiModel.clear();
+				textProdotto.setEditable(false);
+				textQuantita.setEditable(false);
+			}
 			btnCancellaListaSelezionata.setEnabled(listaListe.getSelectedIndex() != -1);
 			btnModificaAggiungiProdotti.setEnabled(listaListe.getSelectedIndex() != -1);
-
 		});
 		listaListe.setName("elencoListe");
 		scrollPane.setViewportView(listaListe);
@@ -159,17 +164,13 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		contentPane.add(btnCancellaListaSelezionata, gbc_btnCancellaListaSelezionata);
 
 		btnModificaAggiungiProdotti = new JButton("Modifica/Aggiungi prodotti");
-		btnModificaAggiungiProdotti.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textProdotto.setEditable(true);
-				textQuantita.setEditable(true);
-			
-				listaDaAssociareAiProdotti = listaListe.getSelectedValue();
-				prodottoController.allProductsGivenAList(listaDaAssociareAiProdotti);
-				btnCancellaListaSelezionata.setEnabled(false);
-				btnModificaAggiungiProdotti.setEnabled(false);
-			}
+		btnModificaAggiungiProdotti.addActionListener(e -> {
+			textProdotto.setEditable(true);
+			textQuantita.setEditable(true);
+			listaDaAssociareAiProdotti = listaListe.getSelectedValue();
+			prodottoController.allProductsGivenAList(listaDaAssociareAiProdotti);
+			btnCancellaListaSelezionata.setEnabled(false);
+			btnModificaAggiungiProdotti.setEnabled(false);
 		});
 		btnModificaAggiungiProdotti.setEnabled(false);
 		GridBagConstraints gbc_btnModificaaggiungiProdotti = new GridBagConstraints();
@@ -201,8 +202,13 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				try {
-					btnAggiungiProdotto.setEnabled(!textProdotto.getText().trim().isEmpty()
-							&& Integer.parseInt(textQuantita.getText().trim()) >= 1);
+					if (!btnSalvaProdottoModificato.isEnabled()) {
+						btnAggiungiProdotto.setEnabled(!textProdotto.getText().trim().isEmpty()
+								&& Integer.parseInt(textQuantita.getText().trim()) >= 1);
+					} else {
+						btnAggiungiProdotto.setEnabled(false);
+					}
+
 				} catch (NumberFormatException nfe) {
 					btnAggiungiProdotto.setEnabled(false);
 				}
@@ -240,19 +246,14 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		textQuantita.setColumns(10);
 
 		btnAggiungiProdotto = new JButton("Aggiungi Prodotto");
-		btnAggiungiProdotto.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Prodotto prodottoDaAggiungere = new Prodotto(textProdotto.getText().trim(),
-						Integer.parseInt(textQuantita.getText().trim()), listaDaAssociareAiProdotti);
-				prodottoController.saveNewProduct(prodottoDaAggiungere);
-				btnAggiungiProdotto.setEnabled(false);
-				textProdotto.setText("");
-				textQuantita.setText("");
-				textQuantita.setText("1");
-				
-				
-			}
+		btnAggiungiProdotto.addActionListener(e -> {
+			Prodotto prodottoDaAggiungere = new Prodotto(textProdotto.getText().trim(),
+					Integer.parseInt(textQuantita.getText().trim()), listaDaAssociareAiProdotti);
+			prodottoController.saveNewProduct(prodottoDaAggiungere);
+			btnAggiungiProdotto.setEnabled(false);
+			textProdotto.setText("");
+			textQuantita.setText("");
+			textQuantita.setText("1");
 		});
 
 		btnSalvaProdottoModificato = new JButton("Salva Prodotto Modificato");
@@ -262,6 +263,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 					Integer.parseInt(textQuantita.getText()));
 			listaProdottiModel.removeElement(listaProdotti.getSelectedValue());
 			listaProdotti.setEnabled(true);
+			textProdotto.setText("");
+			textQuantita.setText("");
+			textQuantita.setText("1");
+			btnSalvaProdottoModificato.setEnabled(false);
+			btnAggiungiProdotto.setEnabled(false);
 		});
 		btnSalvaProdottoModificato.setEnabled(false);
 		GridBagConstraints gbc_btnSalvaProdottoModificato = new GridBagConstraints();
@@ -307,11 +313,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		scrollPane_1.setViewportView(listaProdotti);
 
 		btnCancellaProdottoSelezionato = new JButton("Cancella Prodotto Selezionato");
-		btnCancellaProdottoSelezionato
-				.addActionListener(e -> {prodottoController.deleteProduct(listaProdotti.getSelectedValue()); 
-				btnCancellaProdottoSelezionato.setEnabled(false);
-				btnModificaProdottoSelezionato.setEnabled(false);
-				});
+		btnCancellaProdottoSelezionato.addActionListener(e -> {
+			prodottoController.deleteProduct(listaProdotti.getSelectedValue());
+			btnCancellaProdottoSelezionato.setEnabled(false);
+			btnModificaProdottoSelezionato.setEnabled(false);
+		});
 		btnCancellaProdottoSelezionato.setEnabled(false);
 		GridBagConstraints gbc_btnCancellaProdottoSelezionato = new GridBagConstraints();
 		gbc_btnCancellaProdottoSelezionato.insets = new Insets(0, 0, 5, 5);
@@ -320,19 +326,16 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		contentPane.add(btnCancellaProdottoSelezionato, gbc_btnCancellaProdottoSelezionato);
 
 		btnModificaProdottoSelezionato = new JButton("Modifica Prodotto Selezionato");
-		btnModificaProdottoSelezionato.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				btnSalvaProdottoModificato.setEnabled(true);
-				btnCancellaProdottoSelezionato.setEnabled(false);
-				Prodotto prodotto = listaProdotti.getSelectedValue();
-				textProdotto.setEditable(true);
-				textQuantita.setEditable(true);
-				textProdotto.setText(prodotto.getName());
-				textQuantita.setText(String.valueOf(prodotto.getQuantity()));
-				btnModificaProdottoSelezionato.setEnabled(false);
-				listaProdotti.setEnabled(false);
-			}
+		btnModificaProdottoSelezionato.addActionListener(e -> {
+			btnSalvaProdottoModificato.setEnabled(true);
+			btnCancellaProdottoSelezionato.setEnabled(false);
+			Prodotto prodotto = listaProdotti.getSelectedValue();
+			textProdotto.setEditable(true);
+			textQuantita.setEditable(true);
+			textProdotto.setText(prodotto.getName());
+			textQuantita.setText(String.valueOf(prodotto.getQuantity()));
+			btnModificaProdottoSelezionato.setEnabled(false);
+			listaProdotti.setEnabled(false);
 		});
 		btnModificaProdottoSelezionato.setEnabled(false);
 		GridBagConstraints gbc_btnModificaProdottoSelezionato = new GridBagConstraints();
