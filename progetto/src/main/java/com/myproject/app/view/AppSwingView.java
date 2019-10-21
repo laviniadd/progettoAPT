@@ -115,6 +115,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		btnCreaLista = new JButton("Crea Lista");
 		btnCreaLista.addActionListener(e -> {
+			listaDaAssociareAiProdotti = new ListaSpesa();
 			listaSpesaController.saveNewLista(new ListaSpesa(txtNomeLista.getText()));
 			btnCreaLista.setEnabled(false);
 		});
@@ -163,7 +164,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			public void mouseClicked(MouseEvent e) {
 				textProdotto.setEditable(true);
 				textQuantita.setEditable(true);
-				listaDaAssociareAiProdotti = new ListaSpesa();
+			
 				listaDaAssociareAiProdotti = listaListe.getSelectedValue();
 				prodottoController.allProductsGivenAList(listaDaAssociareAiProdotti);
 				btnCancellaListaSelezionata.setEnabled(false);
@@ -246,6 +247,11 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 						Integer.parseInt(textQuantita.getText().trim()), listaDaAssociareAiProdotti);
 				prodottoController.saveNewProduct(prodottoDaAggiungere);
 				btnAggiungiProdotto.setEnabled(false);
+				textProdotto.setText("");
+				textQuantita.setText("");
+				textQuantita.setText("1");
+				
+				
 			}
 		});
 
@@ -359,6 +365,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		}
 		if (entitiesDaMostrare.get(0).getClass().equals(Prodotto.class)) {
 			SwingUtilities.invokeLater(() -> {
+				listaProdottiModel.clear();
 				for (int i = 0; i < entitiesDaMostrare.size(); i++) {
 					listaProdottiModel.addElement((Prodotto) entitiesDaMostrare.get(i));
 				}

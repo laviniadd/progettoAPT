@@ -10,8 +10,10 @@ import org.mockito.MockitoAnnotations;
 
 import com.myproject.app.controller.ListaSpesaController;
 import com.myproject.app.dao.ListaDellaSpesaDao;
+import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.dao.TransactionTemplate;
 import com.myproject.app.model.ListaSpesa;
+import com.myproject.app.model.Prodotto;
 import com.myproject.app.view.AppViewInterface;
 
 public class ListaSpesaControllerIT extends ITController {
@@ -20,16 +22,16 @@ public class ListaSpesaControllerIT extends ITController {
 
 	@Mock
 	private AppViewInterface listaSpesaView;
-
 	private ListaDellaSpesaDao listaSpesaDao;
+	private ProdottoDao prodottoDao;
 
 	@Override
 	protected void init(TransactionTemplate transaction) throws InitializationError {
 		MockitoAnnotations.initMocks(this);
 
 		listaSpesaDao = new ListaDellaSpesaDao(transaction);
-
-		listaSpesaController = new ListaSpesaController(listaSpesaView, listaSpesaDao);
+		prodottoDao = new ProdottoDao(transaction);
+		listaSpesaController = new ListaSpesaController(listaSpesaView, listaSpesaDao, prodottoDao);
 	}
 
 	@Test
@@ -55,9 +57,14 @@ public class ListaSpesaControllerIT extends ITController {
 	}
 
 	@Test
-	public void testDeleteListaWhenListaAlreadyExists() {
-		ListaSpesa listaDaCancellare = new ListaSpesa();
+	public void testDeleteListaWithProductsWhenListaAlreadyExists() {
+		ListaSpesa listaDaCancellare = new ListaSpesa("spesa");
 		listaSpesaDao.save(listaDaCancellare);
+		Prodotto prodotto1 = new Prodotto("mela", 2, listaDaCancellare);
+		Prodotto prodotto2 = new Prodotto("pera", 1, listaDaCancellare);
+		prodottoDao.save(prodotto1);
+		prodottoDao.save(prodotto2);
+
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
 
 		verify(listaSpesaView).showRemovedEntity(listaDaCancellare);

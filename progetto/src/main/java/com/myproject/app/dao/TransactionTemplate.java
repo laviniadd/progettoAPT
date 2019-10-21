@@ -29,7 +29,7 @@ public class TransactionTemplate {
 
 			return returnValue;
 		} catch (Exception e) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception:" +e);
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception in Transaction Template:" +e);
 			return null;
 		}
 		

@@ -1,17 +1,23 @@
 package com.myproject.app.controller;
 
+import java.util.List;
+
 import com.myproject.app.dao.ListaDellaSpesaDao;
+import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.ListaSpesa;
+import com.myproject.app.model.Prodotto;
 import com.myproject.app.view.AppViewInterface;
 
 public class ListaSpesaController {
 
 	private AppViewInterface listaView;
 	private ListaDellaSpesaDao listaDao;
+	private ProdottoDao prodottoDao;
 
-	public ListaSpesaController(AppViewInterface listaView, ListaDellaSpesaDao listaRepository) {
+	public ListaSpesaController(AppViewInterface listaView, ListaDellaSpesaDao listaRepository, ProdottoDao prodottoDao) {
 		this.listaView = listaView;
 		this.listaDao = listaRepository;
+		this.prodottoDao = prodottoDao;
 	}
 	
 	public void allListeSpesa() {
@@ -37,10 +43,20 @@ public class ListaSpesaController {
 		if (listaAlreadyExist == null) {
 			listaView.showErrorEntityNotFound("This shopping list does not exist", listaDaCancellare);
 		} else {
-			listaDao.delete(listaAlreadyExist.getId());
-			listaView.showRemovedEntity(listaAlreadyExist);
-		}
-		
+			List<Prodotto> prodottiDellaListaDaCancellare = prodottoDao.findAllProductOfAList(listaDaCancellare);
+			
+			if(prodottiDellaListaDaCancellare.isEmpty()) {
+				listaDao.delete(listaAlreadyExist.getId());
+				listaView.showRemovedEntity(listaAlreadyExist);
+			} else {
+				while (prodottiDellaListaDaCancellare.size() > 0) {
+					Prodotto prodottoDaCancellare = prodottiDellaListaDaCancellare.remove(0);
+					prodottoDao.delete(prodottoDaCancellare.getId());
+					listaView.showRemovedEntity(prodottoDaCancellare);
+				}
+				listaDao.delete(listaAlreadyExist.getId());
+				listaView.showRemovedEntity(listaAlreadyExist);
+			}
+		}	
 	}
-
 }
