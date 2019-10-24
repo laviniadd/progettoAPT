@@ -15,7 +15,10 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 	}
 
 	public Prodotto updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
-		if (prodottoDaModificare == null || prodottoDaModificare.getId() == null) {
+		if (prodottoDaModificare == null || nuovoNomeProdotto == null || nuovaQuantitaProdotto <= 0) {
+			throw new IllegalArgumentException();
+		}
+		if (prodottoDaModificare.getId() == null) {
 			throw new IllegalArgumentException();
 		}
 		return transaction.executeTransaction(em -> {
@@ -25,7 +28,6 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 			em.merge(prodottoInDB);
 			return prodottoInDB;
 		});
-
 	}
 
 	public List<Prodotto> findAllProductOfAList(ListaSpesa lista) {

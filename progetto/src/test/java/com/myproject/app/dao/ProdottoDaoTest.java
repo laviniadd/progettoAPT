@@ -195,21 +195,63 @@ public class ProdottoDaoTest extends JpaTest {
 		assertThat(quantities).containsExactly("4");
 		assertThat(retrievedProduct).containsExactly(frutta);
 	}
+	
+	@Test
+	public void testUpdateProduct2() {
+		frutta = new Prodotto("mela", 3, null);
+
+		addProductToDatabase(frutta);
+
+		Prodotto modificato = prodottoDao.updateProduct(frutta, "pera", 4);
+
+		assertThat(modificato.getName()).isEqualTo("pera");
+		assertThat(modificato.getQuantity()).isEqualTo(4);
+	}
 
 	@Test
-	public void testUpdateProdottoNull() {
+	public void testUpdateProductNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			prodottoDao.updateProduct(null, null, 0);
+			prodottoDao.updateProduct(null, "pera", 1);
 		});
 	}
 
 	@Test
-	public void testUpdateProdottoIsNotPersisted() {
+	public void testUpdateProductIsNotPersisted() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			prodottoDao.updateProduct(new Prodotto(), null, 0);
+			prodottoDao.updateProduct(new Prodotto(), "pera", 1);
 		});
 	}
-
+	
+	@Test
+	public void testUpdateProductWithNullName() {
+		frutta = new Prodotto("mela", 3, null);
+		addProductToDatabase(frutta);
+		
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.updateProduct(frutta, null, 1);
+		});
+	}
+	
+	@Test
+	public void testUpdateProductWithNegativeQuantity() {
+		frutta = new Prodotto("mela", 3, null);
+		addProductToDatabase(frutta);
+		
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.updateProduct(frutta, "pera", -1);
+		});
+	}
+	
+	@Test
+	public void testUpdateProductWithZeroQuantity() {
+		frutta = new Prodotto("mela", 3, null);
+		addProductToDatabase(frutta);
+		
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.updateProduct(frutta, "pera", 0);
+		});
+	}
+	
 	private void addProductToDatabase(Prodotto prodottoDaPersistere) {
 		transaction.executeTransaction((em) -> {
 			em.persist(prodottoDaPersistere);
