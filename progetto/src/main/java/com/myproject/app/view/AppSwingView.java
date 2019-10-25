@@ -52,7 +52,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	private JList<ListaSpesa> listaListe;
 	private DefaultListModel<Prodotto> listaProdottiModel;
 	private DefaultListModel<ListaSpesa> listaListeSpesaModel;
-
+	private Boolean modifierMode = false;
 	private transient ListaSpesaController listaSpesaController;
 	private transient ProdottoController prodottoController;
 
@@ -143,6 +143,10 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		listaListe.addListSelectionListener(e -> {
 			if (listaListe.getSelectedIndex() != -1) {
 				listaProdottiModel.clear();
+				btnSalvaProdottoModificato.setEnabled(false);
+				btnAggiungiProdotto.setEnabled(false);
+				btnCancellaProdottoSelezionato.setEnabled(false);
+				btnModificaProdottoSelezionato.setEnabled(false);
 				textProdotto.setEditable(false);
 				textQuantita.setEditable(false);
 			}
@@ -202,13 +206,13 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				try {
-					if (!btnSalvaProdottoModificato.isEnabled()) {
+					if (modifierMode == false) {
 						btnAggiungiProdotto.setEnabled(!textProdotto.getText().trim().isEmpty()
 								&& Integer.parseInt(textQuantita.getText().trim()) >= 1);
 					} else {
-						btnAggiungiProdotto.setEnabled(false);
+						btnSalvaProdottoModificato.setEnabled(!textProdotto.getText().trim().isEmpty()
+								&& Integer.parseInt(textQuantita.getText().trim()) >= 1);
 					}
-
 				} catch (NumberFormatException nfe) {
 					btnAggiungiProdotto.setEnabled(false);
 				}
@@ -258,9 +262,9 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 
 		btnSalvaProdottoModificato = new JButton("Salva Prodotto Modificato");
 		btnSalvaProdottoModificato.addActionListener(e -> {
-
-			prodottoController.updateProduct(listaProdotti.getSelectedValue(), textProdotto.getText(),
-					Integer.parseInt(textQuantita.getText()));
+			modifierMode = false;
+			prodottoController.updateProduct(listaProdotti.getSelectedValue(), textProdotto.getText().trim(),
+					Integer.parseInt(textQuantita.getText().trim()));
 			listaProdottiModel.removeElement(listaProdotti.getSelectedValue());
 			listaProdotti.setEnabled(true);
 			textProdotto.setText("");
@@ -328,6 +332,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 		btnModificaProdottoSelezionato = new JButton("Modifica Prodotto Selezionato");
 		btnModificaProdottoSelezionato.addActionListener(e -> {
 			btnSalvaProdottoModificato.setEnabled(true);
+			modifierMode = true;
 			btnCancellaProdottoSelezionato.setEnabled(false);
 			Prodotto prodotto = listaProdotti.getSelectedValue();
 			textProdotto.setEditable(true);

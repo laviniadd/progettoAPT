@@ -195,7 +195,7 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		quantitaTextBox.setText("");
 		quantitaTextBox.enterText("1");
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireDisabled();
-		
+
 		prodottoTextBox.setText("mela");
 		quantitaTextBox.setText("");
 		quantitaTextBox.enterText("-1");
@@ -239,7 +239,67 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("elencoProdotti").requireDisabled();
 	}
 
-//	// --------------------
+	@Test
+	public void testWhenListIsSelectedListOfProductIsCleanAllProductButtonsAreDisabledAndTextBoxProductAreNotEditable() {
+		GuiActionRunner
+				.execute(() -> appSwingView.getListaListeSpesaModel().addElement(new ListaSpesa("Spesa esselunga")));
+		window.list("elencoListe").selectItem(0);
+
+		window.button(JButtonMatcher.withText("Modifica Prodotto Selezionato")).requireDisabled();
+		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).requireDisabled();
+		window.button(JButtonMatcher.withText("Cancella Prodotto Selezionato")).requireDisabled();
+		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).requireDisabled();
+	}
+
+	@Test
+	public void testSaveModifiedProductButtonShouldBeEnabledOnlyIfProductTextBoxIsNotEmptyAndQuantityTextBoxIsNotEmptyOrNegative() {
+		Prodotto prodotto = new Prodotto("mela", 1, null);
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Prodotto> defaultListModelProduct = appSwingView.getListaProdottiModel();
+			defaultListModelProduct.addElement(prodotto);
+		});
+		window.list("elencoProdotti").selectItem(0);
+		window.button(JButtonMatcher.withText("Modifica Prodotto Selezionato")).click();
+
+		JTextComponentFixture prodottoTextBox = window.textBox("prodottoTextBox");
+		JTextComponentFixture quantitaTextBox = window.textBox("quantitaTextBox");
+
+		prodottoTextBox.setText("");
+		prodottoTextBox.enterText(" ");
+		quantitaTextBox.setText("");
+		quantitaTextBox.enterText(" ");
+		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).requireDisabled();
+
+		prodottoTextBox.enterText("");
+		quantitaTextBox.setText("");
+		quantitaTextBox.enterText("");
+		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).requireDisabled();
+
+		prodottoTextBox.enterText("mela");
+		quantitaTextBox.setText("");
+		quantitaTextBox.enterText("");
+		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).requireDisabled();
+
+		prodottoTextBox.setText("");
+		prodottoTextBox.enterText(" ");
+		quantitaTextBox.setText("");
+		quantitaTextBox.enterText("1");
+		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).requireDisabled();
+
+		prodottoTextBox.setText("");
+		prodottoTextBox.enterText("mela");
+		quantitaTextBox.setText("");
+		quantitaTextBox.enterText("-1");
+		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).requireDisabled();
+		
+		prodottoTextBox.setText("");
+		prodottoTextBox.enterText("mela");
+		quantitaTextBox.setText("");
+		quantitaTextBox.enterText("1");
+		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).requireEnabled();
+	}
+
+	// // --------------------
 
 	@Test
 	public void testsShowAllLists() {
