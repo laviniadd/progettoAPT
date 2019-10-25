@@ -61,7 +61,7 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		window = new FrameFixture(robot(), GuiActionRunner.execute(() -> {
 			appSwingView = new AppSwingView();
 			listaController = new ListaSpesaController(appSwingView, listaDao, prodottoDao);
-			prodottoController = new ProdottoController(appSwingView, prodottoDao);
+			prodottoController = new ProdottoController(appSwingView, prodottoDao, listaDao);
 			appSwingView.setViewController(listaController, prodottoController);
 			return appSwingView;
 		}));

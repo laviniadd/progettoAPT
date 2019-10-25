@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
@@ -28,6 +29,9 @@ public class ProdottoControllerTest {
 
 	@Mock
 	private ProdottoDao prodottoDao;
+	
+	@Mock
+	private ListaDellaSpesaDao listaDao;
 
 	@Mock
 	private AppViewInterface prodottoView;
@@ -58,14 +62,29 @@ public class ProdottoControllerTest {
 		prodotti.add(prodotto1);
 		prodotti.add(prodotto2);
 		ListaSpesa listaDaCuiRiprendereProdotti = new ListaSpesa();
-
+		
+		when(listaDao.findById(listaDaCuiRiprendereProdotti.getId())).thenReturn(listaDaCuiRiprendereProdotti);
 		when(prodottoDao.findAllProductOfAList(listaDaCuiRiprendereProdotti)).thenReturn(prodotti);
 
 		prodottoController.allProductsGivenAList(listaDaCuiRiprendereProdotti);
 
 		verify(prodottoView).showAllEntities(prodotti);
 	}
+	
+	@Test
+	public void testAllProductsInAGivenListShowError() {
+		ListaSpesa listaDaCuiRiprendereProdotti = new ListaSpesa();
+		
+		when(listaDao.findById(listaDaCuiRiprendereProdotti.getId())).thenReturn(null);
 
+		prodottoController.allProductsGivenAList(listaDaCuiRiprendereProdotti);
+		
+		verify(prodottoView).showErrorEntityNotFound("This shopping list does not exist", null);
+		verifyNoMoreInteractions(ignoreStubs(prodottoDao));
+		verifyNoMoreInteractions(ignoreStubs(prodottoView));
+	}
+
+	
 	@Test
 	public void testSaveNewProductWithNameAndQuantityInAListCreatedWhenProductDoesNotAlreadyExist() {
 		ListaSpesa lista = new ListaSpesa();

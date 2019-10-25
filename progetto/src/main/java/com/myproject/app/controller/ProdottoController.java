@@ -1,5 +1,6 @@
 package com.myproject.app.controller;
 
+import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.model.Prodotto;
@@ -10,10 +11,12 @@ public class ProdottoController {
 	private String productNotExists = "This product does not exist";
 	private AppViewInterface prodottoView;
 	private ProdottoDao prodottoDao;
+	private ListaDellaSpesaDao listaDellaSpesaDao;
 		
-	public ProdottoController( AppViewInterface prodottoView, ProdottoDao prodottoRepository) {
+	public ProdottoController( AppViewInterface prodottoView, ProdottoDao prodottoRepository, ListaDellaSpesaDao listaDellaSpesaDao) {
 		this.prodottoView = prodottoView;
 		this.prodottoDao = prodottoRepository;
+		this.listaDellaSpesaDao = listaDellaSpesaDao;
 	}
 
 	public void allProducts() {
@@ -21,7 +24,12 @@ public class ProdottoController {
 	}
 
 	public void allProductsGivenAList(ListaSpesa lista) {
-		prodottoView.showAllEntities(prodottoDao.findAllProductOfAList(lista));
+		ListaSpesa listAlreadyExist = listaDellaSpesaDao.findById(lista.getId());
+		if (listAlreadyExist == null) {
+			prodottoView.showErrorEntityNotFound("This shopping list does not exist", listAlreadyExist);
+		} else {
+			prodottoView.showAllEntities(prodottoDao.findAllProductOfAList(lista));
+		}
 	}
 
 	public void saveNewProduct(Prodotto prodotto) {

@@ -148,6 +148,13 @@ public class ProdottoDaoTest extends JpaTest {
 
 		assertThat(prodottoDao.findAllProductOfAList(lista)).isEmpty();
 	}
+	
+	@Test
+	public void testFindAllProductsInAEmptyListWhenListIsNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findAllProductOfAList(null);
+		});
+	}
 
 	@Test
 	public void testFindANonPersistedProduct() {

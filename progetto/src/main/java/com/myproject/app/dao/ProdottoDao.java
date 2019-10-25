@@ -31,6 +31,9 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 	}
 
 	public List<Prodotto> findAllProductOfAList(ListaSpesa lista) {
+		if (lista == null) {
+			throw new IllegalArgumentException();
+		}
 		if (lista.getId() == null) {
 			throw new IllegalArgumentException();
 		}

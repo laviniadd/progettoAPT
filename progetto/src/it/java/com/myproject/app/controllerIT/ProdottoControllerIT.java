@@ -34,7 +34,7 @@ public class ProdottoControllerIT extends ITController {
 
 		prodottoDao = new ProdottoDao(transaction);
 		listaSpesaDao = new ListaDellaSpesaDao(transaction);
-		prodottoController = new ProdottoController(prodottoView, prodottoDao);
+		prodottoController = new ProdottoController(prodottoView, prodottoDao, listaSpesaDao);
 	}
 
 	@Test
