@@ -52,7 +52,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 	private JList<ListaSpesa> listaListe;
 	private DefaultListModel<Prodotto> listaProdottiModel;
 	private DefaultListModel<ListaSpesa> listaListeSpesaModel;
-	private Boolean modifierMode = false;
+	private boolean modifierMode = false;
 	private transient ListaSpesaController listaSpesaController;
 	private transient ProdottoController prodottoController;
 
@@ -271,7 +271,6 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			textQuantita.setText("");
 			textQuantita.setText("1");
 			btnSalvaProdottoModificato.setEnabled(false);
-			//btnAggiungiProdotto.setEnabled(false);
 		});
 		btnSalvaProdottoModificato.setEnabled(false);
 		GridBagConstraints gbc_btnSalvaProdottoModificato = new GridBagConstraints();

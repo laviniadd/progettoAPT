@@ -102,14 +102,14 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 
 	@GUITest
-	public void testOnStartAllDatabaseElementsAreShown() {
+	public void testAllListsInDatabaseAreShown() {
 		assertThat(window.list("elencoListe").contents()).containsExactly("Lista coop", "Lista con prodotti");
 	}
 
 	@Test
 
 	@GUITest
-	public void testOnStartAllProductsOfAListAreShown() {
+	public void testAllProductsOfAListAreShown() {
 		window.list("elencoListe").selectItem("Lista con prodotti");
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
 
