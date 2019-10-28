@@ -25,13 +25,10 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testsaveProdotto() {
+	public void testSave() {
 		verdura = new Prodotto();
-
 		prodottoDao.save(verdura);
-
 		List<Prodotto> retrievedProduct = retrieveProductToDatabase(verdura);
-
 		assertThat(retrievedProduct).containsExactly(verdura);
 	}
 
@@ -43,25 +40,23 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testProdottoFindById() {
+	public void testFindById() {
 		verdura = new Prodotto();
 		frutta = new Prodotto();
-
 		addProductToDatabase(verdura);
 		addProductToDatabase(frutta);
-
 		assertThat(prodottoDao.findById(frutta.getId())).isEqualTo(frutta);
 	}
 
 	@Test
-	public void testProductFindByIdNull() {
-		assertThat(prodottoDao.findById(null)).isEqualTo(null);
+	public void testFindByIdNull() {
+		assertThat(prodottoDao.findById(null)).isNull();
 	}
 
 	@Test
 	public void testProductNotAlreadySavedFindByIdNull() {
 		Prodotto prodottoNotSaved = new Prodotto();
-		assertThat(prodottoDao.findById(prodottoNotSaved.getId())).isEqualTo(null);
+		assertThat(prodottoDao.findById(prodottoNotSaved.getId())).isNull();
 	}
 
 	@Test
@@ -71,9 +66,7 @@ public class ProdottoDaoTest extends JpaTest {
 
 	public void testProductFindByName() {
 		frutta = new Prodotto("mela", 1, null);
-
 		addProductToDatabase(frutta);
-
 		assertThat(prodottoDao.findByName(frutta.getName())).containsExactly(frutta);
 	}
 
@@ -105,67 +98,26 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testProductFindByNameNotFound() {
+	public void testFindByNameNotFound() {
 		assertThat(prodottoDao.findByName("mela")).isEmpty();
 	}
 
 	@Test
-	public void testFindAllProdottiWhenDatabaseIsNotEmpty() {
+	public void testFindAllProductsWhenDatabaseIsNotEmpty() {
 		frutta = new Prodotto();
 		verdura = new Prodotto();
-
 		addProductToDatabase(frutta);
 		addProductToDatabase(verdura);
-
 		assertThat(prodottoDao.findAll()).containsExactly(frutta, verdura);
 	}
 
 	@Test
-	public void testFindAllProdottiWhenDatabaseIsEmpty() {
+	public void testFindAllProductsWhenDatabaseIsEmpty() {
 		assertThat(prodottoDao.findAll()).isEmpty();
 	}
 
 	@Test
-	public void testFindAllProductsInAListWithSomeProductsWhenDatabaseIsNotEmpty() {
-		ListaSpesa lista = new ListaSpesa();
-		addListToDatabase(lista);
-
-		frutta = new Prodotto();
-		frutta.setListaSpesa(lista);
-		verdura = new Prodotto();
-		verdura.setListaSpesa(lista);
-
-		addProductToDatabase(frutta);
-		addProductToDatabase(verdura);
-
-		assertThat(prodottoDao.findAllProductOfAList(lista)).containsExactly(frutta, verdura);
-	}
-
-	@Test
-	public void testFindAllProductsInAEmptyListWhenDatabaseIsEmpty() {
-		ListaSpesa lista = new ListaSpesa();
-		addListToDatabase(lista);
-
-		assertThat(prodottoDao.findAllProductOfAList(lista)).isEmpty();
-	}
-	
-	@Test
-	public void testFindAllProductsInAEmptyListWhenListIsNull() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			prodottoDao.findAllProductOfAList(null);
-		});
-	}
-
-	@Test
-	public void testFindANonPersistedProduct() {
-		ListaSpesa lista = new ListaSpesa();
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			prodottoDao.findAllProductOfAList(lista);
-		});
-	}
-
-	@Test
-	public void testDeleteProdotto() {
+	public void testDelete() {
 		frutta = new Prodotto();
 		addProductToDatabase(frutta);
 
@@ -176,24 +128,20 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testDeleteProdottoNull() {
+	public void testDeleteNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			prodottoDao.delete(null);
 		});
 	}
-
+	
 	@Test
-	public void testUpdateProduct() {
+	public void testUpdateFromDatabase() {
 		frutta = new Prodotto("mela", 3, null);
-
 		addProductToDatabase(frutta);
-
 		prodottoDao.updateProduct(frutta, "pera", 4);
-
 		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
 		List<String> names = new ArrayList<String>();
 		List<String> quantities = new ArrayList<String>();
-
 		for (Prodotto prodotto : retrievedProduct) {
 			names.add(prodotto.getName());
 			quantities.add(String.valueOf(prodotto.getQuantity()));
@@ -202,15 +150,12 @@ public class ProdottoDaoTest extends JpaTest {
 		assertThat(quantities).containsExactly("4");
 		assertThat(retrievedProduct).containsExactly(frutta);
 	}
-	
+
 	@Test
-	public void testUpdateProduct2() {
+	public void testUpdateFromReturnValue() {
 		frutta = new Prodotto("mela", 3, null);
-
 		addProductToDatabase(frutta);
-
 		Prodotto modificato = prodottoDao.updateProduct(frutta, "pera", 4);
-
 		assertThat(modificato.getName()).isEqualTo("pera");
 		assertThat(modificato.getQuantity()).isEqualTo(4);
 	}
@@ -228,34 +173,83 @@ public class ProdottoDaoTest extends JpaTest {
 			prodottoDao.updateProduct(new Prodotto(), "pera", 1);
 		});
 	}
-	
+
 	@Test
 	public void testUpdateProductWithNullName() {
 		frutta = new Prodotto("mela", 3, null);
 		addProductToDatabase(frutta);
-		
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			prodottoDao.updateProduct(frutta, null, 1);
 		});
 	}
 	
 	@Test
-	public void testUpdateProductWithNegativeQuantity() {
+	public void testUpdateProductWithEmptyName() {
 		frutta = new Prodotto("mela", 3, null);
 		addProductToDatabase(frutta);
-		
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			prodottoDao.updateProduct(frutta, "pera", -1);
+			prodottoDao.updateProduct(frutta, "", 1);
 		});
 	}
 	
 	@Test
+	public void testUpdateProductWithSpaceName() {
+		frutta = new Prodotto("mela", 3, null);
+		addProductToDatabase(frutta);
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.updateProduct(frutta, " ", 1);
+		});
+	}
+
+	@Test
+	public void testUpdateProductWithNegativeQuantity() {
+		frutta = new Prodotto("mela", 3, null);
+		addProductToDatabase(frutta);
+
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.updateProduct(frutta, "pera", -1);
+		});
+	}
+
+	@Test
 	public void testUpdateProductWithZeroQuantity() {
 		frutta = new Prodotto("mela", 3, null);
 		addProductToDatabase(frutta);
-		
+
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			prodottoDao.updateProduct(frutta, "pera", 0);
+		});
+	}
+
+	@Test
+	public void testFindAllProductsInAListWithProductsWhenDatabaseIsNotEmpty() {
+		ListaSpesa lista = new ListaSpesa();
+		addListToDatabase(lista);
+		frutta = new Prodotto("Mela", 1, lista);
+		verdura = new Prodotto("Pera", 2, lista);
+		addProductToDatabase(frutta);
+		addProductToDatabase(verdura);
+		assertThat(prodottoDao.findAllProductOfAList(lista)).containsExactly(frutta, verdura);
+	}
+
+	@Test
+	public void testFindAllProductsInAEmptyListWhenDatabaseIsEmpty() {
+		ListaSpesa lista = new ListaSpesa();
+		addListToDatabase(lista);
+		assertThat(prodottoDao.findAllProductOfAList(lista)).isEmpty();
+	}
+
+	@Test
+	public void testFindAllProductsInAEmptyListWhenListIsNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findAllProductOfAList(null);
+		});
+	}
+
+	@Test
+	public void testFindANotPersistedProduct() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			prodottoDao.findAllProductOfAList(new ListaSpesa());
 		});
 	}
 	

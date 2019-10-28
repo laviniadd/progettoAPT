@@ -21,13 +21,10 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testSaveListaDellaSpesa() {
+	public void testSave() {
 		lista = new ListaSpesa();
-
 		listaSpesaDao.save(lista);
-
 		List<ListaSpesa> retrievedList = retrieveShoppingListToDatabase(lista);
-
 		assertThat(retrievedList).containsExactly(lista);
 	}
 
@@ -39,35 +36,32 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testListaDellaSpesaFindById() {
+	public void testFindById() {
 		lista = new ListaSpesa();
 		listaSpesa = new ListaSpesa();
-
 		addListToDatabase(lista);
 		addListToDatabase(listaSpesa);
-
 		assertThat(listaSpesaDao.findById(listaSpesa.getId())).isEqualTo(listaSpesa);
 	}
 
 	@Test
-	public void testListaDellaSpesaFindByIdNull() {
-		assertThat(listaSpesaDao.findById(null)).isEqualTo(null);
+	public void testFindByIdWithNullList() {
+		assertThat(listaSpesaDao.findById(null)).isNull();
 	}
 
 	@Test
-	public void testListaDellaSpesaNotAlreadySavedFindByIdNull() {
+	public void testListNotAlreadySavedFindByIdNull() {
 		ListaSpesa listaSpesaNotSaved = new ListaSpesa();
-		assertThat(listaSpesaDao.findById(listaSpesaNotSaved.getId())).isEqualTo(null);
+		assertThat(listaSpesaDao.findById(listaSpesaNotSaved.getId())).isNull();
 	}
 
 	@Test
-	public void testListaDellaSpesaFindByIdNotFound() {
-
+	public void testFindByIdNotFound() {
 		assertThat(listaSpesaDao.findById(Long.valueOf(1))).isNull();
 	}
 
 	@Test
-	public void testListaDellaSpesaFindByName() {
+	public void testFindByName() {
 		lista = new ListaSpesa("lista");
 		listaSpesa = new ListaSpesa("listaSpesa");
 
@@ -78,39 +72,39 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testListaDellaSpesaFindByNameNull() {
+	public void testFindByNameNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			listaSpesaDao.findByName(null);
 		});
 	}
 
 	@Test
-	public void testListaDellaSpesaFindByNameEmpty() {
+	public void testFindByNameEmpty() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			listaSpesaDao.findByName("");
 		});
 	}
 
 	@Test
-	public void testListaDellaSpesaFindByNameEmptySpace() {
+	public void testFindByNameSpace() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			listaSpesaDao.findByName(" ");
 		});
 	}
 
 	@Test
-	public void testListaDellaSpesaNotAlreadySavedFindByName() {
+	public void testListNotAlreadySavedFindByName() {
 		ListaSpesa listaSpesaNotSaved = new ListaSpesa("Lista");
 		assertThat(listaSpesaDao.findByName(listaSpesaNotSaved.getName())).isEmpty();
 	}
 
 	@Test
-	public void testListaDellaSpesaFindByNameNotFound() {
+	public void testFindByNameNotFound() {
 		assertThat(listaSpesaDao.findByName("Lista")).isEmpty();
 	}
 
 	@Test
-	public void testFindAllListaDellaSpesaWhenDatabaseIsNotEmpty() {
+	public void testFindAllListsWhenDatabaseIsNotEmpty() {
 		lista = new ListaSpesa();
 		listaSpesa = new ListaSpesa();
 
@@ -121,12 +115,12 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testFindAllListaDellaSpesaWhenDatabaseIsEmpty() {
+	public void testFindAllListsWhenDatabaseIsEmpty() {
 		assertThat(listaSpesaDao.findAll()).isEmpty();
 	}
 
 	@Test
-	public void testDeleteLista() {
+	public void testDelete() {
 		lista = new ListaSpesa();
 		addListToDatabase(lista);
 
@@ -137,7 +131,7 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	}
 
 	@Test
-	public void testDeleteListaNull() {
+	public void testDeleteNullList() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			listaSpesaDao.delete(null);
 		});
