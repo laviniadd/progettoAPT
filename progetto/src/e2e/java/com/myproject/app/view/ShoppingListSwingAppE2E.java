@@ -45,8 +45,6 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		// TODO DA' ERRORE PERCHè CCERCA SUBITO DI AVERE I PARAMETRI ANCHE SE STA ANCORA
-		// CREANDO IL CONTAINER???
 		Map<String, String> configOverrides = new HashMap<String, String>();
 		configOverrides.put("hibernate.connection.url", mysql.getJdbcUrl().toString());
 		configOverrides.put("hibernate.connection.password", mysql.getPassword().toString());
@@ -213,6 +211,22 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).click();
 		assertThat(window.label("errorMessageProductModifiedLabel").text())
 				.contains("This product does not exist: " + "2 Mela");
+	}
+	
+	@Test
+
+	@GUITest
+	public void testError() {
+		window.list("elencoListe").selectItem("Lista coop");
+		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
+		removeTestListFromDatabase(listasenzaProdotti.getId(), listasenzaProdotti.getClass());
+		window.textBox("prodottoTextBox").enterText("Mela");
+		window.textBox("quantitaTextBox").setText("");
+		window.textBox("quantitaTextBox").enterText("2");
+		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).click();
+
+		assertThat(window.label("errorMessageProductModifiedLabel").text())
+				.contains("This product has no valid name or quantity values: " + "2 Mela");
 	}
 
 	private <T> void addEntityToDatabase(T entityDaPersistere) {

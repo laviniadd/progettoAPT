@@ -76,7 +76,6 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 	public void testAllLists() {
 		ListaSpesa listaSpesaPam = new ListaSpesa("lista pam");
 		ListaSpesa listaSpesaCoop = new ListaSpesa("lista coop");
-
 		listaDao.save(listaSpesaPam);
 		listaDao.save(listaSpesaCoop);
 		GuiActionRunner.execute(() -> listaController.allListeSpesa());
@@ -121,8 +120,8 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testAllProductsGivenAList() {
 		ListaSpesa lista = new ListaSpesa("Lista esselunga");
-		listaDao.save(lista);
-		GuiActionRunner.execute(() -> appSwingView.getListaListeSpesaModel().addElement(lista));
+		GuiActionRunner.execute(() -> listaController.saveNewLista(lista));
+		window.list("elencoListe").selectItem(0);
 		Prodotto prodotto1 = new Prodotto("Mela", 1, lista);
 		Prodotto prodotto2 = new Prodotto("Pera", 1, lista);
 		prodottoDao.save(prodotto1);
@@ -133,19 +132,35 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		assertThat(window.list("elencoProdotti").contents()).containsExactly(prodotto1.toString(),
 				prodotto2.toString());
 	}
+	
+	@Test
 
+	@GUITest
+	public void testAllProductsGivenAListError() {
+		ListaSpesa lista = new ListaSpesa("Lista esselunga");
+		GuiActionRunner.execute(() -> appSwingView.getListaListeSpesaModel().addElement(lista));
+		Prodotto prodotto1 = new Prodotto("Mela", 1, lista);
+		Prodotto prodotto2 = new Prodotto("Pera", 1, lista);
+		prodottoDao.save(prodotto1);
+		prodottoDao.save(prodotto2);
+		window.list("elencoListe").selectItem(0);
+		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
+		window.label("errorMessageLabelList").requireText("This shopping list does not exist: " + lista);
+		assertThat(window.list("elencoProdotti").contents()).isEmpty();
+	}
+	
 	@Test
 
 	@GUITest
 	public void testAddProductsButtonSuccess() {
-		window.textBox("nomeListaTextBox").enterText("Lista spesa");
-		window.button(JButtonMatcher.withText("Crea Lista")).click();
+		GuiActionRunner.execute(() -> listaController.saveNewLista(new ListaSpesa("Lista della spesa")));	
 		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
 		window.textBox("prodottoTextBox").enterText("Mela");
 		window.textBox("quantitaTextBox").setText("");
 		window.textBox("quantitaTextBox").enterText("1");
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).click();
+		
 		assertThat(window.list("elencoProdotti").contents()).containsExactly("1 Mela");
 	}
 
@@ -153,9 +168,7 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 
 	@GUITest
 	public void testAddProductsButtonError() {
-		ListaSpesa lista = new ListaSpesa("Lista spesa");
-		listaDao.save(lista);
-		GuiActionRunner.execute(() -> appSwingView.getListaListeSpesaModel().addElement(lista));
+		GuiActionRunner.execute(() -> listaController.saveNewLista(new ListaSpesa("Lista della spesa")));
 		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
 		window.textBox("prodottoTextBox").enterText("Mela");
@@ -172,7 +185,6 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		ListaSpesa lista = new ListaSpesa("Lista esselunga");
 		listaDao.save(lista);
 		GuiActionRunner.execute(() -> prodottoController.saveNewProduct(new Prodotto("mela", 1, lista)));
-
 		window.list("elencoProdotti").selectItem(0);
 		window.button(JButtonMatcher.withText("Cancella Prodotto Selezionato")).click();
 		assertThat(window.list("elencoProdotti").contents()).isEmpty();
@@ -185,7 +197,6 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		ListaSpesa lista = new ListaSpesa("Lista esselunga");
 		listaDao.save(lista);
 		Prodotto prodotto1 = new Prodotto("mela", 1, lista);
-
 		GuiActionRunner.execute(() -> appSwingView.getListaProdottiModel().addElement(prodotto1));
 		window.list("elencoProdotti").selectItem(0);
 		window.button(JButtonMatcher.withText("Cancella Prodotto Selezionato")).click();
@@ -197,9 +208,9 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 
 	@GUITest
 	public void testUpdateProductButtonSuccess() {
-		Prodotto prodottoDaModificare = new Prodotto("Pera", 1, null);
-		prodottoDao.save(prodottoDaModificare);
-		GuiActionRunner.execute(() -> appSwingView.getListaProdottiModel().addElement(prodottoDaModificare));
+		ListaSpesa lista = new ListaSpesa();
+		listaDao.save(lista);
+		GuiActionRunner.execute(() -> prodottoController.saveNewProduct(new Prodotto("Pera", 1, lista)));
 		window.list("elencoProdotti").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica Prodotto Selezionato")).click();
 		window.textBox("prodottoTextBox").setText("");
@@ -214,11 +225,9 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 
 	@GUITest
 	public void testUpdateProductButtonError() {
-		Prodotto prodottoDaModificare = new Prodotto("Pera", 1, null);
-		GuiActionRunner.execute(() -> appSwingView.getListaProdottiModel().addElement(prodottoDaModificare));
+		GuiActionRunner.execute(() -> appSwingView.getListaProdottiModel().addElement(new Prodotto("Pera", 1, null)));
 		window.list("elencoProdotti").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica Prodotto Selezionato")).click();
-
 		window.button(JButtonMatcher.withText("Salva Prodotto Modificato")).click();
 
 		assertThat(window.label("errorMessageProductModifiedLabel").text())
