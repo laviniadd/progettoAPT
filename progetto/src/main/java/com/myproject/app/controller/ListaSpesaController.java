@@ -14,12 +14,13 @@ public class ListaSpesaController {
 	private ListaDellaSpesaDao listaDao;
 	private ProdottoDao prodottoDao;
 
-	public ListaSpesaController(AppViewInterface listaView, ListaDellaSpesaDao listaRepository, ProdottoDao prodottoDao) {
+	public ListaSpesaController(AppViewInterface listaView, ListaDellaSpesaDao listaRepository,
+			ProdottoDao prodottoDao) {
 		this.listaView = listaView;
 		this.listaDao = listaRepository;
 		this.prodottoDao = prodottoDao;
 	}
-	
+
 	public void allListeSpesa() {
 		listaView.showAllEntities(listaDao.findAll());
 	}
@@ -44,8 +45,7 @@ public class ListaSpesaController {
 			listaView.showErrorEntityNotFound("This shopping list does not exist", listaDaCancellare);
 		} else {
 			List<Prodotto> prodottiDellaListaDaCancellare = prodottoDao.findAllProductOfAList(listaDaCancellare);
-			
-			if(prodottiDellaListaDaCancellare.isEmpty()) {
+			if (prodottiDellaListaDaCancellare.isEmpty()) {
 				listaDao.delete(listaAlreadyExist.getId());
 				listaView.showRemovedEntity(listaAlreadyExist);
 			} else {
@@ -57,6 +57,6 @@ public class ListaSpesaController {
 				listaDao.delete(listaAlreadyExist.getId());
 				listaView.showRemovedEntity(listaAlreadyExist);
 			}
-		}	
+		}
 	}
 }

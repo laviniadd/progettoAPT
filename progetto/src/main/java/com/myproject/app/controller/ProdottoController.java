@@ -12,8 +12,9 @@ public class ProdottoController {
 	private AppViewInterface prodottoView;
 	private ProdottoDao prodottoDao;
 	private ListaDellaSpesaDao listaDellaSpesaDao;
-		
-	public ProdottoController( AppViewInterface prodottoView, ProdottoDao prodottoRepository, ListaDellaSpesaDao listaDellaSpesaDao) {
+
+	public ProdottoController(AppViewInterface prodottoView, ProdottoDao prodottoRepository,
+			ListaDellaSpesaDao listaDellaSpesaDao) {
 		this.prodottoView = prodottoView;
 		this.prodottoDao = prodottoRepository;
 		this.listaDellaSpesaDao = listaDellaSpesaDao;
@@ -26,19 +27,26 @@ public class ProdottoController {
 	public void allProductsGivenAList(ListaSpesa lista) {
 		ListaSpesa listAlreadyExist = listaDellaSpesaDao.findById(lista.getId());
 		if (listAlreadyExist == null) {
-			prodottoView.showErrorEntityNotFound("This shopping list does not exist", listAlreadyExist);
+			prodottoView.showErrorEntityNotFound("This shopping list does not exist", lista);
 		} else {
 			prodottoView.showAllEntities(prodottoDao.findAllProductOfAList(lista));
 		}
 	}
 
 	public void saveNewProduct(Prodotto prodotto) {
+		ListaSpesa existedList = new ListaSpesa();	
 		Prodotto productAlreadyExist = prodottoDao.findById(prodotto.getId());
+		if(prodotto.getListaSpesa()!=null) {
+			existedList = listaDellaSpesaDao.findById(prodotto.getListaSpesa().getId());
+		}
+		
 		if (productAlreadyExist != null) {
 			prodottoView.showError("This product already exist", productAlreadyExist);
 		} else if (prodotto.getName() == null || prodotto.getName().equals("") || prodotto.getName().equals(" ")
-				|| prodotto.getQuantity() <= 0 || prodotto.getListaSpesa() == null) {
-			prodottoView.showError("This product has no valid name or quantity values", productAlreadyExist);
+				|| prodotto.getQuantity() <= 0
+				|| prodotto.getListaSpesa() == null || 
+				existedList == null) {
+			prodottoView.showError("This product has no valid name or quantity values", prodotto);
 		} else {
 			prodottoDao.save(prodotto);
 			prodottoView.showNewEntity(prodotto);

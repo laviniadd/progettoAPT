@@ -271,7 +271,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			textQuantita.setText("");
 			textQuantita.setText("1");
 			btnSalvaProdottoModificato.setEnabled(false);
-			btnAggiungiProdotto.setEnabled(false);
+			//btnAggiungiProdotto.setEnabled(false);
 		});
 		btnSalvaProdottoModificato.setEnabled(false);
 		GridBagConstraints gbc_btnSalvaProdottoModificato = new GridBagConstraints();
@@ -449,6 +449,10 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			SwingUtilities.invokeLater(() -> {
 				lblErrorMessageListaLabel.setText(errorMessage + ": " + entity);
 				listaListeSpesaModel.removeElement(entity);
+				textProdotto.setEditable(false);
+				textQuantita.setEditable(false);
+				btnModificaAggiungiProdotti.setEnabled(false);
+				btnAggiungiProdotto.setEnabled(false);
 			});
 		}
 	}

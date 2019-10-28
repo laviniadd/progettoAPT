@@ -49,9 +49,7 @@ public class ListaSpesaControllerIT extends ITController {
 
 	@Test
 	public void testSaveNewListaWithNameWhenListaDoesNotAlreadyExist() {
-		ListaSpesa lista = new ListaSpesa();
-		lista.setName("lista della spesa");
-
+		ListaSpesa lista = new ListaSpesa("lista della spesa");
 		listaSpesaController.saveNewLista(lista);
 		verify(listaSpesaView).showNewEntity(lista);
 	}

@@ -48,9 +48,7 @@ public class ListaSpesaControllerTest {
 
 	@Test
 	public void testSaveNewListaWithNameWhenListaDoesNotAlreadyExist() {
-		ListaSpesa lista = new ListaSpesa();
-		lista.setName("lista della spesa");
-
+		ListaSpesa lista = new ListaSpesa("Lista della spesa");
 		when(listaSpesaDao.findById(lista.getId())).thenReturn(null);
 
 		listaSpesaController.saveNewLista(lista);
@@ -62,28 +60,25 @@ public class ListaSpesaControllerTest {
 
 	@Test
 	public void testSaveNewListaWithNameWhenNameListIsEmptyString() {
-		ListaSpesa lista = new ListaSpesa();
-		lista.setName(" ");
+		ListaSpesa lista = new ListaSpesa(" ");
 
 		when(listaSpesaDao.findById(lista.getId())).thenReturn(null);
 
 		listaSpesaController.saveNewLista(lista);
 
 		verify(listaSpesaView).showError("This shopping list does not have name", null);
-		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
+		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao, listaSpesaView));
 	}
 
 	@Test
 	public void testSaveNewListaWithNameWhenNameListIsEmpty() {
-		ListaSpesa lista = new ListaSpesa();
-		lista.setName("");
-
+		ListaSpesa lista = new ListaSpesa("");
 		when(listaSpesaDao.findById(lista.getId())).thenReturn(null);
 
 		listaSpesaController.saveNewLista(lista);
 
 		verify(listaSpesaView).showError("This shopping list does not have name", null);
-		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
+		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao, listaSpesaView));
 	}
 
 	@Test
@@ -95,7 +90,7 @@ public class ListaSpesaControllerTest {
 		listaSpesaController.saveNewLista(lista);
 
 		verify(listaSpesaView).showError("This shopping list does not have name", null);
-		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
+		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao, listaSpesaView));
 	}
 
 	@Test
@@ -107,7 +102,7 @@ public class ListaSpesaControllerTest {
 		listaSpesaController.saveNewLista(listaDaSalvare);
 
 		verify(listaSpesaView).showError("This shopping list already exist", listaDaSalvare);
-		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao));
+		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao, listaSpesaView));
 	}
 
 	@Test
@@ -127,11 +122,11 @@ public class ListaSpesaControllerTest {
 
 	@Test
 	public void testDeleteListaWithProductsWhenListaAlreadyExists() {
-		ListaSpesa listaDaCancellare = new ListaSpesa("spesa");
-		
+		ListaSpesa listaDaCancellare = new ListaSpesa("Spesa");
+
 		Prodotto prodotto1 = new Prodotto("mela", 2, listaDaCancellare);
 		Prodotto prodotto2 = new Prodotto("pera", 1, listaDaCancellare);
-		
+
 		List<Prodotto> listaConProdotti = new ArrayList<Prodotto>();
 		listaConProdotti.add(prodotto1);
 		listaConProdotti.add(prodotto2);
@@ -141,7 +136,7 @@ public class ListaSpesaControllerTest {
 
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
 
-		verify(prodottoDao, atLeast(2)).delete(null);
+		verify(prodottoDao, atLeast(2)).delete(prodotto1.getId());
 		verify(listaSpesaView, atLeast(2)).showRemovedEntity(prodotto1);
 		verify(listaSpesaDao).delete(listaDaCancellare.getId());
 		verify(listaSpesaView).showRemovedEntity(listaDaCancellare);
@@ -156,6 +151,7 @@ public class ListaSpesaControllerTest {
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
 
 		verify(listaSpesaView).showErrorEntityNotFound("This shopping list does not exist", listaDaCancellare);
+		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao, listaSpesaView, prodottoDao));
 	}
 
 }

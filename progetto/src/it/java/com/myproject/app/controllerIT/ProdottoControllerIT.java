@@ -31,7 +31,6 @@ public class ProdottoControllerIT extends ITController {
 	@Override
 	protected void init(TransactionTemplate transaction) throws InitializationError {
 		MockitoAnnotations.initMocks(this);
-
 		prodottoDao = new ProdottoDao(transaction);
 		listaSpesaDao = new ListaDellaSpesaDao(transaction);
 		prodottoController = new ProdottoController(prodottoView, prodottoDao, listaSpesaDao);
@@ -39,13 +38,9 @@ public class ProdottoControllerIT extends ITController {
 
 	@Test
 	public void testAllProducts() {
-
 		Prodotto prodotto = new Prodotto();
-
 		prodottoDao.save(prodotto);
-
 		prodottoController.allProducts();
-
 		verify(prodottoView).showAllEntities(asList(prodotto));
 
 	}
@@ -54,57 +49,40 @@ public class ProdottoControllerIT extends ITController {
 	public void testSaveNewProductWithNameAndQuantityInAListCreatedWhenProductDoesNotAlreadyExist() {
 		ListaSpesa lista = new ListaSpesa();
 		listaSpesaDao.save(lista);
-		Prodotto prodotto = new Prodotto();
-		prodotto.setName("Mela");
-		prodotto.setQuantity(2);
-		prodotto.setListaSpesa(lista);
-
+		Prodotto prodotto = new Prodotto("Mela", 2, lista);
 		prodottoController.saveNewProduct(prodotto);
-
 		verify(prodottoView).showNewEntity(prodotto);
 	}
 
 	@Test
 	public void testDeleteProductWhenProductAlreadyExists() {
 		Prodotto prodottoDaCancellare = new Prodotto();
-
 		prodottoDao.save(prodottoDaCancellare);
-
 		prodottoController.deleteProduct(prodottoDaCancellare);
-
 		verify(prodottoView).showRemovedEntity(prodottoDaCancellare);
 	}
 
 	@Test
 	public void testUpdateProductWhenProductExists() {
-		Prodotto prodottoDaModificare = new Prodotto();
-		prodottoDaModificare.setName("mela");
-		prodottoDaModificare.setQuantity(2);
-
+		Prodotto prodottoDaModificare = new Prodotto("mela", 2, null);
 		prodottoDao.save(prodottoDaModificare);
-
 		prodottoController.updateProduct(prodottoDaModificare, "pera", 3);
-
 		verify(prodottoView).showNewEntity(prodottoDaModificare);
 	}
 
 	@Test
 	public void testAllProductsInAGivenList() {
 		ListaSpesa listaDaCuiRiprendereProdotti = new ListaSpesa();
-		Prodotto prodotto1 = new Prodotto();
-		prodotto1.setListaSpesa(listaDaCuiRiprendereProdotti);
-		Prodotto prodotto2 = new Prodotto();
-		prodotto2.setListaSpesa(listaDaCuiRiprendereProdotti);
+		Prodotto prodotto1 = new Prodotto("mela", 1, listaDaCuiRiprendereProdotti);
+		Prodotto prodotto2 = new Prodotto("pera", 2, listaDaCuiRiprendereProdotti);
 		List<Prodotto> prodotti = new ArrayList<Prodotto>();
 		prodotti.add(prodotto1);
 		prodotti.add(prodotto2);
-
 		listaSpesaDao.save(listaDaCuiRiprendereProdotti);
 		prodottoDao.save(prodotto1);
 		prodottoDao.save(prodotto2);
 
 		prodottoController.allProductsGivenAList(listaDaCuiRiprendereProdotti);
-
 		verify(prodottoView).showAllEntities(prodotti);
 	}
 }
