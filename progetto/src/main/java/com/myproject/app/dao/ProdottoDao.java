@@ -15,7 +15,7 @@ public class ProdottoDao extends BaseRepository<Prodotto> {
 	}
 
 	public Prodotto updateProduct(Prodotto prodottoDaModificare, String nuovoNomeProdotto, int nuovaQuantitaProdotto) {
-		if (prodottoDaModificare == null || nuovoNomeProdotto == null || nuovoNomeProdotto == "" || nuovoNomeProdotto == " " || nuovaQuantitaProdotto <= 0) {
+		if (prodottoDaModificare == null || nuovoNomeProdotto == null || nuovoNomeProdotto.equals("") || nuovoNomeProdotto.equals(" ") || nuovaQuantitaProdotto <= 0) {
 			throw new IllegalArgumentException();
 		}
 		if (prodottoDaModificare.getId() == null) {
