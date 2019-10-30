@@ -10,7 +10,6 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -78,13 +77,6 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 	@AfterClass
 	public static void tearDownClass() {
 		entityManagerFactory.close();
-	}
-
-	protected void onTearDown() {
-		transaction.executeTransaction((em) -> {
-			em.close();
-			return null;
-		});
 	}
 
 	@Test

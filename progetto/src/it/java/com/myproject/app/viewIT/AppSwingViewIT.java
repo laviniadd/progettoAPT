@@ -132,35 +132,31 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		assertThat(window.list("elencoProdotti").contents()).containsExactly(prodotto1.toString(),
 				prodotto2.toString());
 	}
-	
+
 	@Test
 
 	@GUITest
 	public void testAllProductsGivenAListError() {
 		ListaSpesa lista = new ListaSpesa("Lista esselunga");
 		GuiActionRunner.execute(() -> appSwingView.getListaListeSpesaModel().addElement(lista));
-		Prodotto prodotto1 = new Prodotto("Mela", 1, lista);
-		Prodotto prodotto2 = new Prodotto("Pera", 1, lista);
-		prodottoDao.save(prodotto1);
-		prodottoDao.save(prodotto2);
 		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
 		window.label("errorMessageLabelList").requireText("This shopping list does not exist: " + lista);
 		assertThat(window.list("elencoProdotti").contents()).isEmpty();
 	}
-	
+
 	@Test
 
 	@GUITest
 	public void testAddProductsButtonSuccess() {
-		GuiActionRunner.execute(() -> listaController.saveNewLista(new ListaSpesa("Lista della spesa")));	
+		GuiActionRunner.execute(() -> listaController.saveNewLista(new ListaSpesa("Lista della spesa")));
 		window.list("elencoListe").selectItem(0);
 		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
 		window.textBox("prodottoTextBox").enterText("Mela");
 		window.textBox("quantitaTextBox").setText("");
 		window.textBox("quantitaTextBox").enterText("1");
 		window.button(JButtonMatcher.withText("Aggiungi Prodotto")).click();
-		
+
 		assertThat(window.list("elencoProdotti").contents()).containsExactly("1 Mela");
 	}
 
