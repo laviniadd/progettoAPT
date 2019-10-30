@@ -206,7 +206,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				try {
-					if (modifierMode == false) {
+					if (!modifierMode) {
 						btnAggiungiProdotto.setEnabled(!textProdotto.getText().trim().isEmpty()
 								&& Integer.parseInt(textQuantita.getText().trim()) >= 1);
 					} else {
