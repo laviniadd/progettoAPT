@@ -27,7 +27,6 @@ public class TransactionTemplate {
 			transaction.commit();
 			return returnValue;
 		} catch (Exception e) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception in Transaction Template:" + e);
 			if (transaction != null) {
 				transaction.rollback();
 			}
