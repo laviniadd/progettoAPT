@@ -45,10 +45,8 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 	public void testFindByName() {
 		lista = new ListaSpesa("lista");
 		listaSpesa = new ListaSpesa("listaSpesa");
-
 		addListToDatabase(lista);
 		addListToDatabase(listaSpesa);
-
 		assertThat(listaSpesaDao.findByName(listaSpesa.getName())).containsExactly(listaSpesa);
 	}
 	
@@ -65,9 +63,7 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 	public void testDelete() {
 		lista = new ListaSpesa();
 		addListToDatabase(lista);
-
 		listaSpesaDao.delete(lista.getId());
-
 		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase(lista);
 		assertThat(retrievedShoppingList).isEmpty();
 	}

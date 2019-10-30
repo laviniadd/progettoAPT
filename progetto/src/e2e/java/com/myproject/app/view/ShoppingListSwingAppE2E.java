@@ -86,14 +86,6 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 		}).using(robot());
 	}
 
-	@After
-	public void closeEm() {
-		transaction.executeTransaction((em) -> {
-			em.close();
-			return null;
-		});
-	}
-
 	@AfterClass
 	public static void tearDownClass() {
 		entityManagerFactory.close();
