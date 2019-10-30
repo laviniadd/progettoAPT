@@ -30,7 +30,7 @@ public class TransactionTemplate {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			throw new RuntimeException(e);
+			throw new RuntimeException("Exception in Transaction Template:" + e);
 		} finally {
 			em.close();
 		}
