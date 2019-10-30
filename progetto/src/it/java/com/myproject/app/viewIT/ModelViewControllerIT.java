@@ -75,14 +75,6 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		window.show(); // shows the frame to test
 	}
 
-	@After
-	public void closeEm() {
-		transaction.executeTransaction((em) -> {
-			em.close();
-			return null;
-		});
-	}
-
 	@AfterClass
 	public static void tearDownClass() {
 		entityManagerFactory.close();

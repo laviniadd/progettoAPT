@@ -25,29 +25,24 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 	}
 
 	@Test
-	public void testSaveListaDellaSpesa() {
+	public void testSave() {
 		lista = new ListaSpesa();
-
 		listaSpesaDao.save(lista);
-
 		List<ListaSpesa> retrievedList = retrieveShoppingListToDatabase(lista);
-
 		assertThat(retrievedList).containsExactly(lista);
 	}
 
 	@Test
-	public void testListaDellaSpesaFindById() {
+	public void testFindById() {
 		lista = new ListaSpesa();
 		listaSpesa = new ListaSpesa();
-
 		addListToDatabase(lista);
 		addListToDatabase(listaSpesa);
-
 		assertThat(listaSpesaDao.findById(listaSpesa.getId())).isEqualTo(listaSpesa);
 	}
 
 	@Test
-	public void testListaDellaSpesaFindByName() {
+	public void testFindByName() {
 		lista = new ListaSpesa("lista");
 		listaSpesa = new ListaSpesa("listaSpesa");
 
@@ -58,18 +53,16 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 	}
 	
 	@Test
-	public void testFindAllListaDellaSpesaWhenDatabaseIsNotEmpty() {
+	public void testFindAllListsWhenDatabaseIsNotEmpty() {
 		lista = new ListaSpesa();
 		listaSpesa = new ListaSpesa();
-
 		addListToDatabase(lista);
 		addListToDatabase(listaSpesa);
-
 		assertThat(listaSpesaDao.findAll()).containsExactly(lista, listaSpesa);
 	}
 
 	@Test
-	public void testDeleteLista() {
+	public void testDelete() {
 		lista = new ListaSpesa();
 		addListToDatabase(lista);
 

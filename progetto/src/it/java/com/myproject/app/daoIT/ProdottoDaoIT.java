@@ -1,13 +1,9 @@
 package com.myproject.app.daoIT;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
 import org.junit.runners.model.InitializationError;
-
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.dao.TransactionTemplate;
 import com.myproject.app.model.ListaSpesa;
@@ -26,91 +22,65 @@ public class ProdottoDaoIT extends ITDao {
 	}
 
 	@Test
-	public void testsaveProdotto() {
+	public void testSave() {
 		verdura = new Prodotto();
-
 		prodottoDao.save(verdura);
-
 		List<Prodotto> retrievedProduct = retrieveProductToDatabase(verdura);
-
 		assertThat(retrievedProduct).containsExactly(verdura);
 	}
 
 	@Test
-	public void testProdottoFindById() {
+	public void testFindById() {
 		verdura = new Prodotto();
 		frutta = new Prodotto();
-
 		addProductToDatabase(verdura);
 		addProductToDatabase(frutta);
-
 		assertThat(prodottoDao.findById(frutta.getId())).isEqualTo(frutta);
 	}
 
+
 	public void testProductFindByName() {
 		frutta = new Prodotto("mela", 1, null);
-			
 		addProductToDatabase(frutta);
-
 		assertThat(prodottoDao.findByName(frutta.getName())).containsExactly(frutta);
 	}
 	
 	@Test
-	public void testFindAllProdottiWhenDatabaseIsNotEmpty() {
+	public void testFindAllProductsWhenDatabaseIsNotEmpty() {
 		frutta = new Prodotto();
 		verdura = new Prodotto();
-
 		addProductToDatabase(frutta);
 		addProductToDatabase(verdura);
-
 		assertThat(prodottoDao.findAll()).containsExactly(frutta, verdura);
 	}
 
 	@Test
-	public void testDeleteProdotto() {
+	public void testDelete() {
 		frutta = new Prodotto();
 		addProductToDatabase(frutta);
-
 		prodottoDao.delete(frutta.getId());
-
 		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
 		assertThat(retrievedProduct).isEmpty();
 	}
 
 	@Test
-	public void testUpdateProduct() {
+	public void testUpdateFromReturnValue() {
 		frutta = new Prodotto("mela", 3, null);
-		
 		addProductToDatabase(frutta);
-
-		prodottoDao.updateProduct(frutta, "pera", 4);
-
-		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
-		List<String> names = new ArrayList<String>();
-		List<String> quantities = new ArrayList<String>();
-
-		for (Prodotto prodotto : retrievedProduct) {
-			names.add(prodotto.getName());
-			quantities.add(String.valueOf(prodotto.getQuantity()));
-		}
-		assertThat(names).containsExactly("pera");
-		assertThat(quantities).containsExactly("4");
-		assertThat(retrievedProduct).containsExactly(frutta);
+		Prodotto modificato = prodottoDao.updateProduct(frutta, "pera", 4);
+		assertThat(modificato.getName()).isEqualTo("pera");
+		assertThat(modificato.getQuantity()).isEqualTo(4);
 	}
 
+
 	@Test
-	public void testFindAllProductsInAListWithSomeProductsWhenDatabaseIsNotEmpty() {
+	public void testFindAllProductsInAListWithProductsWhenDatabaseIsNotEmpty() {
 		ListaSpesa lista = new ListaSpesa();
 		addListToDatabase(lista);
-
-		frutta = new Prodotto();
-		frutta.setListaSpesa(lista);
-		verdura = new Prodotto();
-		verdura.setListaSpesa(lista);
-
+		frutta = new Prodotto("Mela", 1, lista);
+		verdura = new Prodotto("Pera", 2, lista);
 		addProductToDatabase(frutta);
 		addProductToDatabase(verdura);
-
 		assertThat(prodottoDao.findAllProductOfAList(lista)).containsExactly(frutta, verdura);
 	}
 
