@@ -19,21 +19,11 @@ public abstract class JpaTest {
 	@Before
 	public void setUp() throws InitializationError {
 		transaction = new TransactionTemplate(entityManagerFactory);
-
 		transaction.executeTransaction((em) -> {
 			em.createNativeQuery("TRUNCATE SCHEMA public AND COMMIT").executeUpdate();
 			return null;
 		});
-
 		init(transaction);
-	}
-
-	@After
-	public void tearDown() {
-		transaction.executeTransaction((em) -> {
-			em.close();
-			return null;
-		});
 	}
 
 	@AfterClass

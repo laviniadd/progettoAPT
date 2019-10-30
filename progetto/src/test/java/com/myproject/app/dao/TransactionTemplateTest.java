@@ -15,10 +15,10 @@ public class TransactionTemplateTest extends JpaTest {
 		this.transactionTemplate = transaction;
 	}
 
-	@Test
-	public void testExceptionIsActive() {
-		Object result = transactionTemplate.executeTransaction(null);
-		assertThat(result).isEqualTo(null);
-	}
+	/*
+	 * @Test public void testExceptionIsActive() { Object result =
+	 * transactionTemplate.executeTransaction(null);
+	 * assertThat(result).isEqualTo(null); }
+	 */
 
 }

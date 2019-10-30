@@ -15,23 +15,26 @@ public class TransactionTemplate {
 		this.emf = emf;
 	}
 
-	public <T> T executeTransaction(BaseRepositoryInterface<T> baseRepository) {
-		EntityManager em;
-		EntityTransaction transaction;
+	public <T> T executeTransaction(BloccoDiCodice<T> bloccoDiCodice) {
+		EntityManager em = this.emf.createEntityManager();
+		EntityTransaction transaction = null;
 		try {
-			em = this.emf.createEntityManager();
 			transaction = em.getTransaction();
 			transaction.begin();
 
-			T returnValue = baseRepository.executeWithOpenedTransaction(em);
+			T returnValue = bloccoDiCodice.executeWithOpenedTransaction(em);
 
 			transaction.commit();
-
 			return returnValue;
 		} catch (Exception e) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception in Transaction Template:" +e);
-			return null;
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception in Transaction Template:" + e);
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new RuntimeException(e);
+		} finally {
+			em.close();
 		}
-		
+
 	}
 }
