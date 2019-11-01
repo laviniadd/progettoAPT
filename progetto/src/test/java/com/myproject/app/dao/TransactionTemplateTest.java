@@ -35,7 +35,7 @@ public class TransactionTemplateTest {
 		when(emf.createEntityManager()).thenReturn(em);
 		when(em.getTransaction()).thenReturn(transaction);
 
-		assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> {
 			transactionTemplate.executeTransaction(null);
 		});
 
@@ -65,7 +65,7 @@ public class TransactionTemplateTest {
 		when(emf.createEntityManager()).thenReturn(em);
 		when(em.getTransaction()).thenReturn(null);
 
-		assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> {
 			transactionTemplate.executeTransaction(em -> em.find(ListaSpesa.class, new ListaSpesa()));
 		});
 
