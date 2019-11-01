@@ -74,4 +74,18 @@ public class TransactionTemplateTest {
 		verify(em, times(1)).close();
 	}
 
+	@Test
+	public void testWhenExecuteTransactionReturnNull() {
+		when(emf.createEntityManager()).thenReturn(em);
+		when(em.getTransaction()).thenReturn(transaction);
+		when(em.find(ListaSpesa.class, new ListaSpesa())).thenReturn(null);
+
+		transactionTemplate.executeTransaction(em -> em.find(ListaSpesa.class, new ListaSpesa()));
+
+		verify(em, times(1)).getTransaction();
+		verify(transaction, times(1)).begin();
+		verify(transaction, times(1)).commit();
+		verify(em, times(1)).close();
+	}
+
 }
