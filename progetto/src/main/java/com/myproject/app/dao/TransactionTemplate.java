@@ -30,11 +30,13 @@ public class TransactionTemplate {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception in Transaction Template:" +e);
-			return null;
+			/*
+			 * Logger.getLogger(getClass().getName()).log(Level.SEVERE,
+			 * "Exception in Transaction Template: " +e); return null;
+			 */
+			 throw new RuntimeException(e); 
 		} finally {
 			em.close();
 		}
-
 	}
 }
