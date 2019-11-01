@@ -1,24 +1,77 @@
 package com.myproject.app.dao;
 
-import static org.assertj.core.api.Assertions.*;
-
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import org.junit.runners.model.InitializationError;
+import com.myproject.app.model.ListaSpesa;
 
-public class TransactionTemplateTest extends JpaTest {
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 
+public class TransactionTemplateTest {
+
+	@InjectMocks
 	private TransactionTemplate transactionTemplate;
+	@Mock
+	private EntityManagerFactory emf;
+	@Mock
+	private EntityManager em;
+	@Mock
+	private EntityTransaction transaction;
 
-	@Override
-	protected void init(TransactionTemplate transaction) throws InitializationError {
-		this.transactionTemplate = transaction;
+	@Before
+	public void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
 	}
 
-	/*
-	 * @Test public void testExceptionIsActive() { Object result =
-	 * transactionTemplate.executeTransaction(null);
-	 * assertThat(result).isEqualTo(null); }
-	 */
+	@Test
+	public void testThrowExceptionWhenABlockOfCodeIsNull() {
+		when(emf.createEntityManager()).thenReturn(em);
+		when(em.getTransaction()).thenReturn(transaction);
+
+		assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
+			transactionTemplate.executeTransaction(null);
+		});
+
+		verify(em, times(1)).getTransaction();
+		verify(transaction, times(1)).begin();
+		verify(transaction, times(1)).rollback();
+		verify(em, times(1)).close();
+	}
+
+	@Test
+	public void testWhenABlockOfCodeIsNotNull() {
+		when(emf.createEntityManager()).thenReturn(em);
+		when(em.getTransaction()).thenReturn(transaction);
+		when(em.find(ListaSpesa.class, new ListaSpesa())).thenReturn(new ListaSpesa());
+
+		transactionTemplate.executeTransaction(em -> em.find(ListaSpesa.class, new ListaSpesa()));
+
+		verify(em, times(1)).getTransaction();
+		verify(transaction, times(1)).begin();
+		verify(transaction, times(1)).commit();
+		verifyNoMoreInteractions(ignoreStubs(transaction));
+		verify(em, times(1)).close();
+	}
+
+	@Test
+	public void testWhenTransactionIsNull() {
+		when(emf.createEntityManager()).thenReturn(em);
+		when(em.getTransaction()).thenReturn(null);
+
+		assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
+			transactionTemplate.executeTransaction(em -> em.find(ListaSpesa.class, new ListaSpesa()));
+		});
+
+		verify(em, times(1)).getTransaction();
+		verifyNoMoreInteractions(ignoreStubs(transaction));
+		verify(em, times(1)).close();
+	}
 
 }

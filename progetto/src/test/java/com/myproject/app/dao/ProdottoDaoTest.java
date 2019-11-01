@@ -13,7 +13,6 @@ import com.myproject.app.model.Prodotto;
 
 public class ProdottoDaoTest extends JpaTest {
 	private TransactionTemplate transaction;
-
 	private ProdottoDao prodottoDao;
 	private Prodotto verdura;
 	private Prodotto frutta;

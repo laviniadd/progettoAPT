@@ -7,7 +7,7 @@ import org.junit.runners.model.InitializationError;
 public abstract class JpaTest {
 	protected EntityManager entityManager;
 	private static EntityManagerFactory entityManagerFactory;
-	private TransactionTemplate transaction;
+	protected TransactionTemplate transaction;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {

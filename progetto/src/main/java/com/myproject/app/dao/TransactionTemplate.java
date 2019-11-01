@@ -1,7 +1,7 @@
 package com.myproject.app.dao;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+/*import java.util.logging.Level;
+import java.util.logging.Logger;*/
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -30,11 +30,7 @@ public class TransactionTemplate {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			/*
-			 * Logger.getLogger(getClass().getName()).log(Level.SEVERE,
-			 * "Exception in Transaction Template: " +e); return null;
-			 */
-			 throw new RuntimeException(e); 
+			throw new RuntimeException(e);
 		} finally {
 			em.close();
 		}
