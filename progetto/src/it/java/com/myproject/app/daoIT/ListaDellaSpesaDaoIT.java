@@ -28,7 +28,7 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 	public void testSave() {
 		lista = new ListaSpesa();
 		listaSpesaDao.save(lista);
-		List<ListaSpesa> retrievedList = retrieveShoppingListToDatabase(lista);
+		List<ListaSpesa> retrievedList = retrieveShoppingListToDatabase();
 		assertThat(retrievedList).containsExactly(lista);
 	}
 
@@ -64,7 +64,7 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 		lista = new ListaSpesa();
 		addListToDatabase(lista);
 		listaSpesaDao.delete(lista.getId());
-		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase(lista);
+		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase();
 		assertThat(retrievedShoppingList).isEmpty();
 	}
 
@@ -75,10 +75,9 @@ public class ListaDellaSpesaDaoIT extends ITDao {
 		});
 	}
 
-	private List<ListaSpesa> retrieveShoppingListToDatabase(ListaSpesa listaSpesaDaRecuperare) {
+	private List<ListaSpesa> retrieveShoppingListToDatabase() {
 		return transaction.executeTransaction((em) -> {
-			return em.createQuery("select e from ListaSpesa e where e.id = :id", ListaSpesa.class)
-					.setParameter("id", listaSpesaDaRecuperare.getId()).getResultList();
+			return em.createQuery("select e from ListaSpesa e", ListaSpesa.class).getResultList();
 		});
 	}
 

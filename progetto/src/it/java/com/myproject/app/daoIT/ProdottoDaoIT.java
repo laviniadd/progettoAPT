@@ -25,7 +25,7 @@ public class ProdottoDaoIT extends ITDao {
 	public void testSave() {
 		verdura = new Prodotto();
 		prodottoDao.save(verdura);
-		List<Prodotto> retrievedProduct = retrieveProductToDatabase(verdura);
+		List<Prodotto> retrievedProduct = retrieveProductToDatabase();
 		assertThat(retrievedProduct).containsExactly(verdura);
 	}
 
@@ -59,7 +59,7 @@ public class ProdottoDaoIT extends ITDao {
 		frutta = new Prodotto();
 		addProductToDatabase(frutta);
 		prodottoDao.delete(frutta.getId());
-		List<Prodotto> retrievedProduct = retrieveProductToDatabase(frutta);
+		List<Prodotto> retrievedProduct = retrieveProductToDatabase();
 		assertThat(retrievedProduct).isEmpty();
 	}
 
@@ -92,10 +92,9 @@ public class ProdottoDaoIT extends ITDao {
 		});
 	}
 
-	private List<Prodotto> retrieveProductToDatabase(Prodotto prodottoDaRecuperare) {
+	private List<Prodotto> retrieveProductToDatabase() {
 		return transaction.executeTransaction((em) -> {
-			return em.createQuery("select e from Prodotto e where e.id = :id", Prodotto.class)
-					.setParameter("id", prodottoDaRecuperare.getId()).getResultList();
+			return em.createQuery("select e from Prodotto e", Prodotto.class).getResultList();
 		});
 	}
 
