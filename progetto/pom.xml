@@ -193,10 +193,13 @@
 				<configuration>
 					<targetClasses>
 						<param>com.myproject.app.dao.*</param>
+						<param>com.myproject.app.controller.*</param>
 					</targetClasses>
 					<targetTests>
 						<param>com.myproject.app.dao.*</param>
+						<param>com.myproject.app.controller.*</param>
 					</targetTests>
+					<mutationThreshold>100</mutationThreshold>
 				</configuration>
 			</plugin>
 		</plugins>
