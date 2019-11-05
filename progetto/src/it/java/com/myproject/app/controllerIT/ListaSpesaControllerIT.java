@@ -10,7 +10,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.myproject.app.controller.ListaSpesaController;
 import com.myproject.app.dao.ListaDellaSpesaDao;
-import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.dao.TransactionTemplate;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.view.AppViewInterface;
@@ -22,15 +21,13 @@ public class ListaSpesaControllerIT extends ITController {
 	@Mock
 	private AppViewInterface listaSpesaView;
 	private ListaDellaSpesaDao listaSpesaDao;
-	private ProdottoDao prodottoDao;
 
 	@Override
 	protected void init(TransactionTemplate transaction) throws InitializationError {
 		MockitoAnnotations.initMocks(this);
 
 		listaSpesaDao = new ListaDellaSpesaDao(transaction);
-		prodottoDao = new ProdottoDao(transaction);
-		listaSpesaController = new ListaSpesaController(listaSpesaView, listaSpesaDao, prodottoDao);
+		listaSpesaController = new ListaSpesaController(listaSpesaView, listaSpesaDao);
 	}
 
 	@Test

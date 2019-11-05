@@ -1,7 +1,6 @@
 package com.myproject.app.controller;
 
 import com.myproject.app.dao.ListaDellaSpesaDao;
-import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.ListaSpesa;
 import com.myproject.app.view.AppViewInterface;
 

@@ -63,7 +63,7 @@ public class ShoppingListSwingApp implements Callable<Void> {
 				prodottoDao = new ProdottoDao(transaction);
 				AppSwingView appSwingView = new AppSwingView();
 				prodottoController = new ProdottoController(appSwingView, prodottoDao, listaDao);
-				listaController = new ListaSpesaController(appSwingView, listaDao, prodottoDao);
+				listaController = new ListaSpesaController(appSwingView, listaDao);
 				appSwingView.setViewController(listaController, prodottoController);
 				appSwingView.setVisible(true);
 				listaController.allListeSpesa();

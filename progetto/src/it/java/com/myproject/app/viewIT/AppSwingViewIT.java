@@ -60,7 +60,7 @@ public class AppSwingViewIT extends AssertJSwingJUnitTestCase {
 		prodottoDao = new ProdottoDao(transaction);
 		GuiActionRunner.execute(() -> {
 			appSwingView = new AppSwingView();
-			listaController = new ListaSpesaController(appSwingView, listaDao, prodottoDao);
+			listaController = new ListaSpesaController(appSwingView, listaDao);
 			prodottoController = new ProdottoController(appSwingView, prodottoDao, listaDao);
 
 			appSwingView.setViewController(listaController, prodottoController);
