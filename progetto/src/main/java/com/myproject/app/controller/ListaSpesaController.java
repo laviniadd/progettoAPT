@@ -10,8 +10,7 @@ public class ListaSpesaController {
 	private AppViewInterface listaView;
 	private ListaDellaSpesaDao listaDao;
 
-	public ListaSpesaController(AppViewInterface listaView, ListaDellaSpesaDao listaRepository,
-			ProdottoDao prodottoDao) {
+	public ListaSpesaController(AppViewInterface listaView, ListaDellaSpesaDao listaRepository) {
 		this.listaView = listaView;
 		this.listaDao = listaRepository;
 	}
