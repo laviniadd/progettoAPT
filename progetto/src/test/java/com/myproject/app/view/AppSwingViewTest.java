@@ -138,6 +138,16 @@ public class AppSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("prodottoTextBox").requireEditable();
 		window.textBox("quantitaTextBox").requireEditable();
 	}
+	
+	@Test
+	public void testWhenModifyAddButtonIsClickedShouldDeselectASelectedList() {
+		GuiActionRunner
+				.execute(() -> appSwingView.getListaListeSpesaModel().addElement(new ListaSpesa("Spesa esselunga")));
+		window.list("elencoListe").selectItem(0);
+		window.button(JButtonMatcher.withText("Modifica/Aggiungi prodotti")).click();
+
+		window.list("elencoListe").requireNoSelection();
+	}
 
 	@Test
 	public void testWhenModifyAddButtonIsClickedShouldDisabledModifyAddButtonAndDeleteButton() {
