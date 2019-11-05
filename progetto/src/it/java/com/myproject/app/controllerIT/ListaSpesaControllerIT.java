@@ -13,7 +13,6 @@ import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.dao.TransactionTemplate;
 import com.myproject.app.model.ListaSpesa;
-import com.myproject.app.model.Prodotto;
 import com.myproject.app.view.AppViewInterface;
 
 public class ListaSpesaControllerIT extends ITController {
@@ -55,16 +54,10 @@ public class ListaSpesaControllerIT extends ITController {
 	}
 
 	@Test
-	public void testDeleteListaWithProductsWhenListaAlreadyExists() {
-		ListaSpesa listaDaCancellare = new ListaSpesa("spesa");
+	public void testDeleteListaWhenListaAlreadyExists() {
+		ListaSpesa listaDaCancellare = new ListaSpesa("Spesa");
 		listaSpesaDao.save(listaDaCancellare);
-		Prodotto prodotto1 = new Prodotto("mela", 2, listaDaCancellare);
-		Prodotto prodotto2 = new Prodotto("pera", 1, listaDaCancellare);
-		prodottoDao.save(prodotto1);
-		prodottoDao.save(prodotto2);
-
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
-
 		verify(listaSpesaView).showRemovedEntity(listaDaCancellare);
 	}
 }

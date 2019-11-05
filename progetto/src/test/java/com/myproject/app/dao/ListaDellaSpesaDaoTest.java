@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runners.model.InitializationError;
 import com.myproject.app.model.ListaSpesa;
+import com.myproject.app.model.Prodotto;
 
 public class ListaDellaSpesaDaoTest extends JpaTest {
 
@@ -137,6 +138,19 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 		});
 	}
 
+	@Test
+	public void testDeleteListWithProduct() {
+		lista = new ListaSpesa();
+		addListToDatabase(lista);
+		Prodotto prodotto = new Prodotto("mela", 2, lista);
+		addProductToDatabase(prodotto);	
+		listaSpesaDao.delete(lista.getId());
+		List<Prodotto> retrievedProducts = retrieveProductToDatabase();
+		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase();
+		assertThat(retrievedShoppingList).isEmpty();
+		assertThat(retrievedProducts).isEmpty();
+	}
+
 	private void addListToDatabase(ListaSpesa listaDaSalvare) {
 		transaction.executeTransaction((em) -> {
 			em.persist(listaDaSalvare);
@@ -147,6 +161,20 @@ public class ListaDellaSpesaDaoTest extends JpaTest {
 	private List<ListaSpesa> retrieveShoppingListToDatabase() {
 		return transaction.executeTransaction((em) -> {
 			return em.createQuery("select e from ListaSpesa e", ListaSpesa.class).getResultList();
+		});
+	}
+
+	private void addProductToDatabase(Prodotto prodottoDaPersistere) {
+		transaction.executeTransaction((em) -> {
+			em.persist(prodottoDaPersistere);
+			em.clear();
+			return null;
+		});
+	}
+
+	private List<Prodotto> retrieveProductToDatabase() {
+		return transaction.executeTransaction((em) -> {
+			return em.createQuery("select e from Prodotto e ", Prodotto.class).getResultList();
 		});
 	}
 

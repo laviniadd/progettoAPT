@@ -127,6 +127,21 @@ public class ProdottoDaoTest extends JpaTest {
 	}
 
 	@Test
+	public void testDeleteProductWithList() {
+		ListaSpesa lista = new ListaSpesa("spesa");
+		addListToDatabase(lista);		
+		Prodotto prodotto = new Prodotto("mela", 2, lista);
+		addProductToDatabase(prodotto);
+		
+		prodottoDao.delete(prodotto.getId());
+		
+		List<Prodotto> retrievedProducts = retrieveProductToDatabase();
+		List<ListaSpesa> retrievedShoppingList = retrieveShoppingListToDatabase();
+		assertThat(retrievedProducts).isEmpty();
+		assertThat(retrievedShoppingList).containsExactly(lista);
+	}
+	
+	@Test
 	public void testDeleteNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			prodottoDao.delete(null);
@@ -251,6 +266,7 @@ public class ProdottoDaoTest extends JpaTest {
 			prodottoDao.findAllProductOfAList(new ListaSpesa());
 		});
 	}
+
 	
 	private void addProductToDatabase(Prodotto prodottoDaPersistere) {
 		transaction.executeTransaction((em) -> {
@@ -273,5 +289,11 @@ public class ProdottoDaoTest extends JpaTest {
 			return em.createQuery("select e from Prodotto e ", Prodotto.class).getResultList();
 		});
 	}
+	private List<ListaSpesa> retrieveShoppingListToDatabase() {
+		return transaction.executeTransaction((em) -> {
+			return em.createQuery("select e from ListaSpesa e", ListaSpesa.class).getResultList();
+		});
+	}
+
 
 }

@@ -1,6 +1,5 @@
 package com.myproject.app.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -16,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 import com.myproject.app.dao.ListaDellaSpesaDao;
 import com.myproject.app.dao.ProdottoDao;
 import com.myproject.app.model.ListaSpesa;
-import com.myproject.app.model.Prodotto;
 import com.myproject.app.view.AppViewInterface;
 
 public class ListaSpesaControllerTest {
@@ -107,38 +105,13 @@ public class ListaSpesaControllerTest {
 	}
 
 	@Test
-	public void testDeleteListaWithoutProductsWhenListaAlreadyExists() {
+	public void testDeleteListaWhenListaAlreadyExists() {
 		ListaSpesa listaDaCancellare = new ListaSpesa("Spesa");
-		List<Prodotto> listaVuota = new ArrayList<Prodotto>();
 
 		when(listaSpesaDao.findById(listaDaCancellare.getId())).thenReturn(listaDaCancellare);
-		when(prodottoDao.findAllProductOfAList(listaDaCancellare)).thenReturn(listaVuota);
 
 		listaSpesaController.deleteListaSpesa(listaDaCancellare);
 
-		verify(listaSpesaDao).delete(listaDaCancellare.getId());
-		verify(listaSpesaView).showRemovedEntity(listaDaCancellare);
-		verifyNoMoreInteractions(ignoreStubs(listaSpesaDao, listaSpesaView, prodottoDao));
-	}
-
-	@Test
-	public void testDeleteListaWithProductsWhenListaAlreadyExists() {
-		ListaSpesa listaDaCancellare = new ListaSpesa("Spesa");
-
-		Prodotto prodotto1 = new Prodotto("mela", 2, listaDaCancellare);
-		Prodotto prodotto2 = new Prodotto("pera", 1, listaDaCancellare);
-
-		List<Prodotto> listaConProdotti = new ArrayList<Prodotto>();
-		listaConProdotti.add(prodotto1);
-		listaConProdotti.add(prodotto2);
-
-		when(listaSpesaDao.findById(listaDaCancellare.getId())).thenReturn(listaDaCancellare);
-		when(prodottoDao.findAllProductOfAList(listaDaCancellare)).thenReturn(listaConProdotti);
-
-		listaSpesaController.deleteListaSpesa(listaDaCancellare);
-
-		verify(prodottoDao, atLeast(2)).delete(prodotto1.getId());
-		verify(listaSpesaView, atLeast(2)).showRemovedEntity(prodotto1);
 		verify(listaSpesaDao).delete(listaDaCancellare.getId());
 		verify(listaSpesaView).showRemovedEntity(listaDaCancellare);
 	}

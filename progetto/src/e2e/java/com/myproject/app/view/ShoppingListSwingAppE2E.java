@@ -124,7 +124,7 @@ public class ShoppingListSwingAppE2E extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Cancella Lista selezionata")).click();
 		assertThat(window.list("elencoListe").contents()).noneMatch(e -> e.contains("Lista coop"));
 	}
-
+	
 	@Test
 
 	@GUITest

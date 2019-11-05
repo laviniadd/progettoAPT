@@ -5,6 +5,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Prodotto extends BaseEntity {
 
@@ -39,7 +42,8 @@ public class Prodotto extends BaseEntity {
 		this.quantity = quantity;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "listaSpesa_id")
 	public ListaSpesa getListaSpesa() {
 		return listaSpesa;
