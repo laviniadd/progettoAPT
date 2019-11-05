@@ -175,6 +175,7 @@ public class AppSwingView extends JFrame implements AppViewInterface {
 			prodottoController.allProductsGivenAList(listaDaAssociareAiProdotti);
 			btnCancellaListaSelezionata.setEnabled(false);
 			btnModificaAggiungiProdotti.setEnabled(false);
+			listaListe.clearSelection();
 		});
 		btnModificaAggiungiProdotti.setEnabled(false);
 		GridBagConstraints gbc_btnModificaaggiungiProdotti = new GridBagConstraints();

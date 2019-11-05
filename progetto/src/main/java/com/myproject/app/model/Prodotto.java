@@ -1,7 +1,6 @@
 package com.myproject.app.model;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -42,7 +41,7 @@ public class Prodotto extends BaseEntity {
 		this.quantity = quantity;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "listaSpesa_id")
 	public ListaSpesa getListaSpesa() {
