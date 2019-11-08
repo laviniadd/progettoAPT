@@ -11,7 +11,7 @@ addons:
   sonarcloud:
     organization: "laviniadd"
     token:
-         secure: $SONAR_TOKEN
+         secure: "9163832915803ca7da0550f4d0cac26510dd9aaa"
 install: true
 cache:
    directories:
