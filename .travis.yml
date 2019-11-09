@@ -10,8 +10,6 @@ services:
 addons:
   sonarcloud:
     organization: "laviniadd"
-    token:
-       secure: $TOKEN
 install: true
 cache:
    directories:
