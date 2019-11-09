@@ -6,6 +6,7 @@ env: DISPLAY=:99.0
 
 services:
    - docker
+   - xvfb
 addons:
   sonarcloud:
     organization: "laviniadd"
@@ -15,10 +16,7 @@ cache:
    directories:
    - $HOME/.m2
    - $HOME/.sonar/cache
-   
-before_script:
-   - sh -e /etc/init.d/xvfb start
-   
+
 script:
  - git fetch --unshallow
  - mvn -f progetto/pom.xml clean verify -Pdocker -Pjacoco coveralls:report sonar:sonar
