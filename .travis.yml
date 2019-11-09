@@ -10,8 +10,7 @@ services:
 addons:
   sonarcloud:
     organization: "laviniadd"
-    token:
-         secure:$SONAR_TOKEN
+    
 install: true
 cache:
    directories:
@@ -20,4 +19,4 @@ cache:
 
 script:
  - git fetch --unshallow
- - mvn -X -f progetto/pom.xml clean verify -Pdocker -Pjacoco coveralls:report sonar:sonar
+ - mvn -f progetto/pom.xml clean verify -Pdocker -Pjacoco coveralls:report sonar:sonar
