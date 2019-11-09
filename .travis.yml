@@ -20,4 +20,4 @@ cache:
 
 script:
  - git fetch --unshallow
- - mvn -X -f progetto/pom.xml clean verify -Pdocker -Pjacoco coveralls:report sonar:sonar
+ - mvn -e -f progetto/pom.xml clean verify -Pdocker -Pjacoco coveralls:report sonar:sonar
