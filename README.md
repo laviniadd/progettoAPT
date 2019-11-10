@@ -7,7 +7,7 @@
 ## Prerequisites:
 * [Docker](https://docs.docker.com/engine/docker-overview/)
 * [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-* [Maven 3.6.1](https://maven.apache.org/download.cgi)
+* [Maven 3.8.1](https://maven.apache.org/plugins/maven-compiler-plugin/download.cgi)
 
 ## Running the application:
 * `git clone https://github.com/laviniadd/progettoAPT`
