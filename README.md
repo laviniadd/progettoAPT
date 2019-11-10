@@ -13,7 +13,7 @@
 * `git clone https://github.com/laviniadd/progettoAPT`
 * `cd progettoAPT/progetto`
 * Run: `mvn package`
-* Open Docker and create the database using the following line. Run:
+* Start Docker and create the database using the following line. Run:
   
   `docker run --name mydbproject-container -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=mydbproject -p 3306:3306 -d mysql:8`
 
@@ -21,6 +21,7 @@
 
 ## Running tests:
 * Start Docker
+* (If not already done) `git clone https://github.com/laviniadd/progettoAPT`
 * `cd progettoAPT/progetto`
 * Running `mvn verify -Pdocker` will run all tests.
 * Running `mvn test` will only run unit tests.
