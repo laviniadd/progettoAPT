@@ -16,7 +16,10 @@ cache:
    directories:
    - $HOME/.m2
    - $HOME/.sonar/cache
-
+   
+before_script: 
+   - echo JAVA_HOME = ${JAVA_HOME}
+   
 script:
  - git fetch --unshallow
  - mvn -f progetto/pom.xml clean verify -Pdocker -Pjacoco coveralls:report sonar:sonar
