@@ -1,8 +1,17 @@
 # Progetto di Advanced Programming Techniques
-
 [![Build Status](https://travis-ci.org/laviniadd/progettoAPT.svg?branch=master)](https://travis-ci.org/laviniadd/progettoAPT)
 [![Coverage Status](https://coveralls.io/repos/github/laviniadd/progettoAPT/badge.svg?branch=master)](https://coveralls.io/github/laviniadd/progettoAPT?branch=master)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.myproject.app%3Aprogetto&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.myproject.app%3Aprogetto)
+
+## Purpose:
+The purpose of my work has been to create an application that allows the user to
+- Create a shopping list and assign it the name
+- Delete shopping list
+- Add products
+- Remove products
+- Modify products
+
+The project has been developed through the Test-Driven Development approach.
 
 ## Prerequisites:
 * [Docker](https://docs.docker.com/engine/docker-overview/)
